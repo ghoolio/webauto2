@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "schwalbebot001",
+  "private_key_id": "dac95d16e220baa8e3c90ff93526420efc311fe2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC4AcahnKDWfxou\n4M16tj3EgJhxqf1TcknDbFkFdrCw0MgjmRYt9HBSMFLCbI/qhlVUodOwp/pMR4NY\nj2qD8c/yfcT1qC857OJqj7VTn4iHK0XI5+QgaSdE+QU+HSM+DTlWcWDc+WQpBuFA\nycjJLjbrJusLszjhQUqurb5Tq4GK56tf4IRhVqAX6t47HQmyAzl8mFQTQumaXDMv\nyL+YM1UtC5kWCH+LSsuw+q9omij7O6JFZfnm3Is/s7zGAz/vGf/S2ybgglbJJ86l\nx9L1M/NPev9mqJZ/niIuyVzgbYEGkM1l4zRDsl2olwE2T9vzy+zNxy2bRn5evuSI\nuPfnSKVlAgMBAAECggEAEuCfw6nBeG/+vCt0+S9kI9o7iYGyixKRDbr6YQydsO4i\nckB83YcT1OK/QtIHa7yPWYjmoluBWr0FdRr1hwbSWiLcB4XTHoK2cc8/f45A3/kp\nBiUAKvEOxc00Y/xyRqXtqXglQ1ZUl77scgyhjD4xBSvvdjpTTgy4QDZz7bqNJjZU\nvT9BwSrOOaxJ6yQs2kW3xY0Negzt1xk+HUjetmBAN7PVDfHf+0ISIP2SOx00LUZb\nSpoy4WSDas6eCkFfEvHAmqnz9eggjIJU+fKucQt6iTEn8ntNF3O7aYesFCiJICbt\nuwqBVoLJSMlFkhywymjmOJOJDBPTqm3B9z0BRr66mwKBgQDccd2QQ6ulDV6q6ygJ\ntywtO7yu2tFg/5Hd6f7Djud7zkHStZtF5qW9J1Qqr2RutTwqKWXUnRkeZyeaghsg\no2HG78HnuVYHqzPHsnVJGvt5XUY0LEjseg9JcGb8qbB+5beYJjnDR7W0cjPr+/5J\nc906qQSMX/3Hacif0BLVOTBfRwKBgQDVr2WMvnoiTDop2m8IJiXrXXC1pWZc1f6V\nXxwYIGjSKCEIsYer3ULJ2Op0oSrw81W+2uRZ7IVP+PegZRfC1i/8j0+/NLl+jcQl\n22exjnQeT6euXJMySLEQBOpvJVVgEn3yGpYkR+KzjBLYLaYL15ziyS3dT25ETVaC\nD5hjwqyj8wKBgAbPueHgRWh3Lkqns3gBYesP4negqUGPBAnQVh/ixYJM0DnbhK23\nP73FflNHUhodnXtMBip4pDMNSur6RC5Q/g9wjxRC5Mad4p60A+27WLPaTvYDvEka\nSGijgXsjHyH8pRydacF/8Lxfnv0WrzfDzb0nRc20lZnYyesuOba+6qC3AoGALnjn\n3/UpAL6NQ77yuNX7FzYKJicjnPsZVAkMRh7+TP5XONnLRNBpDxby3oySlzaEpm5a\njUgIMj1WNXbm9QO6CfZtBIuF8AUK7KTL52ywykrOj/goNx5iC7bV+XgoGi3LYFTx\n5FAR+LR1ALjkzNyGjTftlp0IwSgEsWKM5N1YyIsCgYADbKxTyhhcQRQkA/dzPdBG\ngu6i8zAPHLK/CxbAYSNTTAXMBF86tE+/KK4ajBGze0B60yVGEDvSfPHTaWrAN8OC\ni4VwMAP6WqoNGvADRhjQvyGzIrbDVOKzoACVeSa7mAyTqhCQovzNgcjQd4FbObXe\nZz1oU6ZYFjwaQulA5dVN0g==\n-----END PRIVATE KEY-----\n",
+  "client_email": "schwalbebot-google-sheet-servi@schwalbebot001.iam.gserviceaccount.com",
+  "client_id": "107814906457098161444",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/schwalbebot-google-sheet-servi%40schwalbebot001.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
