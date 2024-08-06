@@ -1,8 +1,10 @@
+// index.js
+
 const puppeteer = require('puppeteer-extra');
 const { google } = require('googleapis');
 const dotenv = require('dotenv');
 const { runPerenterolQuiz } = require('./perenterolQuiz');
-const { checkFor503Error } = require('./utils');
+const { checkFor503Error, sleep } = require('./utils');
 const qs = require('qs');
 const cheerio = require('cheerio');
 const tough = require('tough-cookie');
@@ -51,13 +53,8 @@ async function readSheet() {
   }
 }
 
-async function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 const stealthFixPlugin = require('puppeteer-extra-plugin-stealth-fix');
 const stealthPlugin = require('puppeteer-extra-plugin-stealth');
-const { headers } = require('next/headers');
 
 puppeteer.use(stealthFixPlugin());
 puppeteer.use(stealthPlugin());
@@ -113,10 +110,8 @@ const startSchwalbe = async () => {
 
     async function handleCookieConsent(page) {
         try {
-            // Wait for the cookie notification to be present
             await page.waitForSelector('#cookie-notification', { timeout: 5000 });
         
-            // Check if the cookie notification is visible
             const isCookieNotificationVisible = await page.evaluate(() => {
                 const cookieNotification = document.querySelector('#cookie-notification');
                 return cookieNotification && window.getComputedStyle(cookieNotification).display !== 'none';
@@ -124,10 +119,7 @@ const startSchwalbe = async () => {
         
             if (isCookieNotificationVisible) {
                 console.log('Cookie notification is visible. Accepting cookies...');
-        
-                // Click the "Auswahl bestätigen" button
                 await page.click('#cookie-notification__decline');
-        
                 console.log('Cookies accepted.');
             } else {
                 console.log('Cookie notification is not visible. No action needed.');
@@ -159,195 +151,7 @@ const startSchwalbe = async () => {
         }
     }
 
-    // Define performLogin function
-    async function runPerenterolQuiz(page) {
-        console.log('Starting Perenterol test...');
-    
-        try {
-            await page.goto('https://www.medibee.de/lernmodule/lernmodul/elearning/perenterol-0824-tdm-5-schnelle-fragen-zu-perenterol', { waitUntil: 'networkidle0', timeout: 60000 });
-            console.log('Navigated to Perenterol quiz page...');
-    
-            // Wait for the iframe to load
-            console.log("Waiting for iframe to load...");
-            await page.waitForSelector('iframe.ap-elearning--iframe-top', { timeout: 30000 });
-    
-            // Switch to the iframe context
-            console.log("Switching to iframe context...");
-            const frame = await page.frames().find(f => f.url().includes('/lernmodule/lernmodul/lernmodul-iframe'));
-            
-            if (!frame) {
-                throw new Error('Could not find the quiz iframe');
-            }
-    
-            console.log('Potential quiz frame found. Analyzing content...');
-    
-            // Try to find and click the "Los!" button or any suitable alternative
-            const clickResult = await frame.evaluate(() => {
-                const possibleSelectors = [
-                    'svg *[cursor="pointer"]',
-                    'button',
-                    '*[role="button"]',
-                    '*[onclick]',
-                    '.slide-object-vectorshape',
-                    '*[class*="start"]',
-                    '*[id*="start"]'
-                ];
-    
-                for (const selector of possibleSelectors) {
-                    const elements = document.querySelectorAll(selector);
-                    for (const element of elements) {
-                        if (element.textContent.includes('Los') || element.textContent.includes('Start') || element.textContent.trim() === '') {
-                            element.click();
-                            return `Clicked element: ${selector}`;
-                        }
-                    }
-                }
-    
-                return 'No suitable clickable element found';
-            });
-    
-            console.log('Click attempt result:', clickResult);
-    
-            // Wait for potential changes
-            await sleep(5000);
-    
-            // Answer 5 questions
-            for (let i = 1; i <= 5; i++) {
-                console.log(`Answering question ${i}...`);
-                
-                // Wait for the question to be visible (you might need to adjust this selector)
-                await frame.waitForSelector('svg text', { timeout: 10000 }).catch(() => console.log(`Question ${i} not found`));
-    
-                // Click an answer (you may need to adjust the selector based on the actual structure)
-                await frame.evaluate(() => {
-                    const answerElements = document.querySelectorAll('svg *[cursor="pointer"]');
-                    if (answerElements.length > 0) {
-                        answerElements[0].click(); // Click the first answer
-                    }
-                });
-    
-                await sleep(2000);
-    
-                // Click the next question button
-                await frame.evaluate(() => {
-                    const nextButton = document.querySelector('svg *[cursor="pointer"]');
-                    if (nextButton) {
-                        nextButton.click();
-                    }
-                });
-    
-                await sleep(2000);
-            }
-    
-            console.log("All questions answered. Waiting for results...");
-            await sleep(5000);
-    
-            // Check for results or any final page
-            const resultText = await frame.evaluate(() => document.body.innerText);
-            console.log("Quiz completed. Result:", resultText);
-    
-            // Take a screenshot of the entire page
-            await page.screenshot({ path: 'quiz-after-completion.png', fullPage: true });
-    
-            console.log('Perenterol test completed.');
-        } catch (error) {
-            console.error('Error in Perenterol test:', error);
-            // Take a screenshot on error for debugging
-            await page.screenshot({ path: 'error-screenshot.png', fullPage: true });
-        }
-    }
-
     const cookieJar = new tough.CookieJar();
-
-    async function loginAxios(nm, pw) {
-        const client = axios.create({
-            jar: cookieJar,
-            withCredentials: true
-        });
-    
-        try {
-            await ensureLoggedOut(client);
-            console.log(`Attempting login for user: ${nm}`);
-            const loginPageResponse = await client.get('https://www.medibee.de/login');
-            const $ = cheerio.load(loginPageResponse.data);
-            
-            const hiddenInputs = {};
-            $('form input[type="hidden"]').each((i, el) => {
-                hiddenInputs[$(el).attr('name')] = $(el).val();
-            });
-    
-            console.log('Hidden inputs found:', hiddenInputs);
-    
-            const loginResponse = await client.post('https://www.medibee.de/login', 
-                qs.stringify({
-                    user: nm,
-                    pass: pw,
-                    submit: 'Anmelden',
-                    logintype: 'login',
-                    pid: hiddenInputs.pid || '17@68280de23ad0092ce76442debbb2676c10d754cd',
-                    redirect_url: hiddenInputs.redirect_url || '/lernmodule',
-                    'tx_felogin_pi1[noredirect]': hiddenInputs['tx_felogin_pi1[noredirect]'] || '0',
-                    ...hiddenInputs
-                }),
-                {
-                    headers: {
-                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                        'Accept-Encoding': 'gzip, deflate, br, zstd',
-                        'Accept-Language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
-                        'Cache-Control': 'max-age=0',
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Origin': 'https://www.medibee.de',
-                        'Referer': 'https://www.medibee.de/login',
-                        'Sec-Fetch-Dest': 'document',
-                        'Sec-Fetch-Mode': 'navigate',
-                        'Sec-Fetch-Site': 'same-origin',
-                        'Sec-Fetch-User': '?1',
-                        'Upgrade-Insecure-Requests': '1',
-                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-                    },
-                    maxRedirects: 0,
-                    validateStatus: function (status) {
-                        return status >= 200 && status < 400;
-                    },
-                }
-            );
-    
-            console.log('Login response status:', loginResponse.status);
-            console.log('Login response headers:', loginResponse.headers);
-    
-            if (loginResponse.status === 303 || loginResponse.status === 302) {
-                console.log('Redirect URL:', loginResponse.headers.location);
-                
-                const redirectResponse = await client.get(loginResponse.headers.location);
-                
-                console.log('Redirect response status:', redirectResponse.status);
-                console.log('Redirect response URL:', redirectResponse.config.url);
-    
-                const checkLoginResponse = await client.get('https://www.medibee.de/lernmodule');
-                
-                if (checkLoginResponse.data.includes('Logout') || checkLoginResponse.data.includes('Mein Konto')) {
-                    console.log('Login successful (found Logout or Mein Konto in content)');
-                    return true;
-                } else {
-                    console.log('Login failed. Not logged in after redirect.');
-                    console.log('Response content:', checkLoginResponse.data.slice(0, 500)); // Log first 500 characters
-                    return false;
-                }
-            } else {
-                console.log('Login failed. Unexpected status code.');
-                console.log('Response content:', loginResponse.data.slice(0, 500)); // Log first 500 characters
-                return false;
-            }
-        } catch (error) {
-            console.error('Error during login:', error.message);
-            if (error.response) {
-                console.log('Error response status:', error.response.status);
-                console.log('Error response headers:', error.response.headers);
-                console.log('Error response data:', error.response.data.slice(0, 500)); // Log first 500 characters
-            }
-            return false;
-        }
-    }
 
     async function performLogin2(page) {
         try {
@@ -410,100 +214,6 @@ const startSchwalbe = async () => {
         }
     }
 
-    async function runPerenterolQuiz(page) {
-        console.log('Starting Perenterol test...');
-    
-        try {
-            await page.goto('https://www.medibee.de/lernmodule/lernmodul/elearning/perenterol-0824-tdm-5-schnelle-fragen-zu-perenterol', { waitUntil: 'networkidle0', timeout: 60000 });
-            console.log('Navigated to Perenterol quiz page...');
-    
-            // Wait for the outer iframe to load
-            console.log("Waiting for outer iframe to load...");
-            await page.waitForSelector('iframe.ap-elearning--iframe-top', { timeout: 30000 });
-    
-            // Switch to the outer iframe context
-            console.log("Switching to outer iframe context...");
-            const outerFrame = await page.frames().find(f => f.url().includes('/lernmodule/lernmodul/lernmodul-iframe'));
-            
-            if (!outerFrame) {
-                throw new Error('Could not find the outer iframe');
-            }
-    
-            // Wait for the inner iframe to load
-            console.log("Waiting for inner iframe to load...");
-            await outerFrame.waitForSelector('iframe.ap-elearning--iframe-bottom', { timeout: 30000 });
-    
-            // Switch to the inner iframe context
-            console.log("Switching to inner iframe context...");
-            const innerFrame = await outerFrame.childFrames().find(f => f.url().includes('/fileadmin/elearnings/'));
-    
-            if (!innerFrame) {
-                throw new Error('Could not find the inner iframe');
-            }
-    
-            console.log('Quiz frame found. Starting quiz...');
-    
-            // Click the start button
-            await innerFrame.evaluate(() => {
-                const startButton = document.querySelector('#acc-6WrES1MOsT8');
-                if (startButton) {
-                    startButton.click();
-                    return 'Start button clicked';
-                }
-                return 'Start button not found';
-            });
-    
-            console.log('Start button clicked. Waiting for quiz to load...');
-            await innerFrame.waitForTimeout(2000);
-    
-            // Answer 5 questions
-            for (let i = 1; i <= 5; i++) {
-                console.log(`Attempting to answer question ${i}...`);
-                
-                await innerFrame.evaluate(() => {
-                    const answerButtons = document.querySelectorAll('.slide-object-button');
-                    if (answerButtons.length > 0) {
-                        answerButtons[0].click();
-                        return 'Answer clicked';
-                    }
-                    return 'No clickable answer found';
-                });
-    
-                console.log(`Clicked answer for question ${i}`);
-                await innerFrame.waitForTimeout(1000);
-    
-                // Click the next button
-                await innerFrame.evaluate(() => {
-                    const nextButton = document.querySelector('.slide-object-button[aria-label="Next Slide"]');
-                    if (nextButton) {
-                        nextButton.click();
-                        return 'Next button clicked';
-                    }
-                    return 'Next button not found';
-                });
-    
-                console.log(`Clicked next button after question ${i}`);
-                await innerFrame.waitForTimeout(1000);
-            }
-    
-            console.log('All questions answered. Waiting for results...');
-            await innerFrame.waitForTimeout(2000);
-    
-            // Check for results
-            const resultText = await innerFrame.evaluate(() => {
-                const resultElement = document.querySelector('.ap-lightbox__message');
-                return resultElement ? resultElement.innerText : 'Result not found';
-            });
-            console.log("Quiz completed. Result:", resultText);
-    
-            console.log('Perenterol test completed.');
-        } catch (error) {
-            console.error('Error in Perenterol test:', error);
-            // Take a screenshot on error for debugging
-            await page.screenshot({ path: 'error-screenshot.png', fullPage: true });
-        }
-    }
-
     while (true) {
         try {
             const hasMoreData = await readSheet();
@@ -535,62 +245,13 @@ const startSchwalbe = async () => {
                 continue;
             }
 
-            /* let loginAttempts = 0;
-            const maxLoginAttempts = 3;
-            let loginSuccessful = false;
-
-            while (loginAttempts < maxLoginAttempts && !loginSuccessful) {
-                loginAttempts++;
-                loginSuccessful = await performLogin(page, loginAttempts);
-                
-                if (!loginSuccessful && loginAttempts < maxLoginAttempts) {
-                    console.log(`Login attempt ${loginAttempts} failed. Waiting before next attempt...`);
-                    await sleep(5000);
-                }
-            }
-
-            if (!loginSuccessful) {
-                console.error(`Failed to log in after ${maxLoginAttempts} attempts. Moving to next user.`);
-                continue; // Skip to next user
-            } */
-
-            const tests = [
-                //{ name: 'remifeminQuiz', func: runRemifeminQuiz },
-                { name: 'perenterolQuiz', func: runPerenterolQuiz }
-            ];
-
-            for (let i = 0; i < tests.length; i++) {
-                const test = tests[i];
-                let testCompleted = false;
-                let retryCount = 0;
-            
-                while (!testCompleted && retryCount < maxRetries) {
-                    try {
-                        await test.func(page);
-                        testCompleted = true;
-                    } catch (error) {
-                        console.error(`Error in ${test.name} test:`, error);
-                        const is503Error = await checkFor503Error(page);
-                        if (is503Error) {
-                            console.log(`TYPO3 503 error detected during ${test.name} test. Restarting this test...`);
-                            retryCount++;
-                            await sleep(5000);
-                            await page.goto("https://www.medibee.de/lernmodule/lernmodul/elearning/perenterol-0824-tdm-5-schnelle-fragen-zu-perenterol", {
-                                waitUntil: "domcontentloaded",
-                                timeout: 60000
-                            });
-                            await setZoom(page);  // Reapply zoom after navigation
-                        } else {
-                            console.log(`Unexpected error in ${test.name} test. Retrying...`);
-                            retryCount++;
-                            await sleep(5000);
-                        }
-                    }
-                }
-            
-                if (!testCompleted) {
-                    console.error(`Failed to complete ${test.name} test after ${maxRetries} retries. Moving to next test.`);
-                }
+            try {
+                console.log('Page object before running quiz:', page ? 'exists' : 'does not exist');
+                console.log('Starting Perenterol quiz...');
+                await runPerenterolQuiz(page);
+                console.log('Perenterol quiz completed.');
+            } catch (error) {
+                console.error('Error running Perenterol quiz:', error);
             }
 
             try {

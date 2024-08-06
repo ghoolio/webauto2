@@ -1,4 +1,4 @@
-2024/08/02-00:20:56.483 c103 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/MANIFEST-000001
-2024/08/02-00:20:56.491 c103 Recovering log #3
-2024/08/02-00:20:56.491 c103 (ignoring error) /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/000003.log: dropping 10887 bytes; Corruption: checksum mismatch
-2024/08/02-00:20:56.492 c103 Reusing old log /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/000003.log 
+2024/08/06-09:31:45.668 930b Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/MANIFEST-000001
+2024/08/06-09:31:45.668 930b Recovering log #3
+2024/08/06-09:31:45.669 930b (ignoring error) /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/000003.log: dropping 14739 bytes; Corruption: checksum mismatch
+2024/08/06-09:31:45.669 930b Reusing old log /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/000003.log 
