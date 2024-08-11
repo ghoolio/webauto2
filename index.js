@@ -57,7 +57,7 @@ const stealthPlugin = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(stealthFixPlugin());
 puppeteer.use(stealthPlugin());
 
-const startSchwalbe = async () => {
+const startMedibee = async () => {
     const browser = await puppeteer.launch({
         headless: false,
         defaultViewport: null,
@@ -262,7 +262,7 @@ const startSchwalbe = async () => {
 // Start the scraping
 (async () => {
   try {
-      await startSchwalbe();
+      await startMedibee();
   } catch (error) {
       console.error("Error in main execution:", error);
   }
