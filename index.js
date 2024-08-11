@@ -1,5 +1,5 @@
+"use strict";
 // index.js
-
 const puppeteer = require('puppeteer-extra');
 const { google } = require('googleapis');
 const dotenv = require('dotenv');
@@ -8,8 +8,6 @@ const { checkFor503Error, sleep } = require('./utils');
 const qs = require('qs');
 const cheerio = require('cheerio');
 const tough = require('tough-cookie');
-const { wrapper } = require('axios-cookiejar-support');
-const axios = wrapper(require('axios').default);
 dotenv.config();
 
 const clientEmail = 'schwalbebot-google-sheet-servi@schwalbebot001.iam.gserviceaccount.com';
@@ -83,7 +81,6 @@ const startSchwalbe = async () => {
         console.log("Zoom set to 75%");
     }
 
-    // Define handleCookiePopup function
     async function handleCookiePopup(page, maxRetries = 3) {
         for (let i = 0; i < maxRetries; i++) {
             try {
@@ -132,26 +129,6 @@ const startSchwalbe = async () => {
             }
         }
     }
-    
-    async function ensureLoggedOut(client) {
-        const logoutPageResponse = await client.get('https://www.medibee.de/login');
-        const $ = cheerio.load(logoutPageResponse.data);
-        const logoutForm = $('form[name="logout"]');
-        
-        if (logoutForm.length > 0) {
-            console.log('Already logged in. Logging out...');
-            const logoutResponse = await client.post('https://www.medibee.de/login', 
-                qs.stringify({
-                    logintype: 'logout',
-                    pid: logoutForm.find('input[name="pid"]').val(),
-                    'tx_felogin_pi1[noredirect]': logoutForm.find('input[name="tx_felogin_pi1[noredirect]"]').val()
-                })
-            );
-            console.log('Logout response status:', logoutResponse.status);
-        }
-    }
-
-    const cookieJar = new tough.CookieJar();
 
     async function performLogin2(page) {
         try {
@@ -246,23 +223,29 @@ const startSchwalbe = async () => {
             }
 
             try {
-                console.log('Page object before running quiz:', page ? 'exists' : 'does not exist');
                 console.log('Starting Perenterol quiz...');
-                await runPerenterolQuiz(page);
-                console.log('Perenterol quiz completed.');
+                const quizCompleted = await runPerenterolQuiz(page);
+                console.log('Perenterol quiz completed:', quizCompleted ? 'Successfully' : 'With errors');
             } catch (error) {
                 console.error('Error running Perenterol quiz:', error);
             }
 
+            // Logout process
             try {
-                const logoutSelector = 'body > main > div.tx-felogin-pi1 > section > div > form > fieldset > div.row.ap-form__submit > div > input';
-                const logoutButton = await page.$(logoutSelector);
-                if (logoutButton) {
-                    await logoutButton.click();
-                    console.log('Logout successful');
-                } else {
-                    console.log('Logout button not found. User might already be logged out.');
-                }
+                console.log('Attempting to logout...');
+                await page.goto('https://www.medibee.de/', { waitUntil: 'networkidle0', timeout: 60000 });
+                await sleep(5000);
+
+                // Click dropdown menu
+                await page.click('#dropdownMenuButton');
+                await sleep(2000);
+
+                // Click logout button
+                const logoutSelector = 'body > div.ap-navbar--container > div > div > div > nav > ul.ap-menu.ap-menu--meta > li > div > div > a:nth-child(3)';
+                await page.click(logoutSelector);
+                await sleep(5000);
+
+                console.log('Logout attempt completed.');
             } catch (error) {
                 console.error('Error during logout:', error);
             }
