@@ -4,6 +4,7 @@ const puppeteer = require('puppeteer-extra');
 const { google } = require('googleapis');
 const dotenv = require('dotenv');
 const { runPerenterolQuiz } = require('./perenterolQuiz');
+const { runPerenterol1Quiz } = require('./perenterol1Quiz');
 const { checkFor503Error, sleep } = require('./utils');
 const qs = require('qs');
 const cheerio = require('cheerio');
@@ -56,6 +57,14 @@ const stealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 puppeteer.use(stealthFixPlugin());
 puppeteer.use(stealthPlugin());
+
+// Define an array of quiz functions
+const quizzes = [
+    //{ name: 'Perenterol', func: runPerenterolQuiz },
+    { name: 'Perenterol1', func: runPerenterol1Quiz },
+    // Add more quizzes here
+    // { name: 'NextQuiz', func: runNextQuiz },
+];
 
 const startMedibee = async () => {
     const browser = await puppeteer.launch({
@@ -223,11 +232,23 @@ const startMedibee = async () => {
             }
 
             try {
-                console.log('Starting Perenterol quiz...');
-                const quizCompleted = await runPerenterolQuiz(page);
-                console.log('Perenterol quiz completed:', quizCompleted ? 'Successfully' : 'With errors');
+                let allQuizzesCompleted = true;
+                for (const quiz of quizzes) {
+                    console.log(`Starting ${quiz.name} quiz...`);
+                    const quizCompleted = await quiz.func(page, 3); // 3 is the maximum number of retries
+                    console.log(`${quiz.name} quiz completed:`, quizCompleted ? 'Successfully' : 'With errors');
+                    if (!quizCompleted) {
+                        console.log(`${quiz.name} quiz failed after multiple attempts. Moving to next quiz.`);
+                        allQuizzesCompleted = false;
+                        break; // Optional: remove this line if you want to continue with next quizzes even if one fails
+                    }
+                }
+                if (!allQuizzesCompleted) {
+                    console.log('Not all quizzes were completed successfully. Moving to next user.');
+                    continue;
+                }
             } catch (error) {
-                console.error('Error running Perenterol quiz:', error);
+                console.error('Error running quizzes:', error);
             }
 
             // Logout process
@@ -236,28 +257,64 @@ const startMedibee = async () => {
                 await page.goto('https://www.medibee.de/', { waitUntil: 'networkidle0', timeout: 60000 });
                 await sleep(5000);
 
-                // Click dropdown menu
-                await page.click('#dropdownMenuButton');
-                await sleep(2000);
+                // Execute logout JavaScript
+                const logoutResult = await page.evaluate(() => {
+                    // Check if the logout function exists
+                    if (typeof logout === 'function') {
+                        logout();
+                        return 'Logout function called successfully';
+                    } else {
+                        // If the logout function doesn't exist, try to find and click a logout link
+                        const logoutLink = document.querySelector('a[href*="logout"]');
+                        if (logoutLink) {
+                            logoutLink.click();
+                            return 'Logout link clicked successfully';
+                        } else {
+                            return 'Unable to find logout function or link';
+                        }
+                    }
+                });
 
-                // Click logout button
-                const logoutSelector = 'body > div.ap-navbar--container > div > div > div > nav > ul.ap-menu.ap-menu--meta > li > div > div > a:nth-child(3)';
-                await page.click(logoutSelector);
+                console.log('Logout result:', logoutResult);
+
+                // Wait for potential redirect after logout
                 await sleep(5000);
+
+                // Verify logout
+                const isLoggedOut = await page.evaluate(() => {
+                    return !document.body.innerHTML.includes('Logout') && !document.body.innerHTML.includes('Mein Konto');
+                });
+
+                if (isLoggedOut) {
+                    console.log('Logout verification successful');
+                } else {
+                    console.log('Logout verification failed. User might still be logged in.');
+                    
+                    // Additional check: try to access a protected page
+                    await page.goto('https://www.medibee.de/mein-konto', { waitUntil: 'networkidle0', timeout: 60000 });
+                    const isRedirectedToLogin = await page.url().includes('/login');
+                    if (isRedirectedToLogin) {
+                        console.log('Redirected to login page. Logout seems successful.');
+                    } else {
+                        console.log('Not redirected to login page. Logout may have failed.');
+                    }
+                }
 
                 console.log('Logout attempt completed.');
             } catch (error) {
                 console.error('Error during logout:', error);
+                // Take a screenshot for debugging
+                await page.screenshot({ path: 'logout-error-screenshot.png', fullPage: true });
             }
 
             console.log('All tests completed for current user. Moving to next user if available.');
 
-        } catch (error) {
-            console.error("An error occurred:", error);
-            await sleep(5000);
+            } catch (error) {
+                console.error("An error occurred:", error);
+                await sleep(5000);
+            }
         }
-    }
-};
+    };
 
 // Start the scraping
 (async () => {

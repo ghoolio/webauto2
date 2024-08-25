@@ -19,6 +19,11 @@ const weiterButtonSelectors = [
   '.continue-button'
 ];
 
+const WEITER_BUTTON_SELECTORS = [
+  '#slide-window > div > div > div.slide-transition-container > div > div.slide-layer.base-layer.shown > div:nth-child(42) > div > svg > g',
+  '#slide-window > div > div > div.slide-transition-container > div > div:nth-child(8) > div:nth-child(6) > div > svg > g'
+];
+
 async function clickButton(frame, selectors) {
   for (const selector of selectors) {
       try {
@@ -44,6 +49,20 @@ async function clickNextButton(frame) {
 async function clickWeiterButton(frame) {
   console.log('Attempting to click Weiter button...');
   return await clickButton(frame, weiterButtonSelectors);
+}
+
+async function clickPerenterol1WeiterButton(frame) {
+  for (let i = 0; i < WEITER_BUTTON_SELECTORS.length; i++) {
+    try {
+        await frame.waitForSelector(WEITER_BUTTON_SELECTORS[i], { visible: true, timeout: 5000 });
+        await frame.click(WEITER_BUTTON_SELECTORS[i]);
+        console.log(`Clicked Weiter button ${i + 1}`);
+        await sleep(2000); // Wait for transition
+    } catch (error) {
+        console.log(`Error clicking Weiter button ${i + 1}:`, error.message);
+        throw error; // Rethrow the error to be caught in the main loop
+    }
+  }
 }
 
 // error 503
@@ -128,5 +147,6 @@ module.exports = {
   checkFor503Error,
   clickStartButton,
   clickNextButton,
-  clickWeiterButton
+  clickWeiterButton,
+  clickPerenterol1WeiterButton
 };

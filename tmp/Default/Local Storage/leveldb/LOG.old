@@ -1,3 +1,6 @@
-2024/08/12-00:01:15.513 2d07 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Local Storage/leveldb/MANIFEST-000001
-2024/08/12-00:01:15.526 2d07 Recovering log #94
-2024/08/12-00:01:15.527 2d07 Reusing old log /Users/user/Documents/medibeebot/tmp/Default/Local Storage/leveldb/000094.log 
+2024/08/25-22:07:56.837 3403 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Local Storage/leveldb/MANIFEST-000001
+2024/08/25-22:07:56.891 3403 Recovering log #114
+2024/08/25-22:07:56.892 3403 Reusing old log /Users/user/Documents/medibeebot/tmp/Default/Local Storage/leveldb/000114.log 
+2024/08/25-22:16:00.169 3f0f Level-0 table #117: started
+2024/08/25-22:16:00.172 3f0f Level-0 table #117: 16426 bytes OK
+2024/08/25-22:16:00.175 3f0f Delete type=0 #114

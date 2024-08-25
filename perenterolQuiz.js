@@ -1,54 +1,76 @@
 "use strict";
-// Optimized perenterolQuiz.js
 
 const { sleep, clickNextButton, clickWeiterButton } = require('./utils');
 
-async function runPerenterolQuiz(page) {
+async function runPerenterolQuiz(page, maxRetries = 3) {
     console.log('Starting Perenterol test...');
 
-    try {
-        await navigateToQuizPage(page);
-        const frame = await switchToQuizFrame(page);
-        await startQuiz(frame);
-        await answerQuestions(frame);
-        
-        await Promise.all([
-            handleDragAndDropQuestion(frame),
-            sleep(5000)
-        ]);
-        
-        await clickNextButton(frame);
-        await clickWeiterButton(frame);
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            console.log(`Attempt ${attempt} of ${maxRetries}`);
+            await navigateToQuizPage(page);
+            const frame = await switchToQuizFrame(page);
+            await startQuiz(frame);
+            
+            let allQuestionsAnswered = true;
 
-        await handleMultipleChoice2(frame);
-        await clickNextButton(frame);
-        await clickWeiterButton(frame);
+            // Text input question
+            allQuestionsAnswered &= await handleTextInput(frame);
+            if (!allQuestionsAnswered) throw new Error("Failed to answer text input question");
+            await clickNextButton(frame);
+            await clickWeiterButton(frame);
 
-        await Promise.all([
-            handleDragAndDropQuestion2(frame),
-            sleep(5000)
-        ]);
-        
-        await clickNextButton(frame);
-        await clickWeiterButton(frame);
+            // First multiple choice question
+            allQuestionsAnswered &= await handleMultipleChoice(frame);
+            if (!allQuestionsAnswered) throw new Error("Failed to answer first multiple choice question");
+            await clickNextButton(frame);
+            await clickWeiterButton(frame);
 
-        console.log('Waiting for final submit button...');
-        await sleep(5000);
+            // First drag and drop question
+            await Promise.all([
+                handleDragAndDropQuestion(frame),
+                sleep(5000)
+            ]);
+            await clickNextButton(frame);
+            await clickWeiterButton(frame);
 
-        const parentFrame = frame.parentFrame();
-        if (parentFrame) {
-            await parentFrame.click('#ap-elearning--submit').catch(() => console.log('Failed to click final submit button'));
+            // Second multiple choice question
+            allQuestionsAnswered &= await handleMultipleChoice2(frame);
+            if (!allQuestionsAnswered) throw new Error("Failed to answer second multiple choice question");
+            await clickNextButton(frame);
+            await clickWeiterButton(frame);
+
+            // Second drag and drop question
+            await Promise.all([
+                handleDragAndDropQuestion2(frame),
+                sleep(5000)
+            ]);
+            await clickNextButton(frame);
+            await clickWeiterButton(frame);
+
+            console.log('Waiting for final submit button...');
+            await sleep(5000);
+
+            const parentFrame = frame.parentFrame();
+            if (parentFrame) {
+                await parentFrame.click('#ap-elearning--submit').catch(() => console.log('Failed to click final submit button'));
+            }
+
+            await sleep(5000);
+
+            console.log('Perenterol test completed successfully.');
+            return true;
+
+        } catch (error) {
+            console.error(`Error in Perenterol test (Attempt ${attempt}):`, error);
+            if (attempt === maxRetries) {
+                console.error('Maximum retries reached. Perenterol test failed.');
+                await takeErrorScreenshot(page);
+                return false;
+            }
+            console.log('Retrying...');
+            await sleep(5000);
         }
-
-        await sleep(5000);
-
-        console.log('Perenterol test completed.');
-        return true;
-
-    } catch (error) {
-        console.error('Error in Perenterol test:', error);
-        await takeErrorScreenshot(page);
-        return false;
     }
 }
 
@@ -69,20 +91,6 @@ async function switchToQuizFrame(page) {
 async function startQuiz(frame) {
     await frame.click('#acc-6WrES1MOsT8').catch(() => {});
     await sleep(3000);
-}
-
-async function answerQuestions(frame) {
-    const textInputSuccess = await handleTextInput(frame);
-    if (textInputSuccess) {
-        await clickNextButton(frame);
-        await clickWeiterButton(frame);
-    }
-
-    const multipleChoiceSuccess = await handleMultipleChoice(frame);
-    if (multipleChoiceSuccess) {
-        await clickNextButton(frame);
-        await clickWeiterButton(frame);
-    }
 }
 
 async function handleTextInput(frame) {
@@ -113,7 +121,7 @@ async function handleMultipleChoice(frame) {
         '#slide-window > div > div > div.slide-transition-container > div > div.slide-layer.base-layer.shown > div:nth-child(9) > div > div:nth-child(3) > div > svg > g'
     ];
 
-    let clickedAny = false;
+    let clickedCount = 0;
 
     for (const selector of optionSelectors) {
         try {
@@ -121,13 +129,13 @@ async function handleMultipleChoice(frame) {
             await frame.click(selector);
             console.log(`Clicked multiple choice option with selector: ${selector}`);
             await sleep(1000); // Wait a bit between clicks
-            clickedAny = true;
+            clickedCount++;
         } catch (error) {
             console.log(`Error clicking option with selector ${selector}:`, error.message);
         }
     }
 
-    return clickedAny;
+    return clickedCount === optionSelectors.length;
 }
 
 async function handleDragAndDropQuestion(frame) {
@@ -162,7 +170,7 @@ async function handleMultipleChoice2(frame) {
         '#slide-window > div > div > div.slide-transition-container > div > div.slide-layer.base-layer.shown > div:nth-child(9) > div > div:nth-child(3) > div > svg > g'
     ];
 
-    let clickedAny = false;
+    let clickedCount = 0;
 
     for (let i = 0; i < optionSelectors.length; i++) {
         try {
@@ -171,19 +179,13 @@ async function handleMultipleChoice2(frame) {
             await frame.click(optionSelectors[i]);
             console.log(`Successfully clicked option ${i + 2}`);
             await sleep(1000); // Wait a bit between clicks
-            clickedAny = true;
+            clickedCount++;
         } catch (error) {
             console.log(`Error clicking option ${i + 2}:`, error.message);
         }
     }
 
-    if (clickedAny) {
-        console.log('Successfully clicked at least one option in the second multiple choice question');
-    } else {
-        console.log('Failed to click any options in the second multiple choice question');
-    }
-
-    return clickedAny;
+    return clickedCount === optionSelectors.length;
 }
 
 async function handleDragAndDropQuestion2(frame) {
