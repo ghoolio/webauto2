@@ -7,6 +7,9 @@ const QUESTION_TYPES = {
     MULTIPLE_CHOICE2: 'multipleChoice2',
     DRAG_AND_DROP1: 'dragAndDrop1',
     DRAG_AND_DROP2: 'dragAndDrop2',
+    DRAG_AND_DROP3: 'dragAndDrop3',
+    DRAG_AND_DROP4: 'dragAndDrop4',
+    DRAG_AND_DROP5: 'dragAndDrop4',
     TEXT_INPUT: 'textInput',
     WEITER_ONLY: 'weiterOnly'
 };
@@ -88,10 +91,85 @@ const quizStructure = [
         ],
         correctAnswers: [0, 1, 3]
     },
+    {
+        type: QUESTION_TYPES.DRAG_AND_DROP3,
+        pairs: [
+            {
+                sourceSelector: 'div[data-acc-text="Diarrhö, Tuberkulose,"]',
+                targetSelector: 'div[data-acc-text*="GettyImages-636855402.jpg"]',
+            },
+            {
+                sourceSelector: 'div[data-acc-text="Diarrhö, Influenza,"]',
+                targetSelector: 'div[data-acc-text*="Viren.png"]'
+            }
+        ]
+    },
+    {
+        type: QUESTION_TYPES.WEITER_ONLY,
+        selector: '#slide-window > div > div > div.slide-transition-container > div > div.slide-layer.base-layer.shown > div:nth-child(42) > div > svg > g'
+    },
+    {
+        type: QUESTION_TYPES.DRAG_AND_DROP4,
+        pairs: [
+            {
+                sourceSelector: 'div[data-acc-text="Anwendung bei Antibiotika-"]',
+                targetSelector: 'div[data-acc-text*="Perenterol-Forte_R_102021.png"]'
+            },
+            {
+                sourceSelector: 'div[data-acc-text="Ist für Antibiotika-"]',
+                targetSelector: 'div[data-acc-text*="img-packshot--imodium.png"]'
+            },
+            {
+                sourceSelector: 'div[data-acc-text="Für Kinder schon ab 2 Jahren geeignet"]',
+                targetSelector: 'div[data-acc-text*="Perenterol-Forte_R_102021.png"]'
+            },
+            {
+                sourceSelector: 'div[data-acc-text="Durchfall-Erreger werden"]',
+                targetSelector: 'div[data-acc-text*="Perenterol-Forte_R_102021.png"]'
+            },
+            {
+                sourceSelector: 'div[data-acc-text="Für Kinder erst ab 12 Jahren geeignet"]',
+                targetSelector: 'div[data-acc-text*="img-packshot--imodium.png"]'
+            },
+            {
+                sourceSelector: 'div[data-acc-text="Wirkstoff: Saccharomyces"]',
+                targetSelector: 'div[data-acc-text*="Perenterol-Forte_R_102021.png"]'
+            },
+            {
+                sourceSelector: 'div[data-acc-text="Durchfall-Erreger verbleiben"]',
+                targetSelector: 'div[data-acc-text*="img-packshot--imodium.png"]'
+            },
+            {
+                sourceSelector: 'div[data-acc-text="Wirkstoff: Loperamidhydro-"]',
+                targetSelector: 'div[data-acc-text*="img-packshot--imodium.png"]'
+            },
+        ]
+    },
+    {
+        type: QUESTION_TYPES.DRAG_AND_DROP5,
+        pairs: [
+            {
+                sourceSelector: 'div[data-acc-text="Rechteck 1"]',
+                targetSelector: 'div[data-acc-text*="Kann zeitgleich zum Antibiotikum eingenommen werden"]',
+            },
+            {
+                sourceSelector: 'div[data-acc-text="Rechteck 1"]',
+                targetSelector: 'Ist bei AAD kontraindiziert"]'
+            },
+            {
+                sourceSelector: 'div[data-acc-text="Rechteck 1"]',
+                targetSelector: 'Muss zeitversetzt zum Antibiotikum eingenommen werden"]'
+            }
+        ]
+    },
+    {
+        type: QUESTION_TYPES.WEITER_ONLY,
+        selector: '#slide-window > div > div > div.slide-transition-container > div > div.slide-layer.base-layer.shown > div:nth-child(42) > div > svg > g'
+    },
 ];
 
 function humanDelay(baseMs) {
-    return sleep(baseMs + Math.floor(Math.random() * 500));
+    return sleep(baseMs + Math.floor(Math.random() * 300));
 }
 
 async function runPerenterol1Quiz(page, maxRetries = 3) {
@@ -102,7 +180,7 @@ async function runPerenterol1Quiz(page, maxRetries = 3) {
             console.log(`Attempt ${attempt} of ${maxRetries}`);
             await navigateToQuizPage(page);
             console.log('Navigated to quiz page');
-            await humanDelay(3000); // Wait for page to load
+            await humanDelay(1000); // Reduced wait time
             const frame = await switchToQuizFrame(page);
             console.log('Switched to quiz frame');
             await startQuiz(frame);
@@ -111,20 +189,21 @@ async function runPerenterol1Quiz(page, maxRetries = 3) {
             for (let i = 0; i < quizStructure.length; i++) {
                 const questionNumber = i + 1;
                 const questionInfo = quizStructure[i];
-                
+
                 console.log(`Handling question/slide ${questionNumber} (${questionInfo.type})...`);
-                await humanDelay(2000); // Simulating reading time
-                
+                await humanDelay(500); // Reduced simulated reading time
+
                 let success;
                 switch (questionInfo.type) {
                     case QUESTION_TYPES.MULTIPLE_CHOICE:
-                        success = await handleMultipleChoice(frame, questionNumber, questionInfo);
-                        break;
                     case QUESTION_TYPES.MULTIPLE_CHOICE2:
                         success = await handleMultipleChoice(frame, questionNumber, questionInfo);
                         break;    
                     case QUESTION_TYPES.DRAG_AND_DROP1:
                     case QUESTION_TYPES.DRAG_AND_DROP2:
+                    case QUESTION_TYPES.DRAG_AND_DROP3:
+                    case QUESTION_TYPES.DRAG_AND_DROP4:
+                    case QUESTION_TYPES.DRAG_AND_DROP5:
                         success = await handleDragAndDrop(frame, questionNumber, questionInfo.pairs, questionInfo.type);
                         break;
                     case QUESTION_TYPES.TEXT_INPUT:
@@ -137,18 +216,18 @@ async function runPerenterol1Quiz(page, maxRetries = 3) {
                         console.warn(`Unknown question type for question ${questionNumber}`);
                         success = false;
                 }
-                
+
                 if (!success) {
                     console.error(`Failed to handle question/slide ${questionNumber}`);
                     throw new Error(`Failed to handle question/slide ${questionNumber}`);
                 }
-                
+
                 // Handle "Weiter" clicks based on question type
                 if (i < quizStructure.length - 1) {
                     if (questionInfo.type !== QUESTION_TYPES.WEITER_ONLY) {
                         // For non-WEITER_ONLY questions, click "Weiter" twice
                         console.log(`Clicking first "Weiter" after question ${questionNumber}`);
-                        await humanDelay(1500);
+                        await humanDelay(500); // Reduced wait time
                         const firstWeiterClicked = await clickWeiterButton(frame, false);
                         if (!firstWeiterClicked) {
                             throw new Error(`Failed to click first Weiter button after question ${questionNumber}`);
@@ -156,7 +235,7 @@ async function runPerenterol1Quiz(page, maxRetries = 3) {
                         await waitForNextQuestion(frame);
 
                         console.log(`Clicking second "Weiter" after question ${questionNumber}`);
-                        await humanDelay(1500);
+                        await humanDelay(500); // Reduced wait time
                         const secondWeiterClicked = await clickWeiterButton(frame, true);
                         if (!secondWeiterClicked) {
                             throw new Error(`Failed to click second Weiter button after question ${questionNumber}`);
@@ -168,7 +247,7 @@ async function runPerenterol1Quiz(page, maxRetries = 3) {
             }
 
             console.log('All questions answered. Waiting for final submit button...');
-            await humanDelay(5000);
+            await humanDelay(1000); // Reduced wait time
 
             const parentFrame = frame.parentFrame();
             if (parentFrame) {
@@ -180,7 +259,7 @@ async function runPerenterol1Quiz(page, maxRetries = 3) {
                 throw new Error('Could not find parent frame for final submit');
             }
 
-            await humanDelay(5000);
+            await humanDelay(1000); // Reduced wait time
 
             console.log('Perenterol test completed successfully.');
             return true;
@@ -193,7 +272,7 @@ async function runPerenterol1Quiz(page, maxRetries = 3) {
                 return false;
             }
             console.log('Retrying...');
-            await humanDelay(5000);
+            await humanDelay(3000); // Reduced retry delay
         }
     }
 }
@@ -202,10 +281,10 @@ async function handleWeiterOnly(frame, selector) {
     try {
         console.log(`Attempting to click Weiter button with selector: ${selector}`);
         await frame.waitForSelector(selector, { visible: true, timeout: 15000 });
-        await humanDelay(1000); // Wait before clicking
+        await humanDelay(500); // Wait before clicking
         await frame.click(selector);
         console.log(`Successfully clicked Weiter button`);
-        await humanDelay(2500); // Wait for transition
+        await humanDelay(1500); // Wait for transition
         await waitForNextQuestion(frame);
         return true;
     } catch (error) {
@@ -219,8 +298,8 @@ async function waitForNextQuestion(frame) {
     await frame.waitForFunction(() => {
         const slideWindow = document.querySelector('#slide-window');
         return slideWindow && !slideWindow.classList.contains('animating');
-    }, { timeout: 30000 });
-    await humanDelay(2000); // Additional wait to ensure elements are interactive
+    }, { timeout: 20000 });
+    await humanDelay(1000); // Additional wait to ensure elements are interactive
     console.log('Next question loaded.');
 }
 
@@ -234,10 +313,10 @@ async function handleMultipleChoice(frame, questionNumber, questionInfo) {
             const selector = questionInfo.selectors[i];
             try {
                 await frame.waitForSelector(selector, { visible: true, timeout: 10000 });
-                await humanDelay(1000); // Pause before clicking
+                await humanDelay(500); // Pause before clicking
                 await frame.click(selector);
                 console.log(`Clicked correct option ${i + 1} with selector: ${selector}`);
-                await humanDelay(1500);
+                await humanDelay(800);
                 correctlyClicked++;
             } catch (error) {
                 console.log(`Error clicking correct option ${i + 1} with selector ${selector}:`, error.message);
@@ -245,37 +324,68 @@ async function handleMultipleChoice(frame, questionNumber, questionInfo) {
         }
     }
 
-    return correctlyClicked === questionInfo.correctAnswers.length;
+    if (correctlyClicked === questionInfo.correctAnswers.length) {
+        console.log(`All correct options clicked for question ${questionNumber}`);
+        // Add a delay before attempting to click the "Weiter" button
+        await humanDelay(1000);
+        
+        // Attempt to click the "Weiter" button
+        let weiterClicked = await clickWeiterButton(frame);
+        if (!weiterClicked) {
+            console.log(`Failed to click Weiter button after question ${questionNumber}. Retrying...`);
+            await humanDelay(1000);
+            weiterClicked = await clickWeiterButton(frame);
+        }
+        
+        if (!weiterClicked) {
+            console.error(`Failed to click Weiter button after question ${questionNumber} after retry`);
+            return false;
+        }
+        
+        // Wait for the next question to load
+        await waitForNextQuestion(frame);
+        return true;
+    }
+
+    return false;
 }
 
 async function handleDragAndDrop(frame, questionNumber, pairs, questionType) {
-    console.log(`Handling drag and drop question ${questionNumber}...`);
+    console.log(`Handling drag and drop question ${questionNumber} of type ${questionType}...`);
     const page = frame.page();
 
     for (let i = 0; i < pairs.length; i++) {
         const pair = pairs[i];
         console.log(`Attempting drag-and-drop operation ${i + 1} of ${pairs.length}`);
-        
+
         let success = false;
         for (let attempt = 1; attempt <= 3; attempt++) {
             try {
-                success = await dragAndDropSequential(page, frame, pair.sourceSelector, pair.targetSelector, i === pairs.length - 1, questionType);
+                console.log(`Attempt ${attempt} for pair ${i + 1}`);
+                success = await dragAndDropSequential(
+                    page, 
+                    frame, 
+                    pair.sourceSelector, 
+                    pair.targetSelector, 
+                    i === pairs.length - 1, 
+                    questionType
+                );
                 if (success) {
                     console.log(`Successfully completed drag-and-drop operation ${i + 1}`);
                     break;
                 }
-                console.log(`Attempt ${attempt} failed for drag-and-drop operation ${i + 1}. Retrying...`);
+                console.log(`Attempt ${attempt} failed for drag-and-drop operation ${i + 1}`);
+                
                 if (attempt < 3) {
-                    console.log("Reloading page...");
-                    await page.reload({ waitUntil: 'networkidle0' });
-                    await sleep(5000); // Wait for page to stabilize after reload
-                    frame = await page.frames().find(f => f.url().includes('/fileadmin/elearnings/'));
-                    if (!frame) {
-                        throw new Error('Could not find the quiz frame after reload');
-                    }
+                    console.log("Waiting before next attempt...");
+                    await sleep(2000);
                 }
             } catch (error) {
-                console.log(`Error in drag and drop operation ${i + 1}, attempt ${attempt}:`, error.message);
+                console.error(`Error in drag and drop operation ${i + 1}, attempt ${attempt}:`, error.message);
+                if (attempt < 3) {
+                    console.log("Waiting before next attempt...");
+                    await sleep(2000);
+                }
             }
         }
 
@@ -285,7 +395,7 @@ async function handleDragAndDrop(frame, questionNumber, pairs, questionType) {
             console.log(`Screenshot captured: failed-drag-drop-q${questionNumber}-pair${i + 1}.png`);
         }
 
-        await sleep(3000); // Wait after each drag and drop operation
+        await sleep(1500); // Wait after each drag and drop operation
     }
 
     console.log("All drag and drop operations attempted.");
@@ -295,69 +405,104 @@ async function handleDragAndDrop(frame, questionNumber, pairs, questionType) {
 async function dragAndDropSequential(page, frame, sourceSelector, targetSelector, isLastItem = false, questionType) {
     console.log(`Attempting drag-and-drop: ${sourceSelector} -> ${targetSelector}`);
     try {
-        let sourceElement = await frame.$(sourceSelector);
-        let targetElement = await frame.$(targetSelector);
+        // Function to find element by partial text match
+        const findElementByPartialText = async (selector, text) => {
+            const elements = await frame.$$(selector);
+            for (const element of elements) {
+                const elementText = await frame.evaluate(el => el.getAttribute('data-acc-text'), element);
+                if (elementText && elementText.includes(text)) {
+                    return element;
+                }
+            }
+            return null;
+        };
 
-        if (!sourceElement || !targetElement) {
-            console.error(`Source or target element not found`);
+        // Extract the text to match from the selectors
+        const sourceText = sourceSelector.match(/data-acc-text="(.+?)"/)[1];
+        const targetText = targetSelector.match(/data-acc-text\*="(.+?)"/)[1];
+
+        let sourceElement = await findElementByPartialText('div[data-acc-text]', sourceText);
+        let targetElement = await findElementByPartialText('div[data-acc-text]', targetText);
+
+        if (!sourceElement) {
+            console.error(`Source element not found for text: ${sourceText}`);
+            return false;
+        }
+        if (!targetElement) {
+            console.error(`Target element not found for text: ${targetText}`);
             return false;
         }
 
         console.log(`Source element found: ${sourceElement !== null}`);
         console.log(`Target element found: ${targetElement !== null}`);
 
-        const sourceText = await frame.evaluate(el => el.getAttribute('data-acc-text'), sourceElement);
-        const targetText = await frame.evaluate(el => el.getAttribute('data-acc-text'), targetElement);
-
-        console.log(`Source element text: ${sourceText}`);
-        console.log(`Target element text: ${targetText}`);
+        const sourceElementText = await frame.evaluate(el => el.getAttribute('data-acc-text'), sourceElement);
+        console.log(`Source element text: ${sourceElementText}`);
 
         let sourceBox = await sourceElement.boundingBox();
         let targetBox = await targetElement.boundingBox();
 
-        console.log(`Initial source bounding box: ${JSON.stringify(sourceBox)}`);
-        console.log(`Initial target bounding box: ${JSON.stringify(targetBox)}`);
+        console.log(`Source bounding box: ${JSON.stringify(sourceBox)}`);
+        console.log(`Target bounding box: ${JSON.stringify(targetBox)}`);
 
+        // If sourceBox is null, try to find it again
         if (!sourceBox) {
-            console.log("Attempting to make source element visible...");
-            await frame.evaluate((el) => {
-                el.style.display = 'block';
-                el.style.visibility = 'visible';
-                el.style.opacity = '1';
-            }, sourceElement);
+            await frame.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
             await sleep(1000);
             sourceBox = await sourceElement.boundingBox();
-            console.log(`Updated source bounding box: ${JSON.stringify(sourceBox)}`);
+            console.log(`Retried source bounding box: ${JSON.stringify(sourceBox)}`);
         }
 
-        if (sourceBox && targetBox) {
-            // Perform the drag and drop using mouse events
-            await page.mouse.move(sourceBox.x + sourceBox.width / 2, sourceBox.y + sourceBox.height / 2);
-            await page.mouse.down();
-            await page.mouse.move(targetBox.x + targetBox.width / 2, targetBox.y + targetBox.height / 2, { steps: 30 });
-            await page.mouse.up();
-        } else {
-            console.log("Falling back to JavaScript drag and drop simulation");
-            await frame.evaluate((source, target) => {
-                const dataTransfer = new DataTransfer();
-                
-                source.dispatchEvent(new DragEvent('dragstart', { bubbles: true, cancelable: true, dataTransfer }));
-                target.dispatchEvent(new DragEvent('dragover', { bubbles: true, cancelable: true, dataTransfer }));
-                target.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer }));
-                source.dispatchEvent(new DragEvent('dragend', { bubbles: true, cancelable: true, dataTransfer }));
-            }, sourceElement, targetElement);
+        // If sourceBox is still null, use a default position
+        if (!sourceBox) {
+            console.log('Source bounding box is still null, using default position');
+            sourceBox = { x: 0, y: 0, width: 1, height: 1 };
         }
 
-        console.log('Drag and drop action completed');
+        let dropX, dropY;
 
-        await sleep(1000);
-        const newSourceBox = await sourceElement.boundingBox();
-        if (JSON.stringify(newSourceBox) === JSON.stringify(sourceBox)) {
-            console.log('Warning: Source element position did not change after drag');
-        } else {
-            console.log('Source element position changed after drag');
+        switch (questionType) {
+            case QUESTION_TYPES.DRAG_AND_DROP1:
+            case QUESTION_TYPES.DRAG_AND_DROP2:
+                // For DRAG_AND_DROP1 and DRAG_AND_DROP2, drop directly on the target
+                dropX = targetBox.x + targetBox.width / 2;
+                dropY = targetBox.y + targetBox.height / 2;
+                break;
+            case QUESTION_TYPES.DRAG_AND_DROP3:
+                // For DRAG_AND_DROP3, drop 100px below the target
+                dropX = targetBox.x + targetBox.width / 2;
+                dropY = targetBox.y + targetBox.height + 100;
+                break;
+            case QUESTION_TYPES.DRAG_AND_DROP4:
+                // For DRAG_AND_DROP4, find the image and drop below it
+                const imageElement = await frame.$(`div[data-acc-text*="${targetText}"] img`);
+                if (imageElement) {
+                    const imageBox = await imageElement.boundingBox();
+                    dropX = imageBox.x + imageBox.width / 2;
+                    dropY = imageBox.y + imageBox.height + 50; // 50px below the image
+                } else {
+                    console.log(`Image element not found for DRAG_AND_DROP4, using target bottom`);
+                    dropX = targetBox.x + targetBox.width / 2;
+                    dropY = targetBox.y + targetBox.height + 50; // 50px below the target
+                }
+                break;
+            case QUESTION_TYPES.DRAG_AND_DROP5:
+                // For DRAG_AND_DROP5, use the existing handling
+                return await handleDragAndDrop5(page, frame, sourceElement, targetElement, sourceBox, targetBox);
+            default:
+                console.log(`Unknown question type: ${questionType}, using default target`);
+                dropX = targetBox.x + targetBox.width / 2;
+                dropY = targetBox.y + targetBox.height / 2;
         }
 
+        // Perform the drag and drop
+        await page.mouse.move(sourceBox.x + sourceBox.width / 2, sourceBox.y + sourceBox.height / 2);
+        await page.mouse.down();
+        await page.mouse.move(dropX, dropY, { steps: 30 });
+        await sleep(500); // Short pause before release
+        await page.mouse.up();
+
+        console.log(`Drag and drop action completed. Dropped at: (${dropX}, ${dropY})`);
         return true;
     } catch (error) {
         console.error(`Error in drag and drop operation: ${error.message}`);
@@ -365,46 +510,57 @@ async function dragAndDropSequential(page, frame, sourceSelector, targetSelector
     }
 }
 
-async function dragElementToTargetAdjusted(page, frame, sourceElement, targetElement) {
-    const sourceBox = await sourceElement.boundingBox();
-    const targetBox = await targetElement.boundingBox();
+async function handleDragAndDrop5(page, frame, sourceElement, targetElement, sourceBox, targetBox) {
+    console.log('Handling DRAG_AND_DROP5 specifically');
 
-    if (sourceBox && targetBox) {
-        await page.mouse.move(sourceBox.x + sourceBox.width / 2, sourceBox.y + sourceBox.height / 2);
-        await humanDelay(500);
+    const sourceX = sourceBox.x + sourceBox.width / 2;
+    const sourceY = sourceBox.y + sourceBox.height / 2;
+    const targetX = targetBox.x + targetBox.width + 20; // 20px to the right of the target element
+    const targetY = targetBox.y + targetBox.height / 2;
+
+    console.log(`Moving mouse to source position: (${sourceX}, ${sourceY})`);
+    await page.mouse.move(sourceX, sourceY);
+    await page.mouse.down();
+
+    console.log(`Dragging to target position: (${targetX}, ${targetY})`);
+    await page.mouse.move(targetX, targetY, { steps: 50 });
+
+    await sleep(500); // Short pause before release
+    await page.mouse.up();
+
+    console.log('Drag and drop action completed');
+
+    // Verify if the drag was successful
+    await sleep(1000); // Wait for any animations to complete
+    const finalSourcePosition = await sourceElement.boundingBox();
+    console.log(`Final source position: ${JSON.stringify(finalSourcePosition)}`);
+
+    const isSuccess = Math.abs(finalSourcePosition.x - targetX) < 50 && Math.abs(finalSourcePosition.y - targetY) < 50;
+    console.log(`Drag and drop ${isSuccess ? 'successful' : 'failed'}`);
+
+    if (!isSuccess) {
+        // If the drag failed, try one more time with a different offset
+        console.log('Retrying drag and drop with different offset');
+        await page.mouse.move(sourceX, sourceY);
         await page.mouse.down();
-        await humanDelay(500);
-        // Move to 200px right of the target's center
-        await page.mouse.move(targetBox.x + targetBox.width / 2 + 200, targetBox.y + targetBox.height / 2, { steps: 30 });
-        await humanDelay(500);
+        await page.mouse.move(targetX + 40, targetY, { steps: 50 }); // Try 40px further to the right
+        await sleep(500);
         await page.mouse.up();
-        console.log(`Dragged element to adjusted target position`);
-        
-        await humanDelay(2000);
-    } else {
-        console.error('Could not get bounding box for source or target element');
+
+        await sleep(1000);
+        const retryPosition = await sourceElement.boundingBox();
+        console.log(`Retry final position: ${JSON.stringify(retryPosition)}`);
+
+        const retrySuccess = Math.abs(retryPosition.x - targetX) < 50 && Math.abs(retryPosition.y - targetY) < 50;
+        console.log(`Retry drag and drop ${retrySuccess ? 'successful' : 'failed'}`);
+
+        return retrySuccess;
     }
+
+    return isSuccess;
 }
 
-async function dragElementToTarget(page, frame, sourceElement, targetElement) {
-    const sourceBox = await sourceElement.boundingBox();
-    const targetBox = await targetElement.boundingBox();
 
-    if (sourceBox && targetBox) {
-        await page.mouse.move(sourceBox.x + sourceBox.width / 2, sourceBox.y + sourceBox.height / 2);
-        await humanDelay(500);
-        await page.mouse.down();
-        await humanDelay(500);
-        await page.mouse.move(targetBox.x + targetBox.width / 2, targetBox.y + targetBox.height / 2, { steps: 30 });
-        await humanDelay(500);
-        await page.mouse.up();
-        console.log(`Dragged element to target`);
-        
-        await humanDelay(2000);
-    } else {
-        console.error('Could not get bounding box for source or target element');
-    }
-}
 
 async function handleTextInput(frame, questionNumber, answer) {
     console.log(`Handling text input question ${questionNumber}...`);
@@ -421,14 +577,14 @@ async function handleTextInput(frame, questionNumber, answer) {
                 await frame.waitForSelector(selector, { visible: true, timeout: 5000 });
                 await frame.type(selector, answer, { delay: 100 }); // Slower typing
                 console.log(`Entered text "${answer}" using selector: ${selector}`);
-                await humanDelay(1000);
+                await humanDelay(500);
                 return true;
             } catch (error) {
                 console.log(`Attempt ${attempt}: Error handling text input with selector ${selector}:`, error.message);
             }
         }
         console.log(`Attempt ${attempt} failed. Retrying...`);
-        await humanDelay(2000);
+        await humanDelay(1000);
     }
     
     console.error('Failed to handle text input after multiple attempts');
@@ -447,7 +603,7 @@ async function clickWeiterButton(frame, isSecondClick = false) {
         await humanDelay(1000); // Wait before clicking
         await frame.click(selector);
         console.log(`Successfully clicked ${isSecondClick ? 'second' : 'first'} Weiter button`);
-        await humanDelay(2500); // Wait for transition
+        await humanDelay(1000); // Wait for transition
         return true;
     } catch (error) {
         console.error(`Failed to click ${isSecondClick ? 'second' : 'first'} Weiter button:`, error.message);
@@ -480,10 +636,10 @@ async function startQuiz(frame) {
     for (const selector of startButtonSelectors) {
         try {
             await frame.waitForSelector(selector, { visible: true, timeout: 10000 });
-            await humanDelay(1500); // Wait before clicking start
+            await humanDelay(800); // Wait before clicking start
             await frame.click(selector);
             console.log(`Clicked Start button with selector: ${selector}`);
-            await humanDelay(3000);
+            await humanDelay(1500);
             return;
         } catch (error) {
             console.log(`Failed to click Start button with selector ${selector}:`, error.message);
