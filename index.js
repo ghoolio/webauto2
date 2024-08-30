@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer-extra');
 const { google } = require('googleapis');
 const dotenv = require('dotenv');
 const { runPerenterolQuiz } = require('./perenterolQuiz');
-const { runPerenterol1Quiz } = require('./perenterol1Quiz');
+const { runPerenterolWabenQuiz } = require('./perenterolWabenQuiz');
 const { checkFor503Error, sleep } = require('./utils');
 const qs = require('qs');
 const cheerio = require('cheerio');
@@ -58,12 +58,10 @@ const stealthPlugin = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(stealthFixPlugin());
 puppeteer.use(stealthPlugin());
 
-// Define an array of quiz functions
 const quizzes = [
     //{ name: 'Perenterol', func: runPerenterolQuiz },
-    { name: 'Perenterol1', func: runPerenterol1Quiz },
-    // Add more quizzes here
-    // { name: 'NextQuiz', func: runNextQuiz },
+    { name: 'Perenterol1', func: runPerenterolWabenQuiz },
+    // More qs here
 ];
 
 const startMedibee = async () => {
@@ -150,34 +148,35 @@ const startMedibee = async () => {
             if (logoutButton) {
                 console.log('Already logged in. Logging out first...');
                 await logoutButton.click();
-                await page.waitForNavigation({ waitUntil: 'networkidle0' });
+                await page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 60000 });
             }
     
             // Wait for the login form to be available
-            let loginFormVisible = false;
-            for (let i = 0; i < 5; i++) {
-                loginFormVisible = await page.evaluate(() => {
-                    const userInput = document.querySelector('#user');
-                    const passInput = document.querySelector('#pass');
-                    return !!(userInput && passInput);
-                });
-                if (loginFormVisible) break;
-                await new Promise(resolve => setTimeout(resolve, 2000));
-            }
+            await page.waitForSelector('#user', { visible: true, timeout: 30000 });
     
-            if (!loginFormVisible) {
-                console.log('Login form not found after multiple attempts');
-                return false;
+            // Check if the login form is actually visible
+            const isLoginFormVisible = await page.evaluate(() => {
+                const userInput = document.querySelector('#user');
+                const passInput = document.querySelector('#pass');
+                return userInput && passInput && 
+                       window.getComputedStyle(userInput).display !== 'none' && 
+                       window.getComputedStyle(passInput).display !== 'none';
+            });
+    
+            if (!isLoginFormVisible) {
+                console.log('Login form is not visible. Refreshing the page...');
+                await page.reload({ waitUntil: 'networkidle0', timeout: 60000 });
+                await page.waitForSelector('#user', { visible: true, timeout: 30000 });
             }
     
             // Fill in the login form
-            await page.type('#user', globalLoginName);
-            await page.type('#pass', globalLoginPW);
+            await page.type('#user', globalLoginName, { delay: 50 });
+            await page.type('#pass', globalLoginPW, { delay: 50 });
     
             // Submit the form
             await Promise.all([
                 page.click('input[type="submit"][value="Anmelden"]'),
-                page.waitForNavigation({ waitUntil: 'networkidle0' }),
+                page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 60000 }),
             ]);
     
             // Check if login was successful
@@ -190,8 +189,6 @@ const startMedibee = async () => {
                 return true;
             } else {
                 console.log('Login failed in Puppeteer browser');
-                const content = await page.content();
-                console.log('Page content:', content.slice(0, 500)); // Log first 500 characters
                 return false;
             }
         } catch (error) {
@@ -219,7 +216,7 @@ const startMedibee = async () => {
             await handleCookieConsent(page);
 
             // Set zoom to 75%
-            await setZoom(page);
+            //await setZoom(page);
 
             await sleep(5000);
 
@@ -254,17 +251,15 @@ const startMedibee = async () => {
             // Logout process
             try {
                 console.log('Attempting to logout...');
-                await page.goto('https://www.medibee.de/', { waitUntil: 'networkidle0', timeout: 60000 });
+                await page.goto('https://www.medibee.de/', { waitUntil: 'networkidle0', timeout: 60000 }).catch(e => console.log('Navigation error:', e.message));
                 await sleep(5000);
 
                 // Execute logout JavaScript
                 const logoutResult = await page.evaluate(() => {
-                    // Check if the logout function exists
                     if (typeof logout === 'function') {
                         logout();
                         return 'Logout function called successfully';
                     } else {
-                        // If the logout function doesn't exist, try to find and click a logout link
                         const logoutLink = document.querySelector('a[href*="logout"]');
                         if (logoutLink) {
                             logoutLink.click();
@@ -273,7 +268,7 @@ const startMedibee = async () => {
                             return 'Unable to find logout function or link';
                         }
                     }
-                });
+                }).catch(e => console.log('Logout evaluation error:', e.message));
 
                 console.log('Logout result:', logoutResult);
 
@@ -283,15 +278,15 @@ const startMedibee = async () => {
                 // Verify logout
                 const isLoggedOut = await page.evaluate(() => {
                     return !document.body.innerHTML.includes('Logout') && !document.body.innerHTML.includes('Mein Konto');
-                });
+                }).catch(e => console.log('Logout verification error:', e.message));
 
                 if (isLoggedOut) {
                     console.log('Logout verification successful');
                 } else {
                     console.log('Logout verification failed. User might still be logged in.');
-                    
+
                     // Additional check: try to access a protected page
-                    await page.goto('https://www.medibee.de/mein-konto', { waitUntil: 'networkidle0', timeout: 60000 });
+                    await page.goto('https://www.medibee.de/mein-konto', { waitUntil: 'networkidle0', timeout: 60000 }).catch(e => console.log('Navigation error:', e.message));
                     const isRedirectedToLogin = await page.url().includes('/login');
                     if (isRedirectedToLogin) {
                         console.log('Redirected to login page. Logout seems successful.');
@@ -304,7 +299,7 @@ const startMedibee = async () => {
             } catch (error) {
                 console.error('Error during logout:', error);
                 // Take a screenshot for debugging
-                await page.screenshot({ path: 'logout-error-screenshot.png', fullPage: true });
+                await page.screenshot({ path: 'logout-error-screenshot.png', fullPage: true }).catch(e => console.log('Screenshot error:', e.message));
             }
 
             console.log('All tests completed for current user. Moving to next user if available.');

@@ -171,10 +171,10 @@ const quizStructure = [
 ];
 
 function humanDelay(baseMs) {
-    return sleep(baseMs + Math.floor(Math.random() * 300));
+    return sleep(baseMs + Math.floor(Math.random() * 200));
 }
 
-async function runPerenterol1Quiz(page, maxRetries = 3) {
+async function runPerenterolWabenQuiz(page, maxRetries = 3) {
     console.log('Starting Perenterol test...');
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -182,7 +182,7 @@ async function runPerenterol1Quiz(page, maxRetries = 3) {
             console.log(`Attempt ${attempt} of ${maxRetries}`);
             await navigateToQuizPage(page);
             console.log('Navigated to quiz page');
-            await humanDelay(1000);
+            await humanDelay(500);
             const frame = await switchToQuizFrame(page);
             console.log('Switched to quiz frame');
             await startQuiz(frame);
@@ -193,7 +193,7 @@ async function runPerenterol1Quiz(page, maxRetries = 3) {
                 const questionInfo = quizStructure[i];
 
                 console.log(`Handling question/slide ${questionNumber} (${questionInfo.type})...`);
-                await humanDelay(500);
+                await humanDelay(Math.random() * 200 + 100); // Random delay
 
                 let success;
                 switch (questionInfo.type) {
@@ -221,57 +221,55 @@ async function runPerenterol1Quiz(page, maxRetries = 3) {
                 }
 
                 if (!success) {
-                    console.error(`Failed to handle question/slide ${questionNumber}`);
                     throw new Error(`Failed to handle question/slide ${questionNumber}`);
                 }
 
                 // Handle "Weiter" clicks for all questions except the last one
-                if (i < quizStructure.length - 1) {
-                    if (questionInfo.type !== QUESTION_TYPES.WEITER_ONLY) {
-                        console.log(`Clicking first "Weiter" after question ${questionNumber}`);
-                        await humanDelay(500);
-                        const firstWeiterClicked = await clickWeiterButton(frame, false);
-                        if (!firstWeiterClicked) {
-                            throw new Error(`Failed to click first Weiter button after question ${questionNumber}`);
-                        }
-                        await waitForNextQuestion(frame);
-
-                        console.log(`Clicking second "Weiter" after question ${questionNumber}`);
-                        await humanDelay(500);
-                        const secondWeiterClicked = await clickWeiterButton(frame, true);
-                        if (!secondWeiterClicked) {
-                            throw new Error(`Failed to click second Weiter button after question ${questionNumber}`);
-                        }
-                        await waitForNextQuestion(frame);
-                    }
+                if (i < quizStructure.length - 1 && questionInfo.type !== QUESTION_TYPES.WEITER_ONLY) {
+                    await humanDelay(Math.random() * 150 + 50);
+                    await clickWeiterButton(frame, false);
+                    await waitForNextQuestion(frame);
+                    await humanDelay(Math.random() * 150 + 50);
+                    await clickWeiterButton(frame, true);
+                    await waitForNextQuestion(frame);
                 }
             }
 
             // Handle final "Weiter" clicks after the last question
-            console.log('Clicking final "Weiter" buttons...');
-            await humanDelay(500);
+            await humanDelay(Math.random() * 200 + 100);
             await clickWeiterButton(frame, false);
             await waitForNextQuestion(frame);
-            await humanDelay(500);
+            await humanDelay(Math.random() * 200 + 100);
             await clickWeiterButton(frame, true);
             await waitForNextQuestion(frame);
 
             console.log('All questions answered. Waiting for final submit button...');
-            await humanDelay(1000);
+            await humanDelay(700);
 
             const parentFrame = frame.parentFrame();
             if (parentFrame) {
-                await parentFrame.click('#ap-elearning--submit').catch((error) => {
-                    console.error('Failed to click final submit button:', error);
-                    throw error;
-                });
+                try {
+                    const submitButton = await parentFrame.$('#ap-elearning--submit');
+                    if (submitButton) {
+                        await submitButton.scrollIntoView();
+                        await humanDelay(500);
+                        await submitButton.click({ delay: 100 });
+                        console.log('Final submit button clicked successfully');
+                    } else {
+                        console.log('Submit button not found. Quiz completed without submission.');
+                        return true; // Return control to index.js for logout
+                    }
+                } catch (submitError) {
+                    console.error('Failed to click final submit button:', submitError.message);
+                    console.log('Quiz completed without submission.');
+                    return true; // Return control to index.js for logout
+                }
             } else {
-                throw new Error('Could not find parent frame for final submit');
+                console.error('Could not find parent frame for final submit');
+                return true; // Return control to index.js for logout
             }
 
-            await humanDelay(1000);
-
-            console.log('Perenterol test completed successfully.');
+            console.log('Quiz completed successfully.');
             return true;
 
         } catch (error) {
@@ -282,19 +280,19 @@ async function runPerenterol1Quiz(page, maxRetries = 3) {
                 return false;
             }
             console.log('Retrying...');
-            await humanDelay(3000);
+            await humanDelay(1000);
         }
     }
 }
 
 async function handleWeiterOnly(frame, selector) {
     try {
-        console.log(`Attempting to click Weiter button with selector: ${selector}`);
+        console.log(`Attempting to click Weiter button`);
         await frame.waitForSelector(selector, { visible: true, timeout: 15000 });
-        await humanDelay(500); // Wait before clicking
+        await humanDelay(300); // Wait before clicking
         await frame.click(selector);
         console.log(`Successfully clicked Weiter button`);
-        await humanDelay(1500); // Wait for transition
+        await humanDelay(1000); // Wait for transition
         await waitForNextQuestion(frame);
         return true;
     } catch (error) {
@@ -309,7 +307,7 @@ async function waitForNextQuestion(frame) {
         const slideWindow = document.querySelector('#slide-window');
         return slideWindow && !slideWindow.classList.contains('animating');
     }, { timeout: 20000 });
-    await humanDelay(1000); // Additional wait to ensure elements are interactive
+    await humanDelay(500); // Additional wait to ensure elements are interactive
     console.log('Next question loaded.');
 }
 
@@ -323,13 +321,13 @@ async function handleMultipleChoice(frame, questionNumber, questionInfo) {
             const selector = questionInfo.selectors[i];
             try {
                 await frame.waitForSelector(selector, { visible: true, timeout: 10000 });
-                await humanDelay(500); // Pause before clicking
+                await humanDelay(100); // Pause before clicking
                 await frame.click(selector);
-                console.log(`Clicked correct option ${i + 1} with selector: ${selector}`);
-                await humanDelay(800);
+                console.log(`Clicked correct option ${i + 1}`);
+                await humanDelay(200);
                 correctlyClicked++;
             } catch (error) {
-                console.log(`Error clicking correct option ${i + 1} with selector ${selector}:`, error.message);
+                console.log(`Error clicking correct option ${i + 1}`, error.message);
             }
         }
     }
@@ -337,13 +335,13 @@ async function handleMultipleChoice(frame, questionNumber, questionInfo) {
     if (correctlyClicked === questionInfo.correctAnswers.length) {
         console.log(`All correct options clicked for question ${questionNumber}`);
         // Add a delay before attempting to click the "Weiter" button
-        await humanDelay(1000);
+        await humanDelay(150);
         
         // Attempt to click the "Weiter" button
         let weiterClicked = await clickWeiterButton(frame);
         if (!weiterClicked) {
             console.log(`Failed to click Weiter button after question ${questionNumber}. Retrying...`);
-            await humanDelay(1000);
+            await humanDelay(150);
             weiterClicked = await clickWeiterButton(frame);
         }
         
@@ -392,7 +390,7 @@ async function handleDragAndDrop(frame, questionNumber, pairs, questionType) {
 
                 if (attempt < 3) {
                     console.log("Waiting before next attempt...");
-                    await sleep(2000);
+                    await sleep(1000);
                 }
             } catch (error) {
                 console.error(`Error in drag and drop operation ${i + 1}, attempt ${attempt}:`, error.message);
@@ -405,11 +403,9 @@ async function handleDragAndDrop(frame, questionNumber, pairs, questionType) {
 
         if (!success) {
             console.log(`Failed to complete drag-and-drop operation ${i + 1} after multiple attempts`);
-            await page.screenshot({ path: `failed-drag-drop-q${questionNumber}-pair${i + 1}.png`, fullPage: true });
-            console.log(`Screenshot captured: failed-drag-drop-q${questionNumber}-pair${i + 1}.png`);
         }
 
-        await sleep(1500); // Wait after each drag and drop operation
+        await sleep(200); // Wait after each drag and drop operation
     }
 
     console.log("All drag and drop operations attempted.");
@@ -456,13 +452,10 @@ async function dragAndDropSequential(page, frame, sourceSelector, targetSelector
         let sourceBox = await sourceElement.boundingBox();
         let targetBox = await targetElement.boundingBox();
 
-        console.log(`Source bounding box: ${JSON.stringify(sourceBox)}`);
-        console.log(`Target bounding box: ${JSON.stringify(targetBox)}`);
-
         // If sourceBox is null, try to find it again
         if (!sourceBox) {
             await frame.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-            await sleep(1000);
+            await sleep(300);
             sourceBox = await sourceElement.boundingBox();
             console.log(`Retried source bounding box: ${JSON.stringify(sourceBox)}`);
         }
@@ -513,10 +506,10 @@ async function dragAndDropSequential(page, frame, sourceSelector, targetSelector
         await page.mouse.move(sourceBox.x + sourceBox.width / 2, sourceBox.y + sourceBox.height / 2);
         await page.mouse.down();
         await page.mouse.move(dropX, dropY, { steps: 30 });
-        await sleep(500); // Short pause before release
+        await sleep(200); // Short pause before release
         await page.mouse.up();
 
-        console.log(`Drag and drop action completed. Dropped at: (${dropX}, ${dropY})`);
+        console.log(`Drag and drop action completed.`);
         return true;
     } catch (error) {
         console.error(`Error in drag and drop operation: ${error.message}`);
@@ -569,23 +562,21 @@ async function handleDragAndDrop5(page, frame) {
         const dropX = targetBox.x + targetBox.width + 20;
         const dropY = targetBox.y + (targetBox.height / 2);
 
-        console.log(`Moving mouse to source position: (${sourceX}, ${sourceY})`);
         await page.mouse.move(sourceX, sourceY);
         await page.mouse.down();
 
         console.log(`Dragging to target position: (${dropX}, ${dropY})`);
         await page.mouse.move(dropX, dropY, { steps: 50 });
 
-        await sleep(500);
+        await sleep(300);
         await page.mouse.up();
 
         console.log(`Drag and drop action completed for pair ${i + 1}`);
 
-        await sleep(1000);
+        await sleep(200);
 
         // Verify if the drag was successful
         const finalSourcePosition = await sourceElement.boundingBox();
-        console.log(`Final source position: ${JSON.stringify(finalSourcePosition)}`);
 
         const isSuccess = Math.abs(finalSourcePosition.x - dropX) < 50 && Math.abs(finalSourcePosition.y - dropY) < 50;
         console.log(`Drag and drop ${isSuccess ? 'successful' : 'failed'} for pair ${i + 1}`);
@@ -595,10 +586,10 @@ async function handleDragAndDrop5(page, frame) {
             await page.mouse.move(sourceX, sourceY);
             await page.mouse.down();
             await page.mouse.move(dropX + 50, dropY, { steps: 50 }); // Try 50px further to the right
-            await sleep(500);
+            await sleep(300);
             await page.mouse.up();
 
-            await sleep(1000);
+            await sleep(500);
             const retryPosition = await sourceElement.boundingBox();
             console.log(`Retry final position: ${JSON.stringify(retryPosition)}`);
 
@@ -621,15 +612,15 @@ async function handleTextInput(frame, questionNumber, answer) {
             try {
                 await frame.waitForSelector(selector, { visible: true, timeout: 5000 });
                 await frame.type(selector, answer, { delay: 100 }); // Slower typing
-                console.log(`Entered text "${answer}" using selector: ${selector}`);
-                await humanDelay(500);
+                console.log(`Entered text "${answer}"`);
+                await humanDelay(150);
                 return true;
             } catch (error) {
-                console.log(`Attempt ${attempt}: Error handling text input with selector ${selector}:`, error.message);
+                console.log(`Attempt ${attempt}: Error handling text input`, error.message);
             }
         }
         console.log(`Attempt ${attempt} failed. Retrying...`);
-        await humanDelay(1000);
+        await humanDelay(150);
     }
     
     console.error('Failed to handle text input after multiple attempts');
@@ -643,12 +634,12 @@ async function clickWeiterButton(frame, isSecondClick = false) {
     const selector = isSecondClick ? secondWeiterButtonSelector : firstWeiterButtonSelector;
     
     try {
-        console.log(`Attempting to click ${isSecondClick ? 'second' : 'first'} Weiter button with selector: ${selector}`);
+        console.log(`Attempting to claick ${isSecondClick ? 'second' : 'first'} Weiter button`);
         await frame.waitForSelector(selector, { visible: true, timeout: 15000 });
-        await humanDelay(1000); // Wait before clicking
+        await humanDelay(150); // Wait before clicking
         await frame.click(selector);
         console.log(`Successfully clicked ${isSecondClick ? 'second' : 'first'} Weiter button`);
-        await humanDelay(1000); // Wait for transition
+        await humanDelay(300); // Wait for transition
         return true;
     } catch (error) {
         console.error(`Failed to click ${isSecondClick ? 'second' : 'first'} Weiter button:`, error.message);
@@ -681,13 +672,13 @@ async function startQuiz(frame) {
     for (const selector of startButtonSelectors) {
         try {
             await frame.waitForSelector(selector, { visible: true, timeout: 10000 });
-            await humanDelay(800); // Wait before clicking start
+            await humanDelay(400); // Wait before clicking start
             await frame.click(selector);
-            console.log(`Clicked Start button with selector: ${selector}`);
-            await humanDelay(1500);
+            console.log(`Clicked Start button`);
+            await humanDelay(500);
             return;
         } catch (error) {
-            console.log(`Failed to click Start button with selector ${selector}:`, error.message);
+            console.log(`Failed to click Start button`, error.message);
         }
     }
 
@@ -699,4 +690,4 @@ async function takeErrorScreenshot(page) {
     await page.screenshot({ path: 'error-screenshot.png', fullPage: true });
 }
 
-module.exports = { runPerenterol1Quiz };
+module.exports = { runPerenterolWabenQuiz };
