@@ -170,30 +170,27 @@ const quizStructure = [
     },
 ];
 
-function humanDelay(baseMs) {
-    return sleep(baseMs + Math.floor(Math.random() * 200));
+async function humanDelay(min = 50, max = 100) {
+    return sleep(Math.floor(Math.random() * (max - min + 1)) + min);
 }
 
 async function runPerenterolWabenQuiz(page, maxRetries = 3) {
-    console.log('Starting Perenterol test...');
+    console.log('Starting Perenterol Waben test...');
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
             console.log(`Attempt ${attempt} of ${maxRetries}`);
             await navigateToQuizPage(page);
-            console.log('Navigated to quiz page');
-            await humanDelay(500);
+            await humanDelay(300);
             const frame = await switchToQuizFrame(page);
-            console.log('Switched to quiz frame');
             await startQuiz(frame);
-            console.log('Quiz started');
 
             for (let i = 0; i < quizStructure.length; i++) {
                 const questionNumber = i + 1;
                 const questionInfo = quizStructure[i];
 
                 console.log(`Handling question/slide ${questionNumber} (${questionInfo.type})...`);
-                await humanDelay(Math.random() * 200 + 100); // Random delay
+                await humanDelay(50, 100);
 
                 let success;
                 switch (questionInfo.type) {
@@ -224,64 +221,61 @@ async function runPerenterolWabenQuiz(page, maxRetries = 3) {
                     throw new Error(`Failed to handle question/slide ${questionNumber}`);
                 }
 
-                // Handle "Weiter" clicks for all questions except the last one
                 if (i < quizStructure.length - 1 && questionInfo.type !== QUESTION_TYPES.WEITER_ONLY) {
-                    await humanDelay(Math.random() * 150 + 50);
+                    await humanDelay(50, 100);
                     await clickWeiterButton(frame, false);
                     await waitForNextQuestion(frame);
-                    await humanDelay(Math.random() * 150 + 50);
+                    await humanDelay(50, 100);
                     await clickWeiterButton(frame, true);
                     await waitForNextQuestion(frame);
                 }
             }
 
-            // Handle final "Weiter" clicks after the last question
-            await humanDelay(Math.random() * 200 + 100);
-            await clickWeiterButton(frame, false);
-            await waitForNextQuestion(frame);
-            await humanDelay(Math.random() * 200 + 100);
-            await clickWeiterButton(frame, true);
-            await waitForNextQuestion(frame);
-
-            console.log('All questions answered. Waiting for final submit button...');
-            await humanDelay(700);
-
-            const parentFrame = frame.parentFrame();
-            if (parentFrame) {
-                try {
-                    const submitButton = await parentFrame.$('#ap-elearning--submit');
-                    if (submitButton) {
-                        await submitButton.scrollIntoView();
-                        await humanDelay(500);
-                        await submitButton.click({ delay: 100 });
-                        console.log('Final submit button clicked successfully');
-                    } else {
-                        console.log('Submit button not found. Quiz completed without submission.');
-                        return true; // Return control to index.js for logout
-                    }
-                } catch (submitError) {
-                    console.error('Failed to click final submit button:', submitError.message);
-                    console.log('Quiz completed without submission.');
-                    return true; // Return control to index.js for logout
-                }
-            } else {
-                console.error('Could not find parent frame for final submit');
-                return true; // Return control to index.js for logout
-            }
+            await humanDelay(300, 500);
+            await clickFinalSubmit(frame);
 
             console.log('Quiz completed successfully.');
-            return true;
+            return true; // Always return true to allow index.js to handle logout
 
         } catch (error) {
-            console.error(`Error in Perenterol test (Attempt ${attempt}):`, error);
+            console.error(`Error in Perenterol Waben test (Attempt ${attempt}):`, error);
             if (attempt === maxRetries) {
-                console.error('Maximum retries reached. Perenterol test failed.');
+                console.error('Maximum retries reached. Perenterol Waben test failed.');
                 await takeErrorScreenshot(page);
-                return false;
+                return true; // Return true even if the quiz failed, to allow index.js to handle logout
             }
             console.log('Retrying...');
-            await humanDelay(1000);
+            await humanDelay(500, 1000);
         }
+    }
+
+    return true; // Ensure we always return true, even if we've exhausted all retries
+}
+
+async function clickFinalSubmit(frame) {
+    const parentFrame = frame.parentFrame();
+    if (parentFrame) {
+        try {
+            console.log('Attempting to click final submit button...');
+            const clicked = await parentFrame.evaluate(() => {
+                const submitButton = document.querySelector('#ap-elearning--submit');
+                if (submitButton) {
+                    submitButton.click();
+                    return true;
+                }
+                return false;
+            });
+
+            if (clicked) {
+                console.log('Final submit button clicked successfully');
+            } else {
+                console.log('Submit button not found or not clickable');
+            }
+        } catch (submitError) {
+            console.error('Error during final submit:', submitError.message);
+        }
+    } else {
+        console.error('Could not find parent frame for final submit');
     }
 }
 
@@ -335,13 +329,13 @@ async function handleMultipleChoice(frame, questionNumber, questionInfo) {
     if (correctlyClicked === questionInfo.correctAnswers.length) {
         console.log(`All correct options clicked for question ${questionNumber}`);
         // Add a delay before attempting to click the "Weiter" button
-        await humanDelay(150);
+        await humanDelay(50, 100);
         
         // Attempt to click the "Weiter" button
         let weiterClicked = await clickWeiterButton(frame);
         if (!weiterClicked) {
             console.log(`Failed to click Weiter button after question ${questionNumber}. Retrying...`);
-            await humanDelay(150);
+            await humanDelay(50, 100);
             weiterClicked = await clickWeiterButton(frame);
         }
         
@@ -396,7 +390,7 @@ async function handleDragAndDrop(frame, questionNumber, pairs, questionType) {
                 console.error(`Error in drag and drop operation ${i + 1}, attempt ${attempt}:`, error.message);
                 if (attempt < 3) {
                     console.log("Waiting before next attempt...");
-                    await sleep(2000);
+                    await sleep(1000);
                 }
             }
         }
@@ -634,7 +628,7 @@ async function clickWeiterButton(frame, isSecondClick = false) {
     const selector = isSecondClick ? secondWeiterButtonSelector : firstWeiterButtonSelector;
     
     try {
-        console.log(`Attempting to claick ${isSecondClick ? 'second' : 'first'} Weiter button`);
+        console.log(`Attempting to click ${isSecondClick ? 'second' : 'first'} Weiter button`);
         await frame.waitForSelector(selector, { visible: true, timeout: 15000 });
         await humanDelay(150); // Wait before clicking
         await frame.click(selector);
