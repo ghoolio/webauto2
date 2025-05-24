@@ -1,3 +1,2 @@
-2024/09/10-18:50:29.462 14903 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/shared_proto_db/metadata/MANIFEST-000001
-2024/09/10-18:50:29.462 14903 Recovering log #3
-2024/09/10-18:50:29.463 14903 Reusing old log /Users/user/Documents/medibeebot/tmp/Default/shared_proto_db/metadata/000003.log 
+2025/05/23-23:07:18.110 a003 Creating DB /Users/user/Documents/medibeebot/tmp/Default/shared_proto_db/metadata since it was missing.
+2025/05/23-23:07:18.112 a003 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/shared_proto_db/metadata/MANIFEST-000001

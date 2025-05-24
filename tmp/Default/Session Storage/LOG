@@ -1,3 +1,2 @@
-2024/09/10-18:50:29.133 3803 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Session Storage/MANIFEST-000001
-2024/09/10-18:50:29.133 3803 Recovering log #32
-2024/09/10-18:50:29.134 3803 Reusing old log /Users/user/Documents/medibeebot/tmp/Default/Session Storage/000032.log 
+2025/05/23-23:07:18.012 3003 Creating DB /Users/user/Documents/medibeebot/tmp/Default/Session Storage since it was missing.
+2025/05/23-23:07:18.016 3003 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Session Storage/MANIFEST-000001

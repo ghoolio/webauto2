@@ -1,0 +1,957 @@
+[88606:259:0523/230717.577557:WARNING:chrome_main_delegate.cc(742)] This is Chrome version 126.0.6478.126 (not a warning)
+[88606:259:0523/230717.800378:VERBOSE1:variations_field_trial_creator_base.cc(518)] Applying FieldTrialTestingConfig
+[88606:259:0523/230717.800803:WARNING:field_trial_util.cc(104)] Field trial config study skipped: IsolateSandboxedIframes.EnabledWithPerOrigin_20230713 (some of its features are already overridden)
+[88606:259:0523/230717.800994:WARNING:field_trial_util.cc(104)] Field trial config study skipped: PdfOutOfProcessIframe.Enabled (some of its features are already overridden)
+[88606:259:0523/230717.801424:VERBOSE1:variations_field_trial_creator_base.cc(350)] VariationsSetupComplete
+[88606:259:0523/230717.810917:VERBOSE1:device_event_log_impl.cc(198)] [23:07:17.809] Display: EVENT: screen_mac.mm:453 Displays updated, count: 1
+[88606:259:0523/230717.810963:VERBOSE1:device_event_log_impl.cc(198)] [23:07:17.810] Display: EVENT: screen_mac.mm:455 Display[1] bounds=[0,0 1710x1112], workarea=[0,44 1710x1015], scale=2, rotation=0, panel_rotation=0 internal detected
+[88606:259:0523/230717.815004:VERBOSE1:webrtc_event_log_manager.cc(97)] WebRTC remote-bound event logging enabled.
+[88606:259:0523/230717.885247:VERBOSE1:pref_proxy_config_tracker_impl.cc(191)] 0x11c001802c0: set chrome proxy config service to 0x11c000f1ee0
+[88606:37635:0523/230717.888559:VERBOSE1:media_stream_manager.cc(1527)] MSM::InitializeMaybeAsync([this=0x11c00183f40])
+[88606:37635:0523/230717.888611:VERBOSE1:media_stream_manager.cc(1527)] MDM::MediaDevicesManager()
+[88606:37635:0523/230717.888620:VERBOSE1:media_stream_manager.cc(1527)] MSM::MediaStreamManager([this=0x11c00183f40]))
+[88606:259:0523/230717.892348:VERBOSE1:chrome_browser_cloud_management_controller.cc(161)] Cloud management controller initialization aborted as CBCM is not enabled. Please use the `--enable-chrome-browser-cloud-management` command line flag to enable it if you are not using the official Google Chrome build.
+[88606:259:0523/230717.896519:VERBOSE1:device_event_log_impl.cc(198)] [23:07:17.896] Bluetooth: EVENT: bluetooth_api.cc:82 BluetoothAPI: 0x11c00b01e00
+[88606:259:0523/230717.898346:VERBOSE1:pref_proxy_config_tracker_impl.cc(191)] 0x11c00186880: set chrome proxy config service to 0x11c000fd340
+[88606:259:0523/230717.898506:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(224)] MutablePO2TS::MutablePO2TS
+[88606:259:0523/230717.900128:ERROR:unexportable_key_mac.mm(348)] Unexportable keys unavailable because keychain-access-group entitlement missing or incorrect. Expected value: .com.google.chrome.for.testing.devicetrust
+[88606:259:0523/230717.900208:VERBOSE1:pref_proxy_config_tracker_impl.cc(191)] 0x11c00187640: set chrome proxy config service to 0x11c00f72080
+[88606:259:0523/230717.900592:VERBOSE1:gaia_auth_util.cc(51)] Canonicalized @gmail.com to @gmail.com
+[88606:259:0523/230717.900600:VERBOSE1:gaia_auth_util.cc(51)] Canonicalized @gmail.com to @gmail.com
+[88606:259:0523/230717.900804:VERBOSE1:bluetooth_low_energy_event_router.cc(289)] Initializing BluetoothLowEnergyEventRouter.
+[88606:259:0523/230717.902945:VERBOSE1:extension_service.cc(1577)] AddComponentExtension Web Store
+[88606:259:0523/230717.902955:VERBOSE1:extension_service.cc(1579)] Component extension Web Store (ahfgeienlihckogmohjhadlkjgocpleb) installing/upgrading from '' to 0.2
+[88606:259:0523/230717.903206:VERBOSE1:extension_service.cc(1577)] AddComponentExtension Chromium PDF Viewer
+[88606:259:0523/230717.903212:VERBOSE1:extension_service.cc(1579)] Component extension Chromium PDF Viewer (mhjfbmdgcfjbbpaeojofohoefgiehjai) installing/upgrading from '' to 1
+[88606:259:0523/230717.903771:WARNING:browser_management_service.cc(128)] EnterpriseLogoUrl fetch failed with error code -1 and MIME type 
+[88606:259:0523/230717.903822:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230717.903943:VERBOSE1:account_reconcilor.cc(172)] AccountReconcilor::AccountReconcilor
+[88606:259:0523/230717.903950:VERBOSE1:account_reconcilor.cc(210)] AccountReconcilor::Initialize
+[88606:259:0523/230717.903977:VERBOSE1:account_reconcilor.cc(265)] AccountReconcilor::RegisterWithContentSettings
+[88606:259:0523/230717.903981:VERBOSE1:account_reconcilor.cc(286)] AccountReconcilor::RegisterWithIdentityManager
+[88606:259:0523/230717.904027:VERBOSE1:profile_manager.cc(1988)] ForceSigninCheck: 0, 0, 1
+[88606:259:0523/230717.905507:VERBOSE1:profile_manager.cc(1326)] AddKeepAlive(Default, kBrowserWindow). keep_alives=[kWaitingForFirstBrowserWindow (1), kBrowserWindow (1)]
+[88606:259:0523/230717.905522:VERBOSE1:profile_manager.cc(1399)] ClearFirstBrowserWindowKeepAlive(Default). keep_alives=[kBrowserWindow (1)]
+[88606:46851:0523/230717.910935:VERBOSE1:simple_index_file.cc(601)] Simple Cache Index is being restored from disk.
+[88606:66819:0523/230717.910933:VERBOSE1:simple_index_file.cc(601)] Simple Cache Index is being restored from disk.
+[88606:66563:0523/230717.910976:VERBOSE1:simple_index_file.cc(601)] Simple Cache Index is being restored from disk.
+[88606:51723:0523/230717.930361:VERBOSE1:token_service_table.cc(148)] Loaded tokens: result = 3 ; number of tokens loaded = 0
+[88606:259:0523/230717.970044:VERBOSE1:gaia_auth_util.cc(51)] Canonicalized @gmail.com to @gmail.com
+[88606:259:0523/230717.970068:VERBOSE1:gaia_auth_util.cc(51)] Canonicalized @gmail.com to @gmail.com
+[88618:259:0523/230718.049170:INFO:cpu_info.cc(53)] Available number of cores: 8
+[88619:259:0523/230718.049346:INFO:cpu_info.cc(53)] Available number of cores: 8
+[88606:259:0523/230718.110069:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(408)] MutablePO2TS::OnWebDataServiceRequestDone. Result type: 5
+[88606:259:0523/230718.110095:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(465)] MutablePO2TS::LoadAllCredentialsIntoMemory; 0 redential(s).
+[88606:259:0523/230718.110142:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230718.110205:VERBOSE1:account_reconcilor.cc(369)] AccountReconcilor::OnEndBatchOfRefreshTokenStateChanges. Reconcilor state: 1
+[88606:259:0523/230718.110820:VERBOSE1:gaia_cookie_manager_service.cc(846)] GaiaCookieManagerService::ListAccounts
+[88615:14595:0523/230718.114295:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://accounts.google.com/ListAccounts?gpsia=1&source=ChromiumBrowser&json=standard
+[88615:19715:0523/230718.113506:VERBOSE1:simple_index_file.cc(601)] Simple Cache Index is being restored from disk.
+[88619:259:0523/230718.115792:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x1310014d220
+  URL:                    
+  context_type:           WEB_PAGE
+  effective extension id: (none)
+  effective context type: WEB_PAGE
+[88619:259:0523/230718.116193:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88619:259:0523/230718.116289:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 1
+[88615:19971:0523/230718.118962:VERBOSE1:simple_index_file.cc(601)] Simple Cache Index is being restored from disk.
+[88606:259:0523/230718.139059:VERBOSE1:profile_manager.cc(1326)] AddKeepAlive(Default, kHistoryMenuBridge). keep_alives=[kBrowserWindow (1), kHistoryMenuBridge (1)]
+[88617:259:0523/230718.155683:VERBOSE1:statistics_recorder.cc(607)] Collections of all histograms
+Histogram: HeapProfiling.InProcess.Enabled recorded 1 samples, mean = 0.0 (flags = 0x41)
+0  -O                                                                        (1 = 100.0%)
+1  ... 
+
+Histogram: HeapProfiling.InProcess.Enabled.Utility recorded 1 samples, mean = 0.0 (flags = 0x41)
+0  -O                                                                        (1 = 100.0%)
+1  ... 
+
+Histogram: Memory.PartitionAlloc.PartitionRoot.ExtrasSize recorded 1 samples, mean = 8.0 (flags = 0x41)
+0  ... 
+8  -O                                                                        (1 = 100.0%) {0.0%}
+9  ... 
+
+Histogram: Security.GwpAsan.Activated.Malloc.Utility recorded 1 samples, mean = 0.0 (flags = 0x41)
+0  -O                                                                        (1 = 100.0%)
+1  ... 
+
+Histogram: Security.GwpAsan.Activated.PartitionAlloc.Utility recorded 1 samples, mean = 0.0 (flags = 0x41)
+0  -O                                                                        (1 = 100.0%)
+1  ... 
+
+Histogram: Startup.LoadTime.RecordedProcessCreation recorded 1 samples, mean = 1.0 (flags = 0x1)
+0  O                                                                         (0 = 0.0%)
+1  -O                                                                        (1 = 100.0%) {0.0%}
+2  O                                                                         (0 = 0.0%) {100.0%}
+
+Histogram: UMA.ChildProcess.Ping.SharedMemorySetUp recorded 1 samples, mean = 1.0 (flags = 0x41)
+0  O                                                                         (0 = 0.0%)
+1  -O                                                                        (1 = 100.0%) {0.0%}
+2  ... 
+
+Histogram: UMA.PersistentAllocator.EarlyHistograms.UtilityMetrics recorded 1 samples, mean = 1.0 (flags = 0x41)
+0  O                                                                         (0 = 0.0%)
+1  -O                                                                        (1 = 100.0%) {0.0%}
+2  ... 
+
+Histogram: UMA.PersistentAllocator.UtilityMetrics.Errors recorded 0 samples (flags = 0x41)
+0 ... 
+
+Histogram: UMA.PersistentAllocator.UtilityMetrics.UsedPct recorded 0 samples (flags = 0x41)
+0 ... 
+
+Histogram: Variations.Limits.VariationKeySize.Default recorded 5 samples, mean = 2.0 (flags = 0x41)
+0  ... 
+2  -----O                                                                    (5 = 100.0%) {0.0%}
+3  ... 
+
+
+[88606:259:0523/230718.159102:VERBOSE1:profile_manager.cc(1378)] RemoveKeepAlive(Default, kHistoryMenuBridge). keep_alives=[kBrowserWindow (1)]
+[88606:259:0523/230718.159438:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing Session.TotalDuration
+[88606:259:0523/230718.159446:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing Commerce.PriceDrops.ActiveTabNavigationComplete.IsProductDetailPage
+[88606:259:0523/230718.159450:VERBOSE1:signal_filter_processor.cc(54)] Segmentation platform started observing Autofill_PolledCreditCardSuggestions
+[88606:259:0523/230718.159454:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing Omnibox.SuggestionUsed.ClientSummarizedResultType
+[88606:259:0523/230718.159460:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing Sync.DeviceCount2
+[88606:259:0523/230718.159464:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing Sync.DeviceCount2.Phone
+[88606:259:0523/230718.159467:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing Sync.DeviceCount2.Desktop
+[88606:259:0523/230718.159470:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing Sync.DeviceCount2.Tablet
+[88606:259:0523/230718.159473:VERBOSE1:signal_filter_processor.cc(54)] Segmentation platform started observing MobileBookmarkManagerOpen
+[88606:259:0523/230718.159475:VERBOSE1:signal_filter_processor.cc(54)] Segmentation platform started observing NewTabPage.MostVisited.Clicked
+[88606:259:0523/230718.159478:VERBOSE1:signal_filter_processor.cc(54)] Segmentation platform started observing TabGroup.Created.OpenInNewTab
+[88606:259:0523/230718.159480:VERBOSE1:signal_filter_processor.cc(54)] Segmentation platform started observing Android.HistoryPage.OpenItem
+[88606:259:0523/230718.159483:VERBOSE1:signal_filter_processor.cc(54)] Segmentation platform started observing MobileMenuRecentTabs
+[88606:259:0523/230718.159485:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing PasswordManager.ManagePasswordsReferrer
+[88606:259:0523/230718.159488:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing PasswordManager.ProfileStore.TotalAccountsHiRes3.WithScheme.Https
+[88606:259:0523/230718.159497:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing PasswordManager.FillingAssistance
+[88606:259:0523/230718.159500:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing PasswordManager.NewlySavedPasswordIsGenerated
+[88606:259:0523/230718.159502:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing PasswordManager.SaveUIDismissalReason
+[88606:259:0523/230718.159504:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing PasswordManager.SaveUIDismissalReason
+[88606:259:0523/230718.159507:VERBOSE1:signal_filter_processor.cc(61)] Segmentation platform started observing IOS.CredentialExtension.IsEnabled.Startup
+[88618:259:0523/230718.201709:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x13d0014d220
+  URL:                    
+  context_type:           WEB_PAGE
+  effective extension id: (none)
+  effective context type: WEB_PAGE
+[88618:259:0523/230718.201871:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88618:259:0523/230718.201926:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 1
+[88618:259:0523/230718.240596:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x13d0014d220
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88618:259:0523/230718.240623:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88618:259:0523/230718.240656:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 2
+[88620:259:0523/230718.244609:INFO:cpu_info.cc(53)] Available number of cores: 8
+[88606:259:0523/230718.250430:VERBOSE1:gaia_cookie_manager_service.cc(710)] ListAccounts successful
+[88606:259:0523/230718.250463:VERBOSE1:gaia_cookie_manager_service.cc(882)] GaiaCookieManagerService::HandleNextRequest
+[88606:259:0523/230718.250540:VERBOSE1:account_reconcilor.cc(590)] AccountReconcilor::OnAccountsInCookieUpdated: CookieJar 0 accounts, Reconcilor's state is 1, Error was 
+[88606:259:0523/230718.250551:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230718.250557:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230718.250560:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230718.250564:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230718.250567:VERBOSE1:account_reconcilor.cc(680)] AccountReconcilor::LoadValidAccountsFromTokenService: Chrome 0 accounts
+[88606:259:0523/230718.250576:VERBOSE1:account_reconcilor.cc(807)] AccountReconcilor::CalculateIfMultiloginReconcileIsDone: Error was 
+[88606:259:0523/230718.250587:VERBOSE1:account_reconcilor.cc(715)] AccountReconcilor::StartReconcileIfChromeAccountsChanged
+[88606:259:0523/230718.250679:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230718.250683:VERBOSE1:account_reconcilor.cc(590)] AccountReconcilor::OnAccountsInCookieUpdated: CookieJar 0 accounts, Reconcilor's state is 1, Error was 
+[88606:259:0523/230718.250687:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230718.250689:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230718.250691:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230718.250703:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230718.250708:VERBOSE1:account_reconcilor.cc(680)] AccountReconcilor::LoadValidAccountsFromTokenService: Chrome 0 accounts
+[88606:259:0523/230718.250711:VERBOSE1:account_reconcilor.cc(807)] AccountReconcilor::CalculateIfMultiloginReconcileIsDone: Error was 
+[88606:259:0523/230718.250715:VERBOSE1:account_reconcilor.cc(715)] AccountReconcilor::StartReconcileIfChromeAccountsChanged
+[88606:259:0523/230718.359809:VERBOSE1:segment_result_provider.cc(136)] GetSegmentResult: segment=OPTIMIZATION_TARGET_SEGMENTATION_DEVICE_SWITCHER ignoring DB score, executing model.
+[88606:259:0523/230718.359844:VERBOSE1:segment_result_provider.cc(277)] ExecuteModelAndGetScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_DEVICE_SWITCHER default segment info not available
+[88606:259:0523/230718.359850:VERBOSE1:segment_result_provider.cc(210)] OnGotModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_DEVICE_SWITCHER failed to get database model score, trying default model.
+[88619:259:0523/230718.421505:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x1310014d220
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88619:259:0523/230718.422150:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88619:259:0523/230718.423032:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 2
+[88606:259:0523/230719.409837:VERBOSE1:profile_manager.cc(1326)] AddKeepAlive(Default, kClearingBrowsingData). keep_alives=[kBrowserWindow (1), kClearingBrowsingData (1)]
+[88606:259:0523/230719.440301:VERBOSE1:profile_manager.cc(1378)] RemoveKeepAlive(Default, kClearingBrowsingData). keep_alives=[kBrowserWindow (1)]
+[88606:259:0523/230719.450438:INFO:CONSOLE(15)] "Error clearing storage: [object DOMException]", source: pptr:evaluate;clearBrowserData%20(%2FUsers%2Fuser%2FDocuments%2Fmedibeebot%2Futils%2FbrowserUtils.js%3A89%3A16) (15)
+[88606:259:0523/230719.567744:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88615:14595:0523/230719.567950:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://medice-health-family.com/de/
+[88606:259:0523/230719.632742:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88615:14595:0523/230719.633328:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://medice-health-family.com/de/
+[88615:14595:0523/230719.633754:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88606:259:0523/230719.650802:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88615:14595:0523/230719.651819:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230719.651910:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230719.651959:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230719.652039:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230719.652050:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230719.652163:VERBOSE1:tls_client_handshaker.cc(523)] Client: handshake finished
+[88606:259:0523/230719.654090:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetCurrentBackForwardCacheEligibility: about:blank : No: HTTP status is not OK, scheme is not HTTP or HTTPS
+[88606:259:0523/230719.654119:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetCompleteBackForwardCacheEligibilityForReporting: about:blank : No: HTTP status is not OK, scheme is not HTTP or HTTPS
+[88620:259:0523/230719.654815:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x11300153a80
+  URL:                    
+  context_type:           WEB_PAGE
+  effective extension id: (none)
+  effective context type: WEB_PAGE
+[88620:259:0523/230719.654975:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88620:259:0523/230719.655092:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 1
+[88618:259:0523/230719.655279:VERBOSE1:dispatcher.cc(625)] Num tracked contexts: 1
+[88618:259:0523/230719.655556:VERBOSE1:dispatcher.cc(625)] Num tracked contexts: 0
+[88620:259:0523/230719.655965:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x11300153a80
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88620:259:0523/230719.655984:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88620:259:0523/230719.656016:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 2
+[88618:259:0523/230719.659666:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88618:259:0523/230719.659721:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88618:259:0523/230719.659740:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88618:259:0523/230719.659838:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88615:14595:0523/230719.663557:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/entry.DwWLAdCy.css
+[88615:14595:0523/230719.664720:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/AccountMenu.Dhy-DDEP.css
+[88615:14595:0523/230719.665190:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/AccountLoginForm.BWXOizbn.css
+[88615:14595:0523/230719.665364:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/SharedPrice.BaIBdmOH.css
+[88615:14595:0523/230719.665640:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/LayoutNotifications.CNI3-b1C.css
+[88615:14595:0523/230719.665898:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Dc9HR1-R.js
+[88615:14595:0523/230719.665983:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/CYBik0lM.js
+[88615:14595:0523/230719.666224:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BBbPkCew.js
+[88615:14595:0523/230719.666418:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DWJ2tzg1.js
+[88615:14595:0523/230719.666846:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DmVKDVMI.js
+[88615:14595:0523/230719.666942:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BLGekCCW.js
+[88615:14595:0523/230719.667019:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/D2vXepUx.js
+[88615:14595:0523/230719.667094:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/C5OGYXnR.js
+[88615:14595:0523/230719.667171:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/C53Sx8p5.js
+[88615:14595:0523/230719.667259:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BnPh1zk2.js
+[88615:14595:0523/230719.667331:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/CzZ_t-rQ.js
+[88615:14595:0523/230719.667384:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DkHR9LFV.js
+[88615:14595:0523/230719.667439:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/7hHDMhnr.js
+[88615:14595:0523/230719.667486:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DPFTmfdU.js
+[88615:14595:0523/230719.667534:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DcPODIpC.js
+[88615:14595:0523/230719.667600:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/CM_xHIlP.js
+[88615:14595:0523/230719.667659:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/HV5q9acp.js
+[88615:14595:0523/230719.667719:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DYBt8Thy.js
+[88615:14595:0523/230719.667787:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Bts7STRi.js
+[88615:14595:0523/230719.667843:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BZOenR7q.js
+[88615:14595:0523/230719.667907:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/kURW8kYD.js
+[88615:14595:0523/230719.667951:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/C26IyxjD.js
+[88615:14595:0523/230719.668000:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DJ6guTVv.js
+[88615:14595:0523/230719.668052:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BKeGcv0s.js
+[88615:14595:0523/230719.668097:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Dn4M8ncY.js
+[88615:14595:0523/230719.668251:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/iCtsAqrq.js
+[88615:14595:0523/230719.668310:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DNMkUFqH.js
+[88615:14595:0523/230719.668364:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/B3Z4Sobj.js
+[88615:14595:0523/230719.668416:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/CbHtDUPG.js
+[88615:14595:0523/230719.668472:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/C4b7AQ4C.js
+[88615:14595:0523/230719.668557:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DTbRHQ99.js
+[88615:14595:0523/230719.668831:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/wNKc1Utk.js
+[88615:14595:0523/230719.668907:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DxxAnYcu.js
+[88615:14595:0523/230719.669082:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/kuWmnpQQ.js
+[88615:14595:0523/230719.669214:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Di83ynvR.js
+[88615:14595:0523/230719.669564:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DIajtGdv.js
+[88615:14595:0523/230719.669652:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BAkUCoIq.js
+[88615:14595:0523/230719.669736:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BagYtjnq.js
+[88615:14595:0523/230719.669814:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/CutF77mL.js
+[88615:14595:0523/230719.670110:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BbSji3vg.js
+[88615:14595:0523/230719.670190:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BSSyGUL2.js
+[88615:14595:0523/230719.670287:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/q-untaIN.js
+[88615:14595:0523/230719.670364:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/auK5sIzP.js
+[88615:14595:0523/230719.670434:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/CLZ200fU.js
+[88615:14595:0523/230719.670511:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DIbJIaY3.js
+[88615:14595:0523/230719.670589:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Baq0Glp-.js
+[88615:14595:0523/230719.670644:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BXhuVpWK.js
+[88615:14595:0523/230719.670688:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/CDnJ0yB6.js
+[88615:14595:0523/230719.670738:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/C9dO1kvP.js
+[88615:14595:0523/230719.670784:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BWS-G9Ii.js
+[88615:14595:0523/230719.670841:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/CSmqNyBQ.js
+[88615:14595:0523/230719.670915:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/309276/209x40/76a5d96bec/medice-logo.svg
+[88615:14595:0523/230719.671291:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://consent.medice-health-family.com/vinegar/static/vinegar/standalone.js
+[88615:14595:0523/230719.673542:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/276854/x/df63217a63/1x1_240716_medice_kurz_15sek.mp4
+[88632:259:0523/230719.695532:INFO:cpu_info.cc(53)] Available number of cores: 8
+[88615:14595:0523/230719.756996:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/favicon.BDt9q8XD.ico
+[88615:14595:0523/230719.757172:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/no-image-fachkreis.C6tz0lX0.jpg
+[88615:14595:0523/230719.757212:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/ProductVariantConfigurator.BAxGgvyf.css
+[88615:14595:0523/230719.757244:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/CgmnCfWr.js
+[88615:14595:0523/230719.757270:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/C0FOICx9.js
+[88615:14595:0523/230719.757298:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Bt2JboeN.js
+[88615:14595:0523/230719.757324:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Cwcbyy7L.js
+[88615:14595:0523/230719.757351:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/IuSDPpr4.js
+[88615:14595:0523/230719.757458:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230719.776122:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230719.776218:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230719.776294:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230719.777476:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230719.777501:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230719.777582:VERBOSE1:tls_client_handshaker.cc(523)] Client: handshake finished
+[88615:14595:0523/230719.781230:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Figtree-Regular.CpT782eX.ttf
+[88615:14595:0523/230719.781368:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Figtree-Light.DYBRDWC9.ttf
+[88615:14595:0523/230719.781442:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/AbrilFatface-Regular.CF4J23BR.ttf
+[88615:14595:0523/230719.803521:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/276854/2083x2083/c05397daa5/medibee.jpg/m/0x1200/filters:quality(90):focal()
+[88615:14595:0523/230719.803681:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/276854/2250x2250/18200f16c2/uk_plattform_pta-family_hero_teaser_1zu1.jpg/m/0x1200/filters:quality(90):focal()
+[88615:14595:0523/230719.803761:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/276854/6834x4562/4fed192803/adobestock_496025526.jpeg/m/0x1200/filters:quality(90):focal()
+[88615:14595:0523/230719.803844:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Figtree-Regular.CpT782eX.ttf
+[88615:14595:0523/230719.803929:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Figtree-Light.DYBRDWC9.ttf
+[88615:14595:0523/230719.804002:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/AbrilFatface-Regular.CF4J23BR.ttf
+[88615:14595:0523/230719.804078:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://consent.medice-health-family.com/vinegar/vinegar/
+[88615:14595:0523/230719.822003:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/IuSDPpr4.js
+[88615:14595:0523/230719.829920:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://m.werkbank.de//matomo.js
+[88615:14595:0523/230719.830513:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/builds/meta/e1e92ec9-405b-43d4-b50d-e95ed7003c20.json
+[88615:14595:0523/230719.855448:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://api.storyblok.com/v2/cdn/stories?version=published&level=3&by_slugs=a__portal%2F*%2Fconfig&excluding_fields=body%2Cheader%2Cseo&per_page=25&page=1&token=MhfLye4rcNKDiL2sKjo3DQtt
+[88615:14595:0523/230719.872507:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Figtree-Bold.Bd3iktZZ.ttf
+[88615:14595:0523/230719.876377:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Figtree-Bold.Bd3iktZZ.ttf
+[88606:37635:0523/230719.983739:VERBOSE1:media_stream_manager.cc(1527)] RFAOSF::RequestDeviceAuthorization({device_id=}) [process_id=8, frame_id=8]
+[88615:14595:0523/230720.005325:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://api.storyblok.com/v2/cdn/stories?version=published&level=3&by_slugs=a__portal%2F*%2Fconfig&excluding_fields=body%2Cheader%2Cseo&per_page=25&page=1&token=MhfLye4rcNKDiL2sKjo3DQtt
+[88633:259:0523/230720.065895:ERROR:system_services.cc(31)] SetApplicationIsDaemon: Error Domain=NSOSStatusErrorDomain Code=-50 "paramErr: error in user parameter list" (-50)
+[88615:14595:0523/230720.071226:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://api.storyblok.com/v2/cdn/stories?by_slugs=a__portal%2F%2A%2Fconfig&cv=1748022707&excluding_fields=body%2Cheader%2Cseo&level=3&page=1&per_page=25&token=MhfLye4rcNKDiL2sKjo3DQtt&version=published
+[88615:14595:0523/230720.108016:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://api.storyblok.com/v2/cdn/stories?by_slugs=a__portal%2F%2A%2Fconfig&cv=1748022707&excluding_fields=body%2Cheader%2Cseo&level=3&page=1&per_page=25&token=MhfLye4rcNKDiL2sKjo3DQtt&version=published
+[88615:14595:0523/230720.140746:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://shop-medice-health-family-com.shopware.store/store-api/context
+[88606:37635:0523/230720.161188:VERBOSE1:media_stream_manager.cc(1527)] RFAOSF::AuthorizationCompleted({status=OK}, {params=format: PCM_LOW_LATENCY, channel_layout: 3, channels: 2, sample_rate: 44100, frames_per_buffer: 256, effects: 0, mic_positions: , hw_capabilities: min_frames_per_buffer: 128, max_frames_per_buffer: 4096, bitstream_formats:0, require_encapsulation:0, require_audio_offload:0}, {device_id=default}) [process_id=8, frame_id=8]
+[88606:37635:0523/230720.161214:VERBOSE1:media_stream_manager.cc(1527)] RFAOSF::AuthorizationCompleted => (authorization time=177 ms) [process_id=8, frame_id=8]
+[88606:259:0523/230720.205555:VERBOSE1:passage_embeddings_service_controller.cc(110)] Missing model path: embeddings=''; sp=''
+[88615:14595:0523/230720.205762:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/favicon.BDt9q8XD.ico
+[88615:14595:0523/230720.262231:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://shop-medice-health-family-com.shopware.store/store-api/context
+[88615:14595:0523/230720.262494:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230720.287467:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230720.287577:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230720.287612:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230720.287672:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230720.287690:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230720.288134:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230720.288223:VERBOSE1:tls_client_handshaker.cc(523)] Client: handshake finished
+[88615:14595:0523/230720.343848:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Advantages.PDXO2XK5.css
+[88615:14595:0523/230720.343988:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/SharedModal.i8f3QzJz.css
+[88615:14595:0523/230720.344300:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/CheckoutCartItem.yNm4ylQk.css
+[88615:14595:0523/230720.344408:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/AnnouncementMessage.CaKU0qxl.css
+[88615:14595:0523/230720.344522:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/FreeShipping.BMPnQKGV.css
+[88615:14595:0523/230720.344620:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/LayoutSidebar.D63v2XFX.css
+[88615:14595:0523/230720.344701:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/CheckoutSideCart.BfQmdWg_.css
+[88615:14595:0523/230720.344799:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/HeaderCart.B_XpuQXq.css
+[88615:14595:0523/230720.344884:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/LayoutNotification.K_sKNOzs.css
+[88615:14595:0523/230720.384330:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://api.storyblok.com/v2/cdn/stories/a__portal/de/config?version=published&resolve_links=url&language=de&token=MhfLye4rcNKDiL2sKjo3DQtt&cv=1748022707
+[88615:14595:0523/230720.384462:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://api.storyblok.com/v2/cdn/stories/a__portal/de/config?version=published&resolve_links=url&language=de&token=MhfLye4rcNKDiL2sKjo3DQtt&cv=1748022707
+[88615:14595:0523/230720.386672:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Figtree-Regular.CpT782eX.ttf
+[88615:14595:0523/230720.387086:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/AbrilFatface-Regular.CF4J23BR.ttf
+[88615:14595:0523/230720.390573:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/HeroScrollDown.BEzxhvLF.css
+[88615:14595:0523/230720.390908:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/HeroBackground.Dv54H9ll.css
+[88615:14595:0523/230720.391868:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/HeroSection.DSHhOxU2.css
+[88615:14595:0523/230720.392047:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/TeaserElement.BTkYqYQh.css
+[88615:14595:0523/230720.434762:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://api.storyblok.com/v2/cdn/stories/a__portal/de/config?version=published&resolve_links=url&language=de&token=MhfLye4rcNKDiL2sKjo3DQtt&cv=1748022707
+[88615:14595:0523/230720.446366:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://api.storyblok.com/v2/cdn/stories/a__portal/de/config?version=published&resolve_links=url&language=de&token=MhfLye4rcNKDiL2sKjo3DQtt&cv=1748022707
+[88615:14595:0523/230720.480521:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/BMoUobSj.js
+[88615:14595:0523/230720.480819:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/gTripleRow.Cuey5quc.css
+[88615:14595:0523/230720.509600:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Figtree-Regular.CpT782eX.ttf
+[88615:14595:0523/230720.509883:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/AbrilFatface-Regular.CF4J23BR.ttf
+[88615:14595:0523/230720.519308:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/D46ezzbX.js
+[88615:14595:0523/230720.519519:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/gSingleColumn.BzHMsnSY.css
+[88615:14595:0523/230720.527967:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://shop-medice-health-family-com.shopware.store/store-api/context
+[88615:14595:0523/230720.532616:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://shop-medice-health-family-com.shopware.store/store-api/context
+[88615:14595:0523/230720.563325:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/DICOyuRI.js
+[88615:14595:0523/230720.563465:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/FooterLink.D1r0o-2T.css
+[88615:14595:0523/230720.573855:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Figtree-Regular.CpT782eX.ttf
+[88615:14595:0523/230720.574576:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/AbrilFatface-Regular.CF4J23BR.ttf
+[88615:14595:0523/230720.674305:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/309276/1800x477/45beab5a03/paypal-white.png
+[88615:14595:0523/230720.674507:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/309276/300x67/cde26fc742/klarna-logotype-white-svg.svg
+[88615:14595:0523/230720.674610:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/301238/300x67/f8c60fcd0b/klarna-logotype-white-svg.svg
+[88615:14595:0523/230720.674736:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/301238/235x150/22be2544c4/sepa-svg.svg
+[88615:14595:0523/230720.674827:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/301238/300x63/4dbd2cd104/credit-cards.svg
+[88615:14595:0523/230720.675019:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/301238/166x106/63b50a02dc/apple_pay_mark_rgb_041619.svg
+[88615:14595:0523/230720.675113:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/301238/24x24/a322cfe94b/instagram-2.svg
+[88615:14595:0523/230720.675253:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/301238/24x24/66a8eae72d/facebook-1.svg
+[88615:14595:0523/230720.675328:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://a.storyblok.com/f/301238/24x24/f98b5551dd/linkedin-1.svg
+[88615:14595:0523/230720.675559:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://shop-medice-health-family-com.shopware.store/store-api/checkout/cart
+[88615:14595:0523/230720.688086:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/Figtree-Regular.CpT782eX.ttf
+[88615:14595:0523/230720.688831:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://frontend.prod.medice-portal.net/public/_nuxt/AbrilFatface-Regular.CF4J23BR.ttf
+[88615:14595:0523/230720.756874:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://shop-medice-health-family-com.shopware.store/store-api/checkout/cart
+[88606:259:0523/230721.586208:INFO:CONSOLE(1)] "Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'nonce-+r2KF+joyY6xCuewIJy5Qg==' app.storyblok.com https://m.werkbank.de/ consent.medice-health-family.com frontend.prod.medice-portal.net www.googletagmanager.com 'sha256-Q41c5hrAgPbtKTiCS0h/1oc+r99QXEW6HPxgXL5YBFY='". Either the 'unsafe-inline' keyword, a hash ('sha256-8/GCCrMUJVSCE+cen3r9C8Cvjlc2o47zGRL7UwJOAN8='), or a nonce ('nonce-...') is required to enable inline execution.
+", source: https://consent.medice-health-family.com/vinegar/static/vinegar/standalone.js (1)
+[88615:14595:0523/230721.586221:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://www.googletagmanager.com/gtag/js?id=G-12VJQB9H6G
+[88615:14595:0523/230721.586621:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://consent.medice-health-family.com/vinegar/submit/
+[88606:259:0523/230722.542648:VERBOSE1:profile_manager.cc(1326)] AddKeepAlive(Default, kExtensionUpdater). keep_alives=[kBrowserWindow (1), kExtensionUpdater (1)]
+[88606:259:0523/230722.542738:VERBOSE1:profile_manager.cc(1378)] RemoveKeepAlive(Default, kExtensionUpdater). keep_alives=[kBrowserWindow (1)]
+[88606:165123:0523/230722.542981:VERBOSE1:usb_context.cc(52)] UsbEventHandler started.
+[88606:33795:0523/230722.586727:ERROR:unexportable_key_mac.mm(348)] Unexportable keys unavailable because keychain-access-group entitlement missing or incorrect. Expected value: .com.google.chrome.for.testing.unexportable-keys
+[88615:14595:0523/230722.715127:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://m.werkbank.de//matomo.php
+[88615:14595:0523/230722.812645:VERBOSE1:url_loader.cc(1840)] Will sniff content for mime type: https://m.werkbank.de//matomo.php
+[88615:14595:0523/230722.923483:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.923691:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.946020:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.946058:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.946205:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.946218:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.946237:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.946257:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.946264:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.946342:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.946349:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.946363:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.965820:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.966011:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.966142:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230722.966375:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.966510:VERBOSE1:tls_client_handshaker.cc(523)] Client: handshake finished
+[88615:14595:0523/230722.966569:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.966683:VERBOSE1:tls_client_handshaker.cc(523)] Client: handshake finished
+[88615:14595:0523/230722.966709:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230722.966837:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230722.980831:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.985629:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.985993:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.993090:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.993134:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.994523:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.994541:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.995206:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.995331:VERBOSE1:tls_client_handshaker.cc(523)] Client: handshake finished
+[88615:14595:0523/230722.996836:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.999527:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.999535:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.999616:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.999624:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.999672:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.999746:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230722.999754:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230723.000098:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230723.000231:VERBOSE1:tls_client_handshaker.cc(523)] Client: handshake finished
+[88615:14595:0523/230723.000321:VERBOSE1:tls_handshaker.cc(100)] TlsClient: Continuing handshake
+[88615:14595:0523/230723.000432:VERBOSE1:tls_client_handshaker.cc(523)] Client: handshake finished
+[88606:259:0523/230723.160157:VERBOSE1:segment_result_provider.cc(226)] GetCachedModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_CHROME_LOW_USER_ENGAGEMENT does not have a segment info.
+[88606:259:0523/230723.160256:VERBOSE1:segment_result_provider.cc(172)] OnGotModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_CHROME_LOW_USER_ENGAGEMENT failed to get score from database, executing server model.
+[88606:259:0523/230723.160263:VERBOSE1:segment_result_provider.cc(277)] ExecuteModelAndGetScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_CHROME_LOW_USER_ENGAGEMENT default segment info not available
+[88606:259:0523/230723.160270:VERBOSE1:segment_result_provider.cc(201)] OnGotModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_CHROME_LOW_USER_ENGAGEMENT failed to get score from executing server model, getting score from default model from db.
+[88606:259:0523/230723.160274:VERBOSE1:segment_result_provider.cc(240)] GetCachedModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_CHROME_LOW_USER_ENGAGEMENT has expired or unavailable result.
+[88606:259:0523/230723.160277:VERBOSE1:segment_result_provider.cc(210)] OnGotModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_CHROME_LOW_USER_ENGAGEMENT failed to get database model score, trying default model.
+[88606:259:0523/230723.160284:VERBOSE1:segment_result_provider.cc(293)] ExecuteModelAndGetScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_CHROME_LOW_USER_ENGAGEMENT signal collection not met
+[88606:259:0523/230723.160308:VERBOSE1:segment_result_provider.cc(226)] GetCachedModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SEARCH_USER does not have a segment info.
+[88606:259:0523/230723.160312:VERBOSE1:segment_result_provider.cc(172)] OnGotModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SEARCH_USER failed to get score from database, executing server model.
+[88606:259:0523/230723.160315:VERBOSE1:segment_result_provider.cc(277)] ExecuteModelAndGetScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SEARCH_USER default segment info not available
+[88606:259:0523/230723.160318:VERBOSE1:segment_result_provider.cc(201)] OnGotModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SEARCH_USER failed to get score from executing server model, getting score from default model from db.
+[88606:259:0523/230723.160321:VERBOSE1:segment_result_provider.cc(240)] GetCachedModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SEARCH_USER has expired or unavailable result.
+[88606:259:0523/230723.160323:VERBOSE1:segment_result_provider.cc(210)] OnGotModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SEARCH_USER failed to get database model score, trying default model.
+[88606:259:0523/230723.160328:VERBOSE1:segment_result_provider.cc(293)] ExecuteModelAndGetScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SEARCH_USER signal collection not met
+[88606:259:0523/230723.160332:VERBOSE1:segment_result_provider.cc(226)] GetCachedModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SHOPPING_USER does not have a segment info.
+[88606:259:0523/230723.160335:VERBOSE1:segment_result_provider.cc(172)] OnGotModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SHOPPING_USER failed to get score from database, executing server model.
+[88606:259:0523/230723.160338:VERBOSE1:segment_result_provider.cc(277)] ExecuteModelAndGetScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SHOPPING_USER default segment info not available
+[88606:259:0523/230723.160340:VERBOSE1:segment_result_provider.cc(201)] OnGotModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SHOPPING_USER failed to get score from executing server model, getting score from default model from db.
+[88606:259:0523/230723.160343:VERBOSE1:segment_result_provider.cc(240)] GetCachedModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SHOPPING_USER has expired or unavailable result.
+[88606:259:0523/230723.160345:VERBOSE1:segment_result_provider.cc(210)] OnGotModelScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SHOPPING_USER failed to get database model score, trying default model.
+[88606:259:0523/230723.160351:VERBOSE1:segment_result_provider.cc(293)] ExecuteModelAndGetScore: segment=OPTIMIZATION_TARGET_SEGMENTATION_SHOPPING_USER signal collection not met
+[88606:259:0523/230723.160355:VERBOSE1:segment_result_provider.cc(226)] GetCachedModelScore: segment=CROSS_DEVICE_USER_SEGMENT does not have a segment info.
+[88606:259:0523/230723.160359:VERBOSE1:segment_result_provider.cc(172)] OnGotModelScore: segment=CROSS_DEVICE_USER_SEGMENT failed to get score from database, executing server model.
+[88606:259:0523/230723.160362:VERBOSE1:segment_result_provider.cc(277)] ExecuteModelAndGetScore: segment=CROSS_DEVICE_USER_SEGMENT default segment info not available
+[88606:259:0523/230723.160364:VERBOSE1:segment_result_provider.cc(201)] OnGotModelScore: segment=CROSS_DEVICE_USER_SEGMENT failed to get score from executing server model, getting score from default model from db.
+[88606:259:0523/230723.160367:VERBOSE1:segment_result_provider.cc(240)] GetCachedModelScore: segment=CROSS_DEVICE_USER_SEGMENT has expired or unavailable result.
+[88606:259:0523/230723.160370:VERBOSE1:segment_result_provider.cc(210)] OnGotModelScore: segment=CROSS_DEVICE_USER_SEGMENT failed to get database model score, trying default model.
+[88606:259:0523/230723.160375:VERBOSE1:segment_result_provider.cc(293)] ExecuteModelAndGetScore: segment=CROSS_DEVICE_USER_SEGMENT signal collection not met
+[88606:259:0523/230723.160381:VERBOSE1:segment_result_provider.cc(226)] GetCachedModelScore: segment=RESUME_HEAVY_USER_SEGMENT does not have a segment info.
+[88606:259:0523/230723.160388:VERBOSE1:segment_result_provider.cc(172)] OnGotModelScore: segment=RESUME_HEAVY_USER_SEGMENT failed to get score from database, executing server model.
+[88606:259:0523/230723.160390:VERBOSE1:segment_result_provider.cc(277)] ExecuteModelAndGetScore: segment=RESUME_HEAVY_USER_SEGMENT default segment info not available
+[88606:259:0523/230723.160394:VERBOSE1:segment_result_provider.cc(201)] OnGotModelScore: segment=RESUME_HEAVY_USER_SEGMENT failed to get score from executing server model, getting score from default model from db.
+[88606:259:0523/230723.160396:VERBOSE1:segment_result_provider.cc(240)] GetCachedModelScore: segment=RESUME_HEAVY_USER_SEGMENT has expired or unavailable result.
+[88606:259:0523/230723.160399:VERBOSE1:segment_result_provider.cc(210)] OnGotModelScore: segment=RESUME_HEAVY_USER_SEGMENT failed to get database model score, trying default model.
+[88606:259:0523/230723.160404:VERBOSE1:segment_result_provider.cc(293)] ExecuteModelAndGetScore: segment=RESUME_HEAVY_USER_SEGMENT signal collection not met
+[88606:259:0523/230723.160408:VERBOSE1:segment_result_provider.cc(226)] GetCachedModelScore: segment=PASSWORD_MANAGER_USER does not have a segment info.
+[88606:259:0523/230723.160411:VERBOSE1:segment_result_provider.cc(172)] OnGotModelScore: segment=PASSWORD_MANAGER_USER failed to get score from database, executing server model.
+[88606:259:0523/230723.160414:VERBOSE1:segment_result_provider.cc(277)] ExecuteModelAndGetScore: segment=PASSWORD_MANAGER_USER default segment info not available
+[88606:259:0523/230723.160418:VERBOSE1:segment_result_provider.cc(201)] OnGotModelScore: segment=PASSWORD_MANAGER_USER failed to get score from executing server model, getting score from default model from db.
+[88606:259:0523/230723.160421:VERBOSE1:segment_result_provider.cc(240)] GetCachedModelScore: segment=PASSWORD_MANAGER_USER has expired or unavailable result.
+[88606:259:0523/230723.160424:VERBOSE1:segment_result_provider.cc(210)] OnGotModelScore: segment=PASSWORD_MANAGER_USER failed to get database model score, trying default model.
+[88606:259:0523/230723.160432:VERBOSE1:segment_result_provider.cc(293)] ExecuteModelAndGetScore: segment=PASSWORD_MANAGER_USER signal collection not met
+[88606:259:0523/230723.209038:VERBOSE1:segment_result_provider.cc(136)] GetSegmentResult: segment=OPTIMIZATION_TARGET_WEB_APP_INSTALLATION_PROMO ignoring DB score, executing model.
+[88606:259:0523/230723.209072:VERBOSE1:segment_result_provider.cc(277)] ExecuteModelAndGetScore: segment=OPTIMIZATION_TARGET_WEB_APP_INSTALLATION_PROMO default segment info not available
+[88606:259:0523/230723.209078:VERBOSE1:segment_result_provider.cc(186)] OnGotModelScore: segment=OPTIMIZATION_TARGET_WEB_APP_INSTALLATION_PROMO default provider not available
+[88606:259:0523/230723.209101:VERBOSE1:request_dispatcher.cc(146)] Computed result for web_app_installation_promo: Status: Failed
+[88615:14595:0523/230725.592554:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230725.592715:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230725.592843:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230725.596482:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://m.werkbank.de//matomo.php?ma_id=n9O7VD&ma_ti=&ma_pn=html5video&ma_mt=Video&ma_re=https%3A%2F%2Fa.storyblok.com%2Ff%2F276854%2Fx%2Fdf63217a63%2F1x1_240716_medice_kurz_15sek.mp4&ma_st=5&ma_ps=5&ma_le=16&ma_ttp=0&ma_w=1080&ma_h=1080&ma_fs=0&ma_se=&ca=1&&idsite=68&rec=1&r=526113&h=23&m=7&s=25&url=https%3A%2F%2Fmedice-health-family.com%2Fde%2F&_id=&_idn=1&send_image=0&_refts=0&uadata=%7B%22formFactors%22%3A%5B%22Desktop%22%5D%2C%22fullVersionList%22%3A%5B%7B%22brand%22%3A%22Not%2FA)Brand%22%2C%22version%22%3A%228.0.0.0%22%7D%2C%7B%22brand%22%3A%22Chromium%22%2C%22version%22%3A%22126.0.6478.126%22%7D%5D%2C%22mobile%22%3Afalse%2C%22model%22%3A%22%22%2C%22platform%22%3A%22macOS%22%2C%22platformVersion%22%3A%2215.3.0%22%7D&pdf=1&qt=0&realp=0&wma=0&fla=0&java=0&ag=0&cookie=1&res=1710x1112
+[88615:14595:0523/230725.596770:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230725.596852:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230725.596900:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88650:259:0523/230725.625679:INFO:cpu_info.cc(53)] Available number of cores: 8
+[88606:259:0523/230725.695670:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88615:14595:0523/230725.695870:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/home
+[88615:14595:0523/230725.713393:VERBOSE1:url_loader.cc(1840)] Will sniff content for mime type: https://m.werkbank.de//matomo.php?ma_id=n9O7VD&ma_ti=&ma_pn=html5video&ma_mt=Video&ma_re=https%3A%2F%2Fa.storyblok.com%2Ff%2F276854%2Fx%2Fdf63217a63%2F1x1_240716_medice_kurz_15sek.mp4&ma_st=5&ma_ps=5&ma_le=16&ma_ttp=0&ma_w=1080&ma_h=1080&ma_fs=0&ma_se=&ca=1&&idsite=68&rec=1&r=526113&h=23&m=7&s=25&url=https%3A%2F%2Fmedice-health-family.com%2Fde%2F&_id=&_idn=1&send_image=0&_refts=0&uadata=%7B%22formFactors%22%3A%5B%22Desktop%22%5D%2C%22fullVersionList%22%3A%5B%7B%22brand%22%3A%22Not%2FA)Brand%22%2C%22version%22%3A%228.0.0.0%22%7D%2C%7B%22brand%22%3A%22Chromium%22%2C%22version%22%3A%22126.0.6478.126%22%7D%5D%2C%22mobile%22%3Afalse%2C%22model%22%3A%22%22%2C%22platform%22%3A%22macOS%22%2C%22platformVersion%22%3A%2215.3.0%22%7D&pdf=1&qt=0&realp=0&wma=0&fla=0&java=0&ag=0&cookie=1&res=1710x1112
+[88606:259:0523/230725.748094:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88615:14595:0523/230725.748528:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://app.360learning.com/api/sso/oidc/65959b41d9e0f389a83a198e
+[88615:14595:0523/230725.748721:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230725.748760:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230725.748783:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88606:259:0523/230725.882959:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88615:14595:0523/230725.883364:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://login.medice.com/auth/realms/medicerealm/protocol/openid-connect/auth?response_type=code&client_id=health_family_academy&redirect_uri=https%3A%2F%2Fapp.360learning.com%2Fapi%2Fsso%2Foidc%2F65959b41d9e0f389a83a198e%2Fcallback&scope=openid%20profile&state=de59bec1-0f14-4267-a4c3-ef410cc1aae4
+[88615:14595:0523/230725.883512:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230725.883552:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230725.883574:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88606:259:0523/230726.000217:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetCurrentBackForwardCacheEligibility: https://medice-health-family.com/de/ : Yes
+[88650:259:0523/230726.000761:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x119001539c8
+  URL:                    
+  context_type:           WEB_PAGE
+  effective extension id: (none)
+  effective context type: WEB_PAGE
+[88650:259:0523/230726.000914:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88650:259:0523/230726.000960:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 1
+[88650:259:0523/230726.001514:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x119001539c8
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88650:259:0523/230726.001526:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88650:259:0523/230726.001548:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 2
+[88615:14595:0523/230726.002146:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://login.medice.com/auth/resources/to26w/login/health-family-keycloak-theme/css/styles.css
+[88615:14595:0523/230726.002318:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://login.medice.com/auth/resources/to26w/login/health-family-keycloak-theme/img/logo.svg
+[88606:259:0523/230726.003934:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetCurrentBackForwardCacheEligibility: https://medice-health-family.com/de/ : Yes
+[88615:14595:0523/230726.018164:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://login.medice.com/auth/resources/to26w/login/health-family-keycloak-theme/css/fonts/Figtree/figtree-v5-latin-regular.woff2
+[88615:14595:0523/230726.018385:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://login.medice.com/auth/resources/to26w/login/health-family-keycloak-theme/css/fonts/Figtree/figtree-v5-latin-700.woff2
+[88615:14595:0523/230726.024807:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://login.medice.com/auth/resources/to26w/login/health-family-keycloak-theme/css/fonts/Figtree/figtree-v5-latin-regular.woff2
+[88615:14595:0523/230726.025455:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://login.medice.com/auth/resources/to26w/login/health-family-keycloak-theme/css/fonts/Figtree/figtree-v5-latin-700.woff2
+[88615:14595:0523/230726.028977:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://content-autofill.googleapis.com/v1/pages/ChVDaHJvbWUvMTI2LjAuNjQ3OC4xMjYSIAmNtm6NvfFIUxIFDeeNQA4SBQ3OQUx6ISZ4HbEqHhFy?alt=proto
+[88615:14595:0523/230726.029131:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230726.029378:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230726.029405:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88753:259:0523/230726.034839:INFO:cpu_info.cc(53)] Available number of cores: 8
+[88615:14595:0523/230726.050009:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://login.medice.com/auth/resources/to26w/login/health-family-keycloak-theme/img/favicon/favicon-32x32.png
+[88606:259:0523/230726.050116:VERBOSE1:passage_embeddings_service_controller.cc(110)] Missing model path: embeddings=''; sp=''
+[88606:259:0523/230726.110344:VERBOSE1:autofill_crowdsourcing_encoding.cc(754)] Autofill query response from API was successfully parsed: 
+Form
+ Field
+  signature: 239111655
+  prediction: 9
+  prediction: 86
+ Field
+  signature: 2051817934
+  prediction: 75
+[88606:259:0523/230729.035715:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230729.054113:VERBOSE1:segment_result_provider.cc(136)] GetSegmentResult: segment=OPTIMIZATION_TARGET_WEB_APP_INSTALLATION_PROMO ignoring DB score, executing model.
+[88606:259:0523/230729.054197:VERBOSE1:segment_result_provider.cc(277)] ExecuteModelAndGetScore: segment=OPTIMIZATION_TARGET_WEB_APP_INSTALLATION_PROMO default segment info not available
+[88606:259:0523/230729.054206:VERBOSE1:segment_result_provider.cc(186)] OnGotModelScore: segment=OPTIMIZATION_TARGET_WEB_APP_INSTALLATION_PROMO default provider not available
+[88606:259:0523/230729.054242:VERBOSE1:request_dispatcher.cc(146)] Computed result for web_app_installation_promo: Status: Failed
+[88606:259:0523/230731.101037:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetFutureBackForwardCacheEligibilityPotential: https://login.medice.com/auth/realms/medicerealm/protocol/openid-connect/auth?response_type=code&client_id=health_family_academy&redirect_uri=https%3A%2F%2Fapp.360learning.com%2Fapi%2Fsso%2Foidc%2F65959b41d9e0f389a83a198e%2Fcallback&scope=openid%20profile&state=de59bec1-0f14-4267-a4c3-ef410cc1aae4 : Yes
+[88606:259:0523/230731.102664:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88615:14595:0523/230731.102884:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://login.medice.com/auth/realms/medicerealm/login-actions/authenticate?session_code=DJlsGwPG3seEwSnCk0PnBXffxn-VzQuRoPlbtDv-Tnc&execution=86e657ad-0aa8-452a-91f7-51cd33c0c0f8&client_id=health_family_academy&tab_id=h1TWewJDzHY&client_data=eyJydSI6Imh0dHBzOi8vYXBwLjM2MGxlYXJuaW5nLmNvbS9hcGkvc3NvL29pZGMvNjU5NTliNDFkOWUwZjM4OWE4M2ExOThlL2NhbGxiYWNrIiwicnQiOiJjb2RlIiwic3QiOiJkZTU5YmVjMS0wZjE0LTQyNjctYTRjMy1lZjQxMGNjMWFhZTQifQ
+[88615:14595:0523/230731.103157:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230731.103197:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230731.103220:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88606:259:0523/230731.191045:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230731.191234:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetFutureBackForwardCacheEligibilityPotential: https://login.medice.com/auth/realms/medicerealm/protocol/openid-connect/auth?response_type=code&client_id=health_family_academy&redirect_uri=https%3A%2F%2Fapp.360learning.com%2Fapi%2Fsso%2Foidc%2F65959b41d9e0f389a83a198e%2Fcallback&scope=openid%20profile&state=de59bec1-0f14-4267-a4c3-ef410cc1aae4 : Yes
+[88615:14595:0523/230731.191660:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://app.360learning.com/api/sso/oidc/65959b41d9e0f389a83a198e/callback?state=de59bec1-0f14-4267-a4c3-ef410cc1aae4&session_state=3e2a6934-4f76-4ba6-a16b-878164fa475d&iss=https%3A%2F%2Flogin.medice.com%2Fauth%2Frealms%2Fmedicerealm&code=e06ccc65-70fc-46df-83b9-0e01cd6bc7de.3e2a6934-4f76-4ba6-a16b-878164fa475d.bb2a1973-64f4-4f01-b769-f45a6ea39dba
+[88606:259:0523/230731.436931:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230731.437417:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetFutureBackForwardCacheEligibilityPotential: https://login.medice.com/auth/realms/medicerealm/protocol/openid-connect/auth?response_type=code&client_id=health_family_academy&redirect_uri=https%3A%2F%2Fapp.360learning.com%2Fapi%2Fsso%2Foidc%2F65959b41d9e0f389a83a198e%2Fcallback&scope=openid%20profile&state=de59bec1-0f14-4267-a4c3-ef410cc1aae4 : Yes
+[88615:14595:0523/230731.438580:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/?token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZWFmODAxN2VkN2ZkNjY4OTcwYzkiLCJjb21wYW55SWQiOiI2NTk1OWI0MWQ5ZTBmMzg5YTgzYTE5OGMiLCJmcm9tU1NPIjoiT0lEQyIsInRva2VuSWQiOiJkNzk1NmU4OS0wYWQxLTQyZTgtOGQ5MS1lZTg3MDBmYjQ5Y2UiLCJ0eXBlIjoicmVkaXJlY3QiLCJpYXQiOjE3NDgwMzQ0NTEsImV4cCI6MTc1MDYyNjQ1MX0.SVDyZzF8l71MvnGzlhz0dGUB1rEThCSvUl4FRHxVKihq_gyPQBzbYhsFKaM1t-EKSsiOpj1zqXzYkzZFI0k-dQ
+[88606:259:0523/230731.517208:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88606:259:0523/230731.517515:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetFutureBackForwardCacheEligibilityPotential: https://login.medice.com/auth/realms/medicerealm/protocol/openid-connect/auth?response_type=code&client_id=health_family_academy&redirect_uri=https%3A%2F%2Fapp.360learning.com%2Fapi%2Fsso%2Foidc%2F65959b41d9e0f389a83a198e%2Fcallback&scope=openid%20profile&state=de59bec1-0f14-4267-a4c3-ef410cc1aae4 : Yes
+[88615:14595:0523/230731.518121:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/
+[88606:259:0523/230731.598184:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetFutureBackForwardCacheEligibilityPotential: https://login.medice.com/auth/realms/medicerealm/protocol/openid-connect/auth?response_type=code&client_id=health_family_academy&redirect_uri=https%3A%2F%2Fapp.360learning.com%2Fapi%2Fsso%2Foidc%2F65959b41d9e0f389a83a198e%2Fcallback&scope=openid%20profile&state=de59bec1-0f14-4267-a4c3-ef410cc1aae4 : Yes
+[88606:259:0523/230731.606102:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetCurrentBackForwardCacheEligibility: https://login.medice.com/auth/realms/medicerealm/protocol/openid-connect/auth?response_type=code&client_id=health_family_academy&redirect_uri=https%3A%2F%2Fapp.360learning.com%2Fapi%2Fsso%2Foidc%2F65959b41d9e0f389a83a198e%2Fcallback&scope=openid%20profile&state=de59bec1-0f14-4267-a4c3-ef410cc1aae4 : Yes
+[88753:259:0523/230731.606957:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x117001539c8
+  URL:                    
+  context_type:           WEB_PAGE
+  effective extension id: (none)
+  effective context type: WEB_PAGE
+[88753:259:0523/230731.607133:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230731.607217:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 1
+[88753:259:0523/230731.608060:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x117001539c8
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230731.608076:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230731.608120:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 2
+[88606:259:0523/230731.609981:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetCurrentBackForwardCacheEligibility: https://login.medice.com/auth/realms/medicerealm/protocol/openid-connect/auth?response_type=code&client_id=health_family_academy&redirect_uri=https%3A%2F%2Fapp.360learning.com%2Fapi%2Fsso%2Foidc%2F65959b41d9e0f389a83a198e%2Fcallback&scope=openid%20profile&state=de59bec1-0f14-4267-a4c3-ef410cc1aae4 : Yes
+[88615:14595:0523/230731.610586:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/client/assets/images/platform/gif/initialLoading.gif
+[88615:14595:0523/230731.610887:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/index-VLiWvi_5.js
+[88615:14595:0523/230731.611309:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/RK2k0ADhy5.css
+[88615:14595:0523/230731.611506:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230731.611566:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230731.611605:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88764:259:0523/230731.644306:INFO:cpu_info.cc(53)] Available number of cores: 8
+[88615:14595:0523/230731.870036:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/platform/init
+[88606:259:0523/230731.875060:VERBOSE1:passage_embeddings_service_controller.cc(110)] Missing model path: embeddings=''; sp=''
+[88615:14595:0523/230731.875236:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/static/favicon.png
+[88615:14595:0523/230731.881529:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://passwordsleakcheck-pa.googleapis.com/v1/leaks:lookupSingle
+[88615:14595:0523/230731.881706:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230731.881756:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230731.881783:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230731.974066:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/CEnn5JBcYO.js
+[88615:14595:0523/230731.974240:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/CFhIsVOCqe.js
+[88615:14595:0523/230732.027682:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BCa5dhepue.js
+[88615:14595:0523/230732.027945:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BoxLKJtGp2.js
+[88615:14595:0523/230732.053494:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js
+[88615:14595:0523/230732.369583:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/users/me
+[88615:14595:0523/230732.370186:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/achievements/mine
+[88615:14595:0523/230732.370524:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/playlists/default
+[88615:14595:0523/230732.370994:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/platform
+[88615:14595:0523/230732.371663:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/medias/group/65959b41d9e0f389a83a198e/favicon?company=65959b41d9e0f389a83a198c&_=1705480980087
+[88615:14595:0523/230732.432045:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/features/computeActiveFeatures
+[88606:259:0523/230732.539533:INFO:CONSOLE(138)] "The following features flags failed to load properly leaderboardDisabled,paths_detailedStatus", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (138)
+[88606:259:0523/230732.544999:INFO:CONSOLE(65)] "[Vue Router warn]: The route named "group.content.settings" has a child without a name and an empty path. Using that name won't render the empty path child so you probably want to move the name to the child instead. If this is intentional, add a name to the child route to remove the warning.", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (65)
+[88606:259:0523/230732.545138:INFO:CONSOLE(65)] "[Vue Router warn]: The route named "group.content.trainings" has a child without a name and an empty path. Using that name won't render the empty path child so you probably want to move the name to the child instead. If this is intentional, add a name to the child route to remove the warning.", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (65)
+[88606:259:0523/230732.545500:INFO:CONSOLE(65)] "[Vue Router warn]: The route named "home" has a child without a name and an empty path. Using that name won't render the empty path child so you probably want to move the name to the child instead. If this is intentional, add a name to the child route to remove the warning.", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (65)
+[88615:14595:0523/230732.554925:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/brandCustomizations/65959b41d9e0f389a83a198e
+[88615:14595:0523/230732.555134:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/platform/notifs
+[88606:259:0523/230732.567776:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230732.567843:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230732.567877:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230732.567900:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230732.567953:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230732.567979:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230732.568019:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88615:14595:0523/230732.569540:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/D3TTYgdB6v.ttf
+[88615:14595:0523/230732.569706:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/DxJTClRGqO.ttf
+[88615:14595:0523/230732.577746:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://passback-event-service.sq-data.frc.prod.k8s.360l.io/publishEvent
+[88615:14595:0523/230732.578061:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.578223:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/D3TTYgdB6v.ttf
+[88615:14595:0523/230732.578335:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.578709:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/DxJTClRGqO.ttf
+[88615:14595:0523/230732.578930:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.613595:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.zdassets.com/ekr/snippet.js?key=cbd1a303-c580-48b0-b535-09594be5b755
+[88615:14595:0523/230732.613827:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.613882:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.613913:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.670584:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://passback-event-service.sq-data.frc.prod.k8s.360l.io/publishEvent
+[88615:14595:0523/230732.696931:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://ekr.zdassets.com/compose/cbd1a303-c580-48b0-b535-09594be5b755
+[88615:14595:0523/230732.697040:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.697073:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.697097:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.697261:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://content.pendo-help.360learning.com/agent/static/d5074087-b626-46cf-73b1-75c9f895c08a/pendo.js
+[88615:14595:0523/230732.697432:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.697459:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.697482:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.711732:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/medias/widgets
+[88615:14595:0523/230732.917398:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://data.pendo-help.360learning.com/data/ptm.gif/d5074087-b626-46cf-73b1-75c9f895c08a?v=2.277.0_prod-eu&ct=1748034452917&jzb=eJzVU11vGjsQ_SvRPgfwfrEfbwTQTaqQphW01a0qZOxZMPXaG9sLRVH-e2YX7oZWavtypbQ8MWfOzhzPmfn86LlDBV7uCQ7KieLgXXoro_cWzNKJEjN-EqUkjKI4yPzw0tsJK5w2S8Hxo2ESxUCLlPgJ8KTgw2GaJYRlWIQypmvlTrw4i7NV5PMMSBGmGU1D6mcpQ15tJBI2zlU2HwwooxzKQ78ELhj0NkCl2_QKWgp56DNdDiotBTuM1gagRMH3uqorrFIZXVkvf_S05Mvz1qqW8v8W_YT9qMHuc7q66Xq4Y-Bpw1bTeLb49MA-rN5clVi2MLSEY1KPP1ZXfEGv6Tg173aYtGCt0KpNX8ffytk_28V0Uuvxdr9v0w81KIZGEHTm4ACfGQXZ02XnXAmO_tK16I937SSv-fs7hVstFPCRQ1ZAgqjn-71gOPfjPBzmQdQnhPyLrI1Yb8C691o2E5JAjQKDuLAjXgrl5QWVFtq4dpumcweMNWWbs_hGWWdq1srrwNtTxRxTLTCjiq4boKO83beELr6X1BXalD8KWKBp32M1IrdUrWusiOo5oHB5Hi8n02YJT2a9TO3nfjED1OGWTahrSrSTI36PhHM_ycMkJ_F_k1O4qsiYTSc34-nFdWvlxehocLOOVIKdHxevouyrRQwdBVMZYRE8zqMduFDrOwCOBp_ehXZvgbkXQMH-ju6OH3VHNepehRA_6Q0HJB6g6hjb7cA0B9PA_SBJ-mSJhXkP6tc6TL87zIykZ4cpNeV_-WE2TzgJD-Nhf4hL0vzSLCLJK0076KYdxuHTl2eiASgu
+[88615:14595:0523/230732.917603:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.917651:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.917675:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230732.918471:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://data.pendo-help.360learning.com/data/guide.js/d5074087-b626-46cf-73b1-75c9f895c08a?id=20&jzb=eJyFktFvmzAQxv-Vys-FGAgh8IaaSIvUdtWU7WEv1c0-gjtjI9ukiqb87z3IRrpK0958P398_u6OX-yovArW7SSr2KpY5gjNmicFyqKRq9W6LLgo2S0DIexgwkWWl3n5Y5nIEnmTrUtYZ5CUa0GywWkStCH0vlosQIDE7hR3KJXAqEXQoY0a6JQ-xcJ2i95qJU71wSF2aMKT7YeeXKyW366xzKD1LeswgIQArJozj0f1n9wvVhmUdSBVytNllCRRutoneZWtqnQZc86_k6pVhxZ9-GI1klAjOIOOuPK17JRhVQPa41QPoR1fnsGdBdG-q3fGBzeIKd4M7387VnQ1gQcwcBjBLPn8Ognm-klDaKzrPgb46tH9zQYi92AOAzlSeokUXL-vnzdbdp5XeJ3av9coHEJQ1mwgjBbT5HgS8WyfFFVWVDz_MzkD3ah42G52d9ubT9OGb-rL3unag0a_P_Wjpgfx0xOjRaPrnfIEL_OYBq7M4RFR-rmv3tkXFOEKDL4-wvHyEfXTgyOreu6KEP0gU95swfMFpc7puSM6T62MOE6LIubPZCwjHNj5_AaT4PZn&v=2.277.0_prod-eu&ct=1748034452917
+[88615:14595:0523/230732.918615:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://data.pendo-help.360learning.com/data/guide.gif/d5074087-b626-46cf-73b1-75c9f895c08a?jzb=eJwFwIEIAAAAwDDQd3-N1QABFQC5&ct=1748034452918&v=2.277.0_prod-eu
+[88615:14595:0523/230733.214789:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://content.pendo-help.360learning.com/guide.-323232.1728923512181.css
+[88615:14595:0523/230733.217165:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://content.pendo-help.360learning.com/guide-content/TybDsuGefykyMdk69c2bqx-bxco@NxSQVXajo1gKe_mjWTyaX7VzoX8/TExy_1RAxXfB0lX2YKQ0Yb7u5ds/NucClU-Okznu2iceMtnSK2lM3W8.dom.jsonp?sha256=SLi4eIDix28LlYQVAgDogy4HGfM6r0f0ktCH25EgKwE
+[88615:14595:0523/230733.217683:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://content.pendo-help.360learning.com/guide-content/P3zEwtONjRdLcLJTpRAvg0e5Rik@NxSQVXajo1gKe_mjWTyaX7VzoX8/mWTWaow5_f8OSgooQcHXyNngoN4/KiWjcYjBY2fW92cIa610yaZnUZE.dom.jsonp?sha256=_WUlslRtrirYg6X75C6nyY4G-SSkoKrdJEIOkFJx8H0
+[88615:14595:0523/230733.217844:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://content.pendo-help.360learning.com/guide-content/PioICldiB9YECecKfO3kNoxU_A8@NxSQVXajo1gKe_mjWTyaX7VzoX8/OhHLDQOsOoDicLLtViIOcJNCuvU/C4EcS8V0Wa2vwbLii26djpHU7Gc.dom.jsonp?sha256=Tmr2JQGa8GZXtXOeA1jKEW5fxI5TuxkBeZVL-MMYfDI
+[88615:14595:0523/230733.217971:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://content.pendo-help.360learning.com/guide-content/dU02pU_LisIioGSRGYIeu4slVrY@NxSQVXajo1gKe_mjWTyaX7VzoX8/Ckm3Dme_sxGc5jlQFJGRa6Vo69s/XLqKOMeihWzjb-jiFFRvegqAvL4.dom.jsonp?sha256=k8F6KHR_hX9xTEHyrSTf7yHaYYZ6BnFIoA9MpsNK7js
+[88615:14595:0523/230733.218110:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://content.pendo-help.360learning.com/guide-content/ois2lqnWnZ0Jvm1bkaDw9P5GeCQ@NxSQVXajo1gKe_mjWTyaX7VzoX8/ZUS2_yLQzdYZ4wAdXP9-3JhcAYY/zZBhK57c2bPwd7siBuIJ-PZxEVs.dom.jsonp?sha256=j3wwiwhePU9xHCj9x8ifY9E-7BHboXJ5K0UgC9OVYgc
+[88615:14595:0523/230733.218199:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://content.pendo-help.360learning.com/guide-content/YNzNpjMkGaXN3k5diogwfuab1sQ@NxSQVXajo1gKe_mjWTyaX7VzoX8/5uTjhgJAnYO6kt7pwBtDBqHOGag/r-CHVI1ekV0y6ZO6Pqqs4OAY96c.dom.jsonp?sha256=w2t_vWHw61RW4qsik1r42BlxrK695itkHWtuTafYToM
+[88615:14595:0523/230733.251922:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://content.pendo-help.360learning.com/guide-content/NxSQVXajo1gKe_mjWTyaX7VzoX8/FpdC7P-7pK6zaEgRrBs04d3jv3A/jY_wy98Wcmt_0HIiZboGc-sNvwc.dom.jsonp?sha256=kyYn6qZ8siOb7o1qQuSunQAU3XPgwqIbF9KCEigIodk
+[88753:259:0523/230733.300735:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x1170052caa0
+  URL:                    
+  context_type:           WEB_PAGE
+  effective extension id: (none)
+  effective context type: WEB_PAGE
+[88753:259:0523/230733.301070:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230733.301203:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 3
+[88753:259:0523/230733.302266:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x1170052caa0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230733.302332:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230733.302399:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 4
+[88615:14595:0523/230733.303610:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.zdassets.com/web_widget/classic/latest/web-widget-main-f5a540e.js
+[88615:14595:0523/230733.451252:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.zdassets.com/web_widget/classic/latest/web-widget-locales/classic/de-de-json-f5a540e.js
+[88615:14595:0523/230733.451732:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://360learning.zendesk.com/embeddable/config
+[88615:14595:0523/230733.452053:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230733.452108:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230733.452136:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://chrome.cloudflare-dns.com/dns-query
+[88615:14595:0523/230733.486419:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.zdassets.com/web_widget/classic/latest/web-widget-locales/classic/de-json-f5a540e.js
+[88753:259:0523/230733.494794:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x1170053f3d8
+  URL:                    
+  context_type:           WEB_PAGE
+  effective extension id: (none)
+  effective context type: WEB_PAGE
+[88753:259:0523/230733.494840:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230733.494881:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 5
+[88753:259:0523/230733.495236:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x1170053f3d8
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230733.495247:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230733.495263:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 6
+[88606:259:0523/230736.366545:INFO:CONSOLE(5)] "Found 0 unchecked checkboxes", source: pptr:evaluate;handleTermsModal%20(%2FUsers%2Fuser%2FDocuments%2Fmedibeebot%2Futils%2FloginUtils.js%3A510%3A16) (5)
+[88606:259:0523/230737.370799:INFO:CONSOLE(5)] "Clicked Bestätigen button", source: pptr:evaluate;handleTermsModal%20(%2FUsers%2Fuser%2FDocuments%2Fmedibeebot%2Futils%2FloginUtils.js%3A527%3A38) (5)
+[88606:259:0523/230740.381956:INFO:CONSOLE(17)] "Found close button with selector: button[aria-label="Schließen"]", source: pptr:evaluate;handleWelcomeDialog%20(%2FUsers%2Fuser%2FDocuments%2Fmedibeebot%2Futils%2FloginUtils.js%3A582%3A37) (17)
+[88606:259:0523/230741.412065:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetFutureBackForwardCacheEligibilityPotential: https://academy.medice-health-family.com/policyAgreementPopup : No: blocklisted features: main resource has Cache-Control: No-Store, JavaScript network request received Cache-Control: no-store resource, Unload handler exists in the main frame, and the current experimental config doesn't permit it to be BFCached., Pages with cache-control:no-store went into bfcache temporarily because of the flag, and while in bfcache the cookie was modified or deleted and thus evicted.
+[88606:259:0523/230741.412140:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetCompleteBackForwardCacheEligibilityForReporting: https://academy.medice-health-family.com/policyAgreementPopup : No: blocklisted features: main resource has Cache-Control: No-Store, requested broadcast channel permission, JavaScript network request received Cache-Control: no-store resource, Unload handler exists in the main frame, and the current experimental config doesn't permit it to be BFCached., Pages with cache-control:no-store went into bfcache temporarily because of the flag, and while in bfcache the cookie was modified or deleted and thus evicted.
+[88606:259:0523/230741.415564:VERBOSE1:mutable_profile_oauth2_token_service_delegate.cc(311)] MutablePO2TS::RefreshTokenIsAvailable
+[88615:14595:0523/230741.415786:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/home
+[88606:259:0523/230741.479196:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetFutureBackForwardCacheEligibilityPotential: https://academy.medice-health-family.com/policyAgreementPopup : No: blocklisted features: main resource has Cache-Control: No-Store, JavaScript network request received Cache-Control: no-store resource, Unload handler exists in the main frame, and the current experimental config doesn't permit it to be BFCached., Pages with cache-control:no-store went into bfcache temporarily because of the flag, and while in bfcache the cookie was modified or deleted and thus evicted.
+[88606:259:0523/230741.479263:VERBOSE1:back_forward_cache_impl.cc(725)] BackForwardCacheImpl::GetCompleteBackForwardCacheEligibilityForReporting: https://academy.medice-health-family.com/policyAgreementPopup : No: blocklisted features: main resource has Cache-Control: No-Store, requested broadcast channel permission, JavaScript network request received Cache-Control: no-store resource, Unload handler exists in the main frame, and the current experimental config doesn't permit it to be BFCached., Pages with cache-control:no-store went into bfcache temporarily because of the flag, and while in bfcache the cookie was modified or deleted and thus evicted.
+[88615:14595:0523/230741.482618:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://data.pendo-help.360learning.com/data/ptm.gif/d5074087-b626-46cf-73b1-75c9f895c08a?v=2.277.0_prod-eu&ct=1748034461481&jzb=eJy1lG9v2jAQxr-LX0MJI0DCu_JHLdM6Ng26TRWqLvYFQu04tS-FaOK79wibOg0xsRfjDbHvuef5nTF5-CGoKlAMhNSZfBINkTi79egeKTO83e6HUdAJw17QicKGeMl8RtY9Zoo7ev2wi5BGQbuPqp-qXi-K-4GM2QSktGVOP3XduBsnYVvFGKSdKIaoA-04kqwrnWbBmqjwg1YLJCg01ZVBlUlsrhE0rZspmExXV9KaVmEZsrpeOUSDOX2yRVmwS-Fs4cWARwG3Qjo-rdh4uJjPZx9ZUXPwt9SsE-hlMymJbM5blJHmQfNSa-YmcrWTAoImoWezgxwK_NWxbwhTTXOFOz4ddlxnWr0taXfomHwZHbDAMeREo3kjGk_vT3CMVaCbCcgnxYNchFS3_A0lOBd__WF2c0JwLvP3AHa8KOB0vv_i_lLixv9TxGUnNJyNv5_7hXTpLgl698et2B8-DZFqWLH0QWhMSSwPW0eAOSRTjjsa0nEhrJPJpHu3-PYs75P3Q8PBqQODx6IdfS2GagG3MIrc5xcuevQ-s3ldvu3uzN3NZjEZl3a02W7r8nOJuWTuDv_FK75GDBa0-UxSV3pyQNw85zdBTagQ1Kh-Hyz3y1e3lFI6
+[88753:259:0523/230741.482681:VERBOSE1:dispatcher.cc(625)] Num tracked contexts: 5
+[88753:259:0523/230741.482739:VERBOSE1:dispatcher.cc(625)] Num tracked contexts: 4
+[88753:259:0523/230741.483004:VERBOSE1:dispatcher.cc(625)] Num tracked contexts: 3
+[88753:259:0523/230741.483032:VERBOSE1:dispatcher.cc(625)] Num tracked contexts: 2
+[88753:259:0523/230741.484073:VERBOSE1:dispatcher.cc(625)] Num tracked contexts: 1
+[88753:259:0523/230741.484100:VERBOSE1:dispatcher.cc(625)] Num tracked contexts: 0
+[88753:259:0523/230741.485013:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x117001539c8
+  URL:                    
+  context_type:           WEB_PAGE
+  effective extension id: (none)
+  effective context type: WEB_PAGE
+[88753:259:0523/230741.485033:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230741.485073:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 1
+[88753:259:0523/230741.485540:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x117001539c8
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230741.485553:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230741.485576:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 2
+[88615:14595:0523/230741.485949:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/client/assets/images/platform/gif/initialLoading.gif
+[88753:259:0523/230741.486177:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88753:259:0523/230741.486190:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88753:259:0523/230741.486199:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88753:259:0523/230741.486206:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88753:259:0523/230741.486225:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88753:259:0523/230741.486235:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88753:259:0523/230741.486243:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88753:259:0523/230741.486251:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88753:259:0523/230741.486318:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88753:259:0523/230741.486327:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88753:259:0523/230741.486333:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88753:259:0523/230741.486339:VERBOSE1:script_context.cc(162)] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[88615:14595:0523/230741.505456:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/platform/init
+[88615:14595:0523/230741.619430:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/static/favicon.png
+[88606:259:0523/230741.623946:VERBOSE1:passage_embeddings_service_controller.cc(110)] Missing model path: embeddings=''; sp=''
+[88615:14595:0523/230741.628556:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js
+[88615:14595:0523/230741.729364:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/achievements/mine
+[88615:14595:0523/230741.729816:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/playlists/default
+[88615:14595:0523/230741.730138:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/platform
+[88615:14595:0523/230741.784765:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/features/computeActiveFeatures
+[88606:259:0523/230741.891729:INFO:CONSOLE(138)] "The following features flags failed to load properly leaderboardDisabled,paths_detailedStatus", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (138)
+[88606:259:0523/230741.894750:INFO:CONSOLE(65)] "[Vue Router warn]: The route named "group.content.settings" has a child without a name and an empty path. Using that name won't render the empty path child so you probably want to move the name to the child instead. If this is intentional, add a name to the child route to remove the warning.", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (65)
+[88606:259:0523/230741.894845:INFO:CONSOLE(65)] "[Vue Router warn]: The route named "group.content.trainings" has a child without a name and an empty path. Using that name won't render the empty path child so you probably want to move the name to the child instead. If this is intentional, add a name to the child route to remove the warning.", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (65)
+[88606:259:0523/230741.896600:INFO:CONSOLE(65)] "[Vue Router warn]: The route named "home" has a child without a name and an empty path. Using that name won't render the empty path child so you probably want to move the name to the child instead. If this is intentional, add a name to the child route to remove the warning.", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (65)
+[88615:14595:0523/230741.909091:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/brandCustomizations/65959b41d9e0f389a83a198e
+[88615:14595:0523/230741.909507:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/platform/notifs
+[88606:259:0523/230741.915051:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230741.915112:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230741.915144:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230741.915177:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230741.915213:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230741.915237:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88606:259:0523/230741.915268:INFO:CONSOLE(11)] "[Vue warn] Set operation on key "value" failed: target is readonly. [object Object]", source: https://static.360learning.com/client-assets/prod-f3c412cb305/dist/platform/assets/BpYvUBz5V5.js (11)
+[88615:14595:0523/230741.919697:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://passback-event-service.sq-data.frc.prod.k8s.360l.io/publishEvent
+[88615:14595:0523/230741.945393:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://passback-event-service.sq-data.frc.prod.k8s.360l.io/publishEvent
+[88615:14595:0523/230741.961684:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://ekr.zdassets.com/compose/cbd1a303-c580-48b0-b535-09594be5b755
+[88615:14595:0523/230741.973057:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://data.pendo-help.360learning.com/data/ptm.gif/d5074087-b626-46cf-73b1-75c9f895c08a?v=2.277.0_prod-eu&ct=1748034461972&jzb=eJw1kF1PMyEQhf8L1_3YzX4Avau-ja8mTbywpokxDQuzlgoLBda6Nv3vnWyVO-Z55uTA25mkwQNZEOOEIhPSBHeKEHZJW5zmtGRZUZZ1zms6IV866uTCTitcqGlZgWhZllNQtFV1zTjNJMcQIaXru_TrVbziTZkrDllbMC5YIXLOJHp9MCjsU_JxMZ8LKRTYYWZBaQnTPQiT9tNWWG2GmXR27p3Rclh-BAALXXp2vveY4oPzkSzO4xP-inM-o_x2aJZzSi8oioBrL6J5xF5db8yEpNuFuCCbVbXebI_ytXm6sxjbBmFhhCsrrV0yv26PP5_bISKMEKN23Yj_V992_XDYrP717v5wOo342EMnsUiGXzokwH5FVV7er3J1dZM
+[88615:14595:0523/230741.974586:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://data.pendo-help.360learning.com/data/guide.js/d5074087-b626-46cf-73b1-75c9f895c08a?id=20&jzb=eJyFktFvmzAQxv-Vys-FGAgh8IaaSIvUdtWU7WEv1c0-gjtjI9ukiqb87z3IRrpK0958P398_u6OX-yovArW7SSr2KpY5gjNmicFyqKRq9W6LLgo2S0DIexgwkWWl3n5Y5nIEnmTrUtYZ5CUa0GywWkStCH0vlosQIDE7hR3KJXAqEXQoY0a6JQ-xcJ2i95qJU71wSF2aMKT7YeeXKyW366xzKD1LeswgIQArJozj0f1n9wvVhmUdSBVytNllCRRutoneZWtqnQZc86_k6pVhxZ9-GI1klAjOIOOuPK17JRhVQPa41QPoR1fnsGdBdG-q3fGBzeIKd4M7387VnQ1gQcwcBjBLPn8Ognm-klDaKzrPgb46tH9zQYi92AOAzlSeokUXL-vnzdbdp5XeJ3av9coHEJQ1mwgjBbT5HgS8WyfFFVWVDz_MzkD3ah42G52d9ubT9OGb-rL3unag0a_P_Wjpgfx0xOjRaPrnfIEL_OYBq7M4RFR-rmv3tkXFOEKDL4-wvHyEfXTgyOreu6KEP0gU95swfMFpc7puSM6T62MOE6LIubPZCwjHNj5_AaT4PZn&v=2.277.0_prod-eu&ct=1748034461973
+[88753:259:0523/230741.976012:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x11700bea1d8
+  URL:                    
+  context_type:           WEB_PAGE
+  effective extension id: (none)
+  effective context type: WEB_PAGE
+[88753:259:0523/230741.976044:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230741.976084:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 3
+[88753:259:0523/230741.976453:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x11700bea1d8
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230741.976467:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230741.976493:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 4
+[88615:14595:0523/230741.989082:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://360learning.zendesk.com/embeddable/config
+[88753:259:0523/230742.000503:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x11700bfa0b0
+  URL:                    
+  context_type:           WEB_PAGE
+  effective extension id: (none)
+  effective context type: WEB_PAGE
+[88753:259:0523/230742.000553:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230742.000597:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 5
+[88753:259:0523/230742.000982:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x11700bfa0b0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230742.000992:VERBOSE1:script_context.cc(149)] Created context:
+  extension id:           (none)
+  frame:                  0x0
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[88753:259:0523/230742.001012:VERBOSE1:dispatcher.cc(419)] Num tracked contexts: 6
+[88615:14595:0523/230742.067347:VERBOSE1:network_delegate.cc(35)] NetworkDelegate::NotifyBeforeURLRequest: https://academy.medice-health-family.com/api/medias/widgets

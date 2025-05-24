@@ -1,3 +1,2 @@
-2024/09/10-18:50:28.777 e703 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Sync Data/LevelDB/MANIFEST-000001
-2024/09/10-18:50:28.787 e703 Recovering log #3
-2024/09/10-18:50:28.788 e703 Reusing old log /Users/user/Documents/medibeebot/tmp/Default/Sync Data/LevelDB/000003.log 
+2025/05/23-23:07:17.898 f403 Creating DB /Users/user/Documents/medibeebot/tmp/Default/Sync Data/LevelDB since it was missing.
+2025/05/23-23:07:17.899 f403 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Sync Data/LevelDB/MANIFEST-000001

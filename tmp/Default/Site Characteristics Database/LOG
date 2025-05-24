@@ -1,5 +1,2 @@
-2024/09/10-18:50:28.781 bc03 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/MANIFEST-000001
-2024/09/10-18:50:28.787 bc03 Recovering log #3
-2024/09/10-18:50:28.788 bc03 (ignoring error) /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/000003.log: dropping 19961 bytes; Corruption: checksum mismatch
-2024/09/10-18:50:28.791 bc03 (ignoring error) /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/000003.log: dropping 22 bytes; Corruption: missing start of fragmented record(2)
-2024/09/10-18:50:28.791 bc03 Reusing old log /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/000003.log 
+2025/05/23-23:07:17.900 a20b Creating DB /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database since it was missing.
+2025/05/23-23:07:17.901 a20b Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/MANIFEST-000001

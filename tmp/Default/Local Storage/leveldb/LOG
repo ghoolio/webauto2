@@ -1,3 +1,2 @@
-2024/09/10-18:50:28.878 2c0f Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Local Storage/leveldb/MANIFEST-000001
-2024/09/10-18:50:28.883 2c0f Recovering log #233
-2024/09/10-18:50:28.883 2c0f Reusing old log /Users/user/Documents/medibeebot/tmp/Default/Local Storage/leveldb/000233.log 
+2025/05/23-23:07:17.958 3a0b Creating DB /Users/user/Documents/medibeebot/tmp/Default/Local Storage/leveldb since it was missing.
+2025/05/23-23:07:17.963 3a0b Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Local Storage/leveldb/MANIFEST-000001

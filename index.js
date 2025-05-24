@@ -1,16 +1,20 @@
 "use strict";
-// index.js
-const puppeteer = require('puppeteer-extra');
+// index.js - Main Entry Point
+const puppeteer = require('puppeteer-core');
 const { google } = require('googleapis');
 const dotenv = require('dotenv');
-const { runPerenterolQuiz } = require('./perenterolQuiz');
-const { runPerenterolWabenQuiz } = require('./perenterolWabenQuiz');
-const { checkFor503Error, sleep } = require('./utils');
-const qs = require('qs');
-const cheerio = require('cheerio');
-const tough = require('tough-cookie');
+const path = require('path');
+const fs = require('fs').promises;
+const { exec } = require('child_process');
+const { sleep } = require('./utils/commonUtils');
+const { checkFor503Error } = require('./utils/browserUtils');
+const { performLogin, clearLoginData } = require('./utils/loginUtils');
+const { runQuiz } = require('./core/quizRunner');
+const { quizRegistry } = require('./quizzes/quizRegistry');
+
 dotenv.config();
 
+// Google Sheets configuration
 const clientEmail = 'schwalbebot-google-sheet-servi@schwalbebot001.iam.gserviceaccount.com';
 const privateKey = process.env.PRIVATE_KEY;
 const googleSheetId = process.env.GOOGLE_SHEET_ID;
@@ -52,125 +56,82 @@ async function readSheet() {
   }
 }
 
-const stealthFixPlugin = require('puppeteer-extra-plugin-stealth-fix');
-const stealthPlugin = require('puppeteer-extra-plugin-stealth');
-
-puppeteer.use(stealthFixPlugin());
-puppeteer.use(stealthPlugin());
-
-const quizzes = [
-    // { name: 'Perenterol', func: runPerenterolQuiz },
-    { name: 'Perenterol1', func: runPerenterolWabenQuiz },
-    // More quizzes here
-];
-
-async function handleCookieConsent(page) {
-    try {
-        await page.waitForSelector('#cookie-notification', { timeout: 5000 });
-    
-        const isCookieNotificationVisible = await page.evaluate(() => {
-            const cookieNotification = document.querySelector('#cookie-notification');
-            return cookieNotification && window.getComputedStyle(cookieNotification).display !== 'none';
-        });
-    
-        if (isCookieNotificationVisible) {
-            console.log('Cookie notification is visible. Accepting cookies...');
-            await page.click('#cookie-notification__decline');
-            console.log('Cookies accepted.');
-        } else {
-            console.log('Cookie notification is not visible. No action needed.');
-        }
-    } catch (error) {
-        if (error.name === 'TimeoutError') {
-            console.log('Cookie notification not found. Proceeding without interaction.');
-        } else {
-            console.error('Error handling cookie consent:', error);
-        }
-    }
-}
-
-async function handleCookiePopup(page, maxRetries = 3) {
-    for (let i = 0; i < maxRetries; i++) {
-        try {
-            const cookiePopupExists = await page.evaluate(() => {
-                return !!document.querySelector('#pwaModal > div > div > div.modal-header');
-            });
-
-            if (cookiePopupExists) {
-                await page.click('#pwaModal > div > div > div.modal-header > button');
-                await page.waitForSelector('#pwaModal > div > div > div.modal-header > button', { hidden: true, timeout: 5000 });
-                console.log('Cookie popup closed successfully');
-                return;
-            } else {
-                console.log('No cookie popup found, skipping...');
-                return;
+async function killSpecificChromiumProcess(pid) {
+    return new Promise((resolve, reject) => {
+        exec(`taskkill /F /PID ${pid}`, (error, stdout, stderr) => {
+            if (error) {
+                console.log(`Error killing Chrome process ${pid}: ${error.message}`);
+                // Resolve anyway, as the process might have already ended
             }
-        } catch (error) {
-            console.log(`Error handling cookie popup (attempt ${i + 1}):`, error);
-            if (i === maxRetries - 1) throw error;
-            await sleep(1000);
+            console.log(`Chrome process ${pid} terminated`);
+            resolve();
+        });
+    });
+}
+
+async function cleanupDefaultFolder(browser) {
+    const defaultFolderPath = path.join(__dirname, "tmp", "Default");
+    console.log("Cleaning up Default folder...");
+
+    try {
+        if (browser && browser.process() != null) {
+            const pid = browser.process().pid;
+            await browser.close();
+            await killSpecificChromiumProcess(pid);
         }
+        await sleep(5000); // Wait for 5 seconds after closing the browser
+        await removeDirectoryContents(defaultFolderPath);
+        console.log("Default folder cleaned up successfully.");
+    } catch (err) {
+        console.error("Error during cleanup:", err);
     }
 }
 
-async function performLogin2(page) {
+async function removeDirectoryContents(dirPath) {
     try {
-        console.log(`Attempting login for user: ${globalLoginName}`);
-
-        await page.goto('https://www.medibee.de/login', { waitUntil: 'networkidle0', timeout: 60000 });
-
-        // Check if we're already logged in
-        const logoutButton = await page.$('#top > header > div.navigation.sticky > div > nav > div > div.meta-wrapper > ul > li.meta-item.logout > a > div');
-        if (logoutButton) {
-            console.log('Already logged in. Logging out first...');
-            await logoutButton.click();
-            await page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 60000 });
+        const files = await fs.readdir(dirPath);
+        for (const file of files) {
+            const filePath = path.join(dirPath, file);
+            try {
+                const stat = await fs.stat(filePath);
+                if (stat.isDirectory()) {
+                    await removeDirectoryContents(filePath);
+                    await fs.rmdir(filePath).catch(err => {
+                        if (err.code !== 'ENOTEMPTY') {
+                            console.log(`Could not remove directory ${filePath}: ${err.message}`);
+                        }
+                    });
+                } else {
+                    await fs.unlink(filePath).catch(err => {
+                        if (err.code !== 'EBUSY' && err.code !== 'EPERM') {
+                            console.log(`Could not delete file ${filePath}: ${err.message}`);
+                        }
+                    });
+                }
+            } catch (err) {
+                console.log(`Error processing ${filePath}: ${err.message}`);
+            }
         }
-
-        // Wait for the login form to be available
-        await page.waitForSelector('#user', { visible: true, timeout: 30000 });
-
-        // Check if the login form is actually visible
-        const isLoginFormVisible = await page.evaluate(() => {
-            const userInput = document.querySelector('#user');
-            const passInput = document.querySelector('#pass');
-            return userInput && passInput && 
-                   window.getComputedStyle(userInput).display !== 'none' && 
-                   window.getComputedStyle(passInput).display !== 'none';
-        });
-
-        if (!isLoginFormVisible) {
-            console.log('Login form is not visible. Refreshing the page...');
-            await page.reload({ waitUntil: 'networkidle0', timeout: 60000 });
-            await page.waitForSelector('#user', { visible: true, timeout: 30000 });
-        }
-
-        // Fill in the login form
-        await page.type('#user', globalLoginName, { delay: 50 });
-        await page.type('#pass', globalLoginPW, { delay: 50 });
-
-        // Submit the form
-        await Promise.all([
-            page.click('input[type="submit"][value="Anmelden"]'),
-            page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 60000 }),
-        ]);
-
-        // Check if login was successful
-        const isLoggedIn = await page.evaluate(() => {
-            return document.body.innerHTML.includes('Logout') || document.body.innerHTML.includes('Mein Konto');
-        });
-
-        if (isLoggedIn) {
-            console.log('Login successful in Puppeteer browser');
-            return true;
-        } else {
-            console.log('Login failed in Puppeteer browser');
-            return false;
-        }
-    } catch (error) {
-        console.error('Error in performLogin2:', error);
-        return false;
+    } catch (err) {
+        console.error(`Error reading directory ${dirPath}: ${err.message}`);
     }
+}
+
+async function retryCleanup(browser, maxRetries = 3, retryDelay = 10000) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            await cleanupDefaultFolder(browser);
+            console.log(`Cleanup successful on attempt ${attempt}`);
+            return;
+        } catch (error) {
+            console.log(`Cleanup attempt ${attempt} failed: ${error.message}`);
+            if (attempt < maxRetries) {
+                console.log(`Retrying in ${retryDelay / 1000} seconds...`);
+                await sleep(retryDelay);
+            }
+        }
+    }
+    console.log(`Failed to clean up after ${maxRetries} attempts. Proceeding with execution.`);
 }
 
 async function logout(page, maxRetries = 3) {
@@ -178,56 +139,175 @@ async function logout(page, maxRetries = 3) {
         console.log(`Logout attempt ${attempt} of ${maxRetries}`);
         try {
             console.log('Attempting to logout...');
-            await page.goto('https://www.medibee.de/', { waitUntil: 'networkidle0', timeout: 60000 })
+            
+            // Always navigate to the home page first
+            console.log('Navigating to academy home page...');
+            await page.goto('https://academy.medice-health-family.com/home/content/all', 
+                { waitUntil: 'networkidle0', timeout: 60000 })
                 .catch(e => {
                     console.log('Navigation error:', e.message);
-                    throw e; // Rethrow to be caught by the outer try-catch
+                    // Continue despite navigation errors
                 });
-
-            await sleep(2500);
-
-            const logoutResult = await page.evaluate(() => {
-                if (typeof logout === 'function') {
-                    logout();
-                    return 'Logout function called successfully';
-                } else {
-                    const logoutLink = document.querySelector('a[href*="logout"]');
-                    if (logoutLink) {
-                        logoutLink.click();
-                        return 'Logout link clicked successfully';
-                    } else {
-                        return 'Unable to find logout function or link';
+            await sleep(3000);
+            
+            console.log('Clicking profile button...');
+            
+            // Try to find and click profile button
+            let profileButtonClicked = false;
+            try {
+                // Wait for profile button to be visible
+                await page.waitForSelector('.profile-button-container', { visible: true, timeout: 10000 });
+                
+                // Click the profile button to open dropdown
+                await page.click('.profile-button-container');
+                
+                profileButtonClicked = true;
+                console.log('Profile button clicked successfully');
+                
+                // Wait for dropdown menu to appear
+                await sleep(1000);
+                
+                // Now click the Abmelden button in the dropdown
+                console.log('Clicking Abmelden button...');
+                
+                // Try using the data-test attribute first (most reliable)
+                await page.waitForSelector('button[data-test="logout"]', { visible: true, timeout: 5000 });
+                await page.click('button[data-test="logout"]');
+                
+                console.log('Abmelden button clicked successfully');
+            } catch (clickError) {
+                console.log('Error clicking profile/logout buttons with primary selectors:', clickError.message);
+                
+                if (!profileButtonClicked) {
+                    // Try alternative selectors for profile button
+                    try {
+                        // Try alternative selectors
+                        const altProfileSelectors = [
+                            '.user-menu', 
+                            '.profile-pic', 
+                            '.user-info', 
+                            '[aria-label="Menu"]',
+                            '.avatar'
+                        ];
+                        
+                        for (const selector of altProfileSelectors) {
+                            const exists = await page.$(selector);
+                            if (exists) {
+                                await page.click(selector);
+                                profileButtonClicked = true;
+                                console.log(`Clicked profile button with selector: ${selector}`);
+                                await sleep(1000);
+                                break;
+                            }
+                        }
+                        
+                        // If still not clicked, try more generic approach
+                        if (!profileButtonClicked) {
+                            await page.evaluate(() => {
+                                // Look for any button that might be a profile button
+                                const profileElements = Array.from(document.querySelectorAll('button, .profile, .user, [class*="profile"], [class*="user"]'));
+                                const profileButton = profileElements.find(el => {
+                                    // Check if it's positioned in the top right area
+                                    const rect = el.getBoundingClientRect();
+                                    return rect.top < 100 && rect.right > window.innerWidth - 100;
+                                });
+                                
+                                if (profileButton) {
+                                    profileButton.click();
+                                    return true;
+                                }
+                                return false;
+                            });
+                            await sleep(1000);
+                        }
+                    } catch (altError) {
+                        console.log('Alternative profile button selection failed:', altError.message);
                     }
                 }
-            }).catch(e => {
-                console.log('Logout evaluation error:', e.message);
-                throw e; // Rethrow to be caught by the outer try-catch
-            });
-
-            console.log('Logout result:', logoutResult);
-            await sleep(2500);
-
+                
+                // Try to find and click logout button
+                try {
+                    // Look for logout button with various selectors
+                    const logoutSelectors = [
+                        'button[data-test="logout"]',
+                        'a.logout',
+                        '.logout-button',
+                        'button:has-text("Abmelden")',
+                        'button:has-text("Logout")'
+                    ];
+                    
+                    let logoutClicked = false;
+                    
+                    for (const selector of logoutSelectors) {
+                        try {
+                            const exists = await page.$(selector);
+                            if (exists) {
+                                await page.click(selector);
+                                logoutClicked = true;
+                                console.log(`Clicked logout button with selector: ${selector}`);
+                                break;
+                            }
+                        } catch (e) {
+                            console.log(`Error clicking logout with selector ${selector}:`, e.message);
+                        }
+                    }
+                    
+                    // If still not clicked, try by text content
+                    if (!logoutClicked) {
+                        await page.evaluate(() => {
+                            // Look for elements containing "Abmelden" or "Logout" text
+                            const elements = Array.from(document.querySelectorAll('button, a'));
+                            const logoutElement = elements.find(el => 
+                                el.textContent && (
+                                    el.textContent.includes('Abmelden') || 
+                                    el.textContent.includes('Logout') ||
+                                    el.textContent.includes('abmelden')
+                                )
+                            );
+                            
+                            if (logoutElement) {
+                                logoutElement.click();
+                                return true;
+                            }
+                            return false;
+                        });
+                    }
+                } catch (logoutError) {
+                    console.log('Error finding logout button:', logoutError.message);
+                }
+            }
+            
+            // Wait for logout to process
+            await sleep(3000);
+            
+            // Verify logout was successful
+            console.log('Verifying logout...');
+            
             const isLoggedOut = await page.evaluate(() => {
-                return !document.body.innerHTML.includes('Logout') && !document.body.innerHTML.includes('Mein Konto');
+                // Check if elements that only appear when logged in are gone
+                const profileElement = document.querySelector('.profile-button-container');
+                const logoutButton = document.querySelector('button[data-test="logout"]');
+                const welcomeMessage = document.querySelector('.login-form') || 
+                                     document.body.innerHTML.includes('Anmelden') ||
+                                     document.body.innerHTML.includes('Login');
+                
+                return (!profileElement && !logoutButton) || welcomeMessage;
             }).catch(e => {
                 console.log('Logout verification error:', e.message);
-                throw e; // Rethrow to be caught by the outer try-catch
+                return false;
             });
-
+            
             if (isLoggedOut) {
                 console.log('Logout verification successful');
                 return true; // Successful logout
             } else {
                 console.log('Logout verification failed. User might still be logged in.');
-                await page.goto('https://www.medibee.de/mein-konto', { waitUntil: 'networkidle0', timeout: 60000 })
-                    .catch(e => console.log('Navigation error:', e.message));
-                const isRedirectedToLogin = await page.url().includes('/login');
-                if (isRedirectedToLogin) {
+                // Try one more verification by checking if redirected to login page
+                if (page.url().includes('/login')) {
                     console.log('Redirected to login page. Logout seems successful.');
                     return true; // Successful logout
                 } else {
-                    console.log('Not redirected to login page. Logout may have failed.');
-                    throw new Error('Logout failed'); // Force a retry
+                    throw new Error('Logout verification failed');
                 }
             }
         } catch (error) {
@@ -240,89 +320,169 @@ async function logout(page, maxRetries = 3) {
             await sleep(3000); // Wait before retrying
         }
     }
+    return false;
 }
 
 const startMedibee = async () => {
-    const browser = await puppeteer.launch({
-        headless: false,
-        defaultViewport: null,
-        userDataDir: "./tmp",
-    });
+    let browser;
+    try {
+        // Initial cleanup
+        await retryCleanup();
 
-    const page = await browser.newPage();
+        browser = await puppeteer.launch({
+            executablePath: '/Users/user/.cache/puppeteer/chrome/mac_arm-126.0.6478.126/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing',
+            headless: false,
+            defaultViewport: null,
+            userDataDir: "./tmp",
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-accelerated-2d-canvas',
+                '--disable-gpu',
+                '--disable-features=IsolateOrigins,site-per-process',
+                '--enable-features=NetworkService',
+                '--enable-logging',
+                '--v=1'
+            ],
+        });
 
-    const pages = await browser.pages();
-    if (pages.length > 1) {
-        await pages[0].close();
-    }
+        const page = await browser.newPage();
+        
+        // Set page timeout to be more generous
+        page.setDefaultTimeout(60000);
 
-    while (true) {
-        try {
-            const hasMoreData = await readSheet();
-            if (!hasMoreData) {
-                console.log('No more data in the sheet, closing the browser...');
-                await browser.close();
-                return;
-            }
+        const pages = await browser.pages();
+        if (pages.length > 1) {
+            await pages[0].close();
+        }
 
-            console.log(`Processing login: ${globalLoginName}`);
+        // Get list of enabled quizzes from registry
+        const enabledQuizzes = quizRegistry.getEnabledQuizzes();
+        console.log(`Enabled quizzes: ${enabledQuizzes.join(', ')}`);
 
-            for (const quiz of quizzes) {
-                console.log(`Starting ${quiz.name} quiz...`);
-
-                // Login for each quiz
-                await page.goto("https://www.medibee.de/login", {
-                    waitUntil: "networkidle0",
-                    timeout: 60000
-                });
-
-                await handleCookieConsent(page);
-                await handleCookiePopup(page);
-
-                const loginSuccessful = await performLogin2(page);
-                if (!loginSuccessful) {
-                    console.log(`Login failed for ${quiz.name} quiz. Skipping this quiz.`);
-                    continue;
+        while (true) {
+            try {
+                const hasMoreData = await readSheet();
+                if (!hasMoreData) {
+                    console.log('No more data in the sheet, closing the browser...');
+                    break;
                 }
-
-                console.log(`Login successful for ${quiz.name} quiz. Running quiz...`);
-
-                try {
-                    // Run the quiz
-                    const quizCompleted = await quiz.func(page, 3); // 3 is the maximum number of retries
-                    console.log(`${quiz.name} quiz completed:`, quizCompleted ? 'Successfully' : 'With errors');
-                } catch (quizError) {
-                    console.error(`Error running ${quiz.name} quiz:`, quizError);
+        
+                console.log(`Processing login: ${globalLoginName}`);
+        
+                // Clear previous browser data
+                await clearLoginData(page);
+                console.log('Browser data cleared for clean session');
+        
+                let userSessionSuccessful = false;
+                let userAttempts = 0;
+                const maxUserAttempts = 3; // Increased attempts
+        
+                while (!userSessionSuccessful && userAttempts < maxUserAttempts) {
+                    userAttempts++;
+                    console.log(`Attempt ${userAttempts}/${maxUserAttempts} for user ${globalLoginName}`);
+                
+                    try {
+                        // Perform login
+                        const loginSuccessful = await performLogin(page, globalLoginName, globalLoginPW);
+                        if (!loginSuccessful) {
+                            throw new Error('Login failed');
+                        }
+                        
+                        // Wait for page to stabilize after login
+                        await sleep(5000);
+                        
+                        // Run each enabled quiz in sequence
+                        for (const quizName of enabledQuizzes) {
+                            console.log(`Starting quiz: ${quizName}`);
+                            
+                            const quiz = quizRegistry.getQuiz(quizName);
+                            if (!quiz) {
+                                console.log(`Quiz "${quizName}" not found in registry, skipping...`);
+                                continue;
+                            }
+                            
+                            try {
+                                await runQuiz(page, quiz);
+                                console.log(`Quiz "${quizName}" completed successfully.`);
+                            } catch (quizError) {
+                                console.error(`Error running quiz "${quizName}":`, quizError.message);
+                                // Continue with next quiz even if this one failed
+                            }
+                            
+                            // Navigate back to home page between quizzes
+                            await page.goto('https://academy.medice-health-family.com/home', {
+                                waitUntil: 'networkidle2',
+                                timeout: 60000
+                            }).catch(e => console.log('Home navigation error:', e.message));
+                            
+                            await sleep(3000);
+                        }
+                        
+                        userSessionSuccessful = true;
+                    } catch (error) {
+                        console.error(`Error in user session (Attempt ${userAttempts}):`, error);
+                        
+                        // Take error screenshot
+                        await page.screenshot({ path: `session-error-${globalLoginName}-attempt-${userAttempts}.png` });
+                        
+                        if (userAttempts < maxUserAttempts) {
+                            console.log('Retrying user session after error...');
+                            // Logout and clear data for next attempt
+                            await logout(page);
+                            await clearLoginData(page);
+                            await sleep(5000);
+                        }
+                    }
                 }
-
-                // Logout after each quiz
-                console.log(`Attempting to logout after ${quiz.name} quiz...`);
-                const logoutSuccessful = await logout(page);
-                if (!logoutSuccessful) {
-                    console.log(`Logout failed after ${quiz.name} quiz. Proceeding to next quiz or user.`);
+        
+                if (!userSessionSuccessful) {
+                    console.log(`Failed to complete session for ${globalLoginName} after ${maxUserAttempts} attempts. Moving to next user.`);
+                } else {
+                    console.log(`Successfully completed session for ${globalLoginName}`);
                 }
-
-                // Add a delay between quizzes
-                console.log('Waiting before next quiz...');
+        
+                // Ensure thorough logout
+                await logout(page);
+                
+                // Clear all browser data between users
+                await clearLoginData(page);
+        
+                console.log('Moving to next user if available.');
+                await sleep(5000);
+        
+            } catch (error) {
+                console.error("An error occurred:", error);
                 await sleep(5000);
             }
-
-            console.log('All quizzes completed for current user. Moving to next user if available.');
-
-        } catch (error) {
-            console.error("An error occurred:", error);
-            await sleep(5000);
         }
+    } catch (error) {
+        console.error("Error in main execution:", error);
+    } finally {
+        // Final cleanup before exiting
+        if (browser) {
+            await browser.close();
+        }
+        await retryCleanup();
     }
 };
 
-// Start the scraping
+// Handle script interruptions
+process.on("SIGINT", async () => {
+    console.log("Script interrupted. Cleaning up...");
+    await retryCleanup();
+    process.exit();
+});
+
+// Start the process
 (async () => {
     try {
+        await retryCleanup();
         await startMedibee();
     } catch (error) {
         console.error("Error in main execution:", error);
+    } finally {
+        await retryCleanup();
     }
 })();
-
-module.exports = { sleep };
