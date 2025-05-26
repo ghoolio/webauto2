@@ -1,1 +1,16 @@
 node_modules
+# In .gitignore im Hauptverzeichnis
+
+# Ignoriere sensible Dateien
+.env
+*.env
+*.json
+!package.json
+
+# Temporäre Dateien
+tmp/
+*.log
+
+# Credentials-Ordner
+credentials/
+secrets/
