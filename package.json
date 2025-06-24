@@ -1,0 +1,31 @@
+{
+  "name": "schwalbebot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "types": "module",
+  "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
+    "axios": "^1.7.2",
+    "axios-cookiejar-support": "^5.0.2",
+    "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.4.5",
+    "googleapis": "^105.0.0",
+    "next": "^14.2.4",
+    "nodemon": "^3.1.9",
+    "puppeteer": "^22.6.4",
+    "puppeteer-cmp-clicker": "^1.0.3",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "puppeteer-extra-plugin-stealth-fix": "^2.11.3",
+    "qs": "^6.12.3",
+    "tough-cookie": "^4.1.4"
+  }
+}
