@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer-core');
 const { google } = require('googleapis');
 const dotenv = require('dotenv');
 const path = require('path');
-const fs = require('fs').promises;
+const fs = require('fs');
 const { exec } = require('child_process');
 const { sleep } = require('./utils/commonUtils');
 const { checkFor503Error } = require('./utils/browserUtils');
@@ -14,17 +14,53 @@ const { quizRegistry } = require('./quizzes/quizRegistry');
 
 dotenv.config();
 
+// Pfad zum Schlüssel aus Umgebungsvariable
+const keyPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+
+// Pfad zum Schlüssel aus Umgebungsvariable
+let privateKey;
+try {
+    console.log('Versuche Schlüssel zu laden von:', keyPath);
+    
+    // Verwenden Sie fs.readFileSync direkt
+    privateKey = fs.readFileSync(keyPath, 'utf8');
+    
+    console.log('Schlüssel erfolgreich geladen');
+    console.log('Schlüsselpfad existiert:', fs.existsSync(keyPath));
+} catch (error) {
+    console.error('Fehler beim Laden des Service Account Schlüssels:', error);
+    
+    // Detaillierte Fehlerdiagnose
+    if (error.code === 'ENOENT') {
+        console.error('Datei nicht gefunden. Bitte überprüfen Sie den Pfad.');
+    }
+    
+    console.error('Aktuelle Konfiguration:');
+    console.error('Umgebungsvariable GOOGLE_APPLICATION_CREDENTIALS:', process.env.GOOGLE_APPLICATION_CREDENTIALS);
+    
+    process.exit(1);
+}
+
+console.log('Schlüsselpfad:', keyPath);
+console.log('Schlüsselpfad existiert:', require('fs').existsSync(keyPath));
+
 // Google Sheets configuration
-const clientEmail = 'schwalbebot-google-sheet-servi@schwalbebot001.iam.gserviceaccount.com';
-const privateKey = process.env.PRIVATE_KEY;
+const clientEmail = 'schwalbebot-google-sheet-service@schwalbebot001.iam.gserviceaccount.com';
+//const privateKey = process.env.PRIVATE_KEY.replace(/\\n/g, '\n');
 const googleSheetId = process.env.GOOGLE_SHEET_ID;
 const googleSheetPage = 'Logins Medibee';
 
+// Fügen Sie Fehlerbehandlung hinzu
+if (!privateKey) {
+    console.error('FEHLER: Privater Schlüssel nicht gefunden. Bitte überprüfen Sie Ihre .env-Datei.');
+    process.exit(1);
+}
+
 const googleAuth = new google.auth.JWT(
     clientEmail,
-    null,
-    privateKey.replace(/\\n/g, '\n'),
-    'https://www.googleapis.com/auth/spreadsheets'
+    keyPath,  // Pfad zur Schlüsseldatei
+    null,     // Privater Schlüssel wird aus Datei gelesen
+    ['https://www.googleapis.com/auth/spreadsheets']
 );
 
 let globalLoginName, globalLoginPW;
@@ -322,6 +358,73 @@ async function logout(page, maxRetries = 3) {
     }
     return false;
 }
+
+// Fügen Sie diese Funktion vor der startMedibee-Funktion hinzu
+async function testGoogleSheetsConnection() {
+    try {
+        console.log('Teste Google Sheets Verbindung...');
+        
+        // Zusätzliche Überprüfungen
+        if (!keyPath) {
+            throw new Error('GOOGLE_APPLICATION_CREDENTIALS nicht gesetzt');
+        }
+
+        // Überprüfen Sie die Existenz der Schlüsseldatei
+        try {
+            await fs.access(keyPath);
+        } catch (accessError) {
+            throw new Error(`Schlüsseldatei nicht gefunden: ${keyPath}`);
+        }
+
+        console.log('Verwendete Konfiguration:');
+        console.log('Client Email:', clientEmail);
+        console.log('Schlüsselpfad:', keyPath);
+        console.log('Sheet ID:', googleSheetId);
+
+        const sheets = google.sheets({ version: 'v4', auth: googleAuth });
+        
+        // Test-Abfrage: Lese erste Zeile
+        const response = await sheets.spreadsheets.values.get({
+            spreadsheetId: googleSheetId,
+            range: 'Logins Medibee!A1:C1'
+        });
+
+        console.log('Erfolgreich verbunden!');
+        console.log('Erste Zeile:', response.data.values);
+    } catch (error) {
+        console.error('Fehler bei der Verbindung zu Google Sheets:');
+        console.error('Fehlerdetails:', error);
+        
+        // Detaillierte Fehleranalyse
+        if (error.code === 'ENOENT') {
+            console.error('Schlüsseldatei nicht gefunden. Bitte überprüfen Sie den Pfad.');
+        } else if (error.response) {
+            console.error('HTTP-Statuscode:', error.response.status);
+            console.error('Fehler-Payload:', error.response.data);
+        }
+        
+        // Zusätzliche Diagnose
+        console.error('Überprüfen Sie:');
+        console.error('1. Ist die .env-Datei korrekt?');
+        console.error('2. Existiert die Schlüsseldatei?');
+        console.error('3. Ist der Service Account korrekt berechtigt?');
+        
+        throw error; // Re-throw für weitere Behandlung
+    }
+}
+
+// Rufen Sie die Testfunktion auf, bevor startMedibee
+(async () => {
+    try {
+        await retryCleanup();
+        await testGoogleSheetsConnection(); // Neuer Testschritt
+        await startMedibee();
+    } catch (error) {
+        console.error("Error in main execution:", error);
+    } finally {
+        await retryCleanup();
+    }
+})();
 
 const startMedibee = async () => {
     let browser;

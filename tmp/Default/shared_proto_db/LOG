@@ -1,2 +1,3 @@
-2025/05/23-23:07:18.118 ca0b Creating DB /Users/user/Documents/medibeebot/tmp/Default/shared_proto_db since it was missing.
-2025/05/23-23:07:18.119 ca0b Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/shared_proto_db/MANIFEST-000001
+2025/06/24-13:32:02.453 8303 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/shared_proto_db/MANIFEST-000001
+2025/06/24-13:32:02.453 8303 Recovering log #3
+2025/06/24-13:32:02.454 8303 Reusing old log /Users/user/Documents/medibeebot/tmp/Default/shared_proto_db/000003.log 

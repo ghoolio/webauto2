@@ -1,2 +1,6 @@
-2025/05/23-23:07:18.012 3003 Creating DB /Users/user/Documents/medibeebot/tmp/Default/Session Storage since it was missing.
-2025/05/23-23:07:18.016 3003 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Session Storage/MANIFEST-000001
+2025/06/24-13:32:06.949 3803 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Session Storage/MANIFEST-000001
+2025/06/24-13:32:06.952 3803 Recovering log #4
+2025/06/24-13:32:06.954 3803 Reusing old log /Users/user/Documents/medibeebot/tmp/Default/Session Storage/000004.log 
+2025/06/24-13:40:18.887 220f Level-0 table #8: started
+2025/06/24-13:40:18.888 220f Level-0 table #8: 14315 bytes OK
+2025/06/24-13:40:18.889 220f Delete type=0 #4

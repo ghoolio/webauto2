@@ -480,7 +480,7 @@ async function navigateToLoginPage(page) {
 }
 
 /**
- * Handle the Terms acceptance modal if it appears
+ * Handle the Terms acceptance modal if it appears - FIXED VERSION
  * @param {Object} page - Puppeteer page object
  * @returns {boolean} - Whether terms modal was present and handled
  */
@@ -496,7 +496,8 @@ async function handleTermsModal(page) {
       // Look for modal title text or button
       const modalText = document.body.innerText;
       return modalText.includes('Sie müssen zustimmen') || 
-             document.querySelector('button[data-test="popup-confirm-button"]') !== null;
+             document.querySelector('button[data-test="popup-confirm-button"]') !== null ||
+             document.querySelector('.checkbox-wrapper[data-test="checkbox-wrapper"]') !== null;
     }).catch(() => false);
     
     if (!isModalPresent) {
@@ -506,40 +507,165 @@ async function handleTermsModal(page) {
     
     console.log('Terms acceptance modal detected. Accepting terms...');
     
-    // Click both checkboxes
-    await page.evaluate(() => {
-      // Find all checkbox wrappers
-      const checkboxes = document.querySelectorAll('div[data-v-b8da17c7][aria-checked="false"][role="checkbox"]');
+    // FIXED: Click both checkboxes using the correct selectors
+    const checkboxesClicked = await page.evaluate(() => {
+      // Find all checkbox wrappers with the correct selector
+      const checkboxes = document.querySelectorAll('div.checkbox-wrapper[data-test="checkbox-wrapper"][aria-checked="false"]');
       
-      console.log(`Found ${checkboxes.length} unchecked checkboxes`);
+      console.log(`[BROWSER] Found ${checkboxes.length} unchecked checkboxes`);
       
-      // Click each checkbox
-      checkboxes.forEach(checkbox => {
-        checkbox.click();
-        console.log('Clicked a checkbox');
+      let clickedCount = 0;
+      
+      // Click each unchecked checkbox
+      checkboxes.forEach((checkbox, index) => {
+        try {
+          console.log(`[BROWSER] Clicking checkbox ${index + 1}`);
+          
+          // Try multiple click methods for reliability
+          checkbox.click();
+          
+          // Also dispatch mouse events
+          checkbox.dispatchEvent(new MouseEvent('click', {
+            bubbles: true,
+            cancelable: true,
+            view: window
+          }));
+          
+          // Dispatch change event
+          checkbox.dispatchEvent(new Event('change', {
+            bubbles: true,
+            cancelable: true
+          }));
+          
+          clickedCount++;
+          console.log(`[BROWSER] Successfully clicked checkbox ${index + 1}`);
+        } catch (error) {
+          console.log(`[BROWSER] Error clicking checkbox ${index + 1}:`, error);
+        }
       });
-    }).catch(() => console.log('Error finding/clicking checkboxes'));
+      
+      return clickedCount;
+    }).catch((error) => {
+      console.log('Error clicking checkboxes:', error.message);
+      return 0;
+    });
+    
+    console.log(`Clicked ${checkboxesClicked} checkboxes`);
     
     // Wait a moment for the UI to update
-    await sleep(1000);
+    await sleep(1500);
+    
+    // Verify checkboxes are checked
+    const checkboxStatus = await page.evaluate(() => {
+      const checkboxes = document.querySelectorAll('div.checkbox-wrapper[data-test="checkbox-wrapper"]');
+      const checkedCount = Array.from(checkboxes).filter(cb => cb.getAttribute('aria-checked') === 'true').length;
+      const totalCount = checkboxes.length;
+      
+      console.log(`[BROWSER] Checkbox status: ${checkedCount}/${totalCount} checked`);
+      
+      return { checked: checkedCount, total: totalCount };
+    }).catch(() => ({ checked: 0, total: 0 }));
+    
+    console.log(`Checkbox verification: ${checkboxStatus.checked}/${checkboxStatus.total} checkboxes are checked`);
     
     // Click the Bestätigen button
     const buttonClicked = await page.evaluate(() => {
-      const confirmButton = document.querySelector('button[data-test="popup-confirm-button"]');
-      if (confirmButton) {
-        confirmButton.click();
-        console.log('Clicked Bestätigen button');
-        return true;
+      // Try multiple selectors for the confirm button
+      const buttonSelectors = [
+        'button[data-test="popup-confirm-button"]',
+        'button:contains("Bestätigen")',
+        'button:contains("Confirm")',
+        '.modal button',
+        '.popup button'
+      ];
+      
+      for (const selector of buttonSelectors) {
+        try {
+          // Handle text-based selectors
+          if (selector.includes(':contains(')) {
+            const text = selector.match(/:contains\("([^"]+)"\)/)[1];
+            const buttons = Array.from(document.querySelectorAll('button'));
+            const confirmButton = buttons.find(btn => btn.textContent && btn.textContent.includes(text));
+            
+            if (confirmButton) {
+              console.log(`[BROWSER] Found confirm button by text: ${text}`);
+              confirmButton.click();
+              
+              // Also dispatch events for reliability
+              confirmButton.dispatchEvent(new MouseEvent('click', {
+                bubbles: true,
+                cancelable: true,
+                view: window
+              }));
+              
+              return true;
+            }
+          } else {
+            // Standard selector
+            const confirmButton = document.querySelector(selector);
+            if (confirmButton) {
+              console.log(`[BROWSER] Found confirm button with selector: ${selector}`);
+              confirmButton.click();
+              
+              // Also dispatch events for reliability
+              confirmButton.dispatchEvent(new MouseEvent('click', {
+                bubbles: true,
+                cancelable: true,
+                view: window
+              }));
+              
+              return true;
+            }
+          }
+        } catch (error) {
+          console.log(`[BROWSER] Error with selector ${selector}:`, error);
+        }
       }
+      
+      // Fallback: try to find any button in the modal area
+      const allButtons = document.querySelectorAll('button');
+      for (const button of allButtons) {
+        const buttonText = button.textContent?.toLowerCase() || '';
+        if (buttonText.includes('bestätigen') || 
+            buttonText.includes('confirm') || 
+            buttonText.includes('accept') ||
+            buttonText.includes('akzeptieren')) {
+          console.log(`[BROWSER] Found confirm button by text content: ${buttonText}`);
+          button.click();
+          return true;
+        }
+      }
+      
+      console.log('[BROWSER] Could not find confirm button');
       return false;
-    }).catch(() => false);
+    }).catch((error) => {
+      console.log('Error clicking confirm button:', error.message);
+      return false;
+    });
     
     if (buttonClicked) {
-      console.log('Terms accepted successfully');
+      console.log('Successfully clicked Bestätigen button');
       // Wait for any resulting navigation
       await sleep(3000);
     } else {
       console.log('Could not find the confirm button');
+      
+      // Fallback: try pressing Enter key
+      console.log('Trying Enter key as fallback...');
+      await page.keyboard.press('Enter');
+      await sleep(2000);
+    }
+    
+    // Verify the modal is gone
+    const modalGone = await page.evaluate(() => {
+      const modalText = document.body.innerText;
+      return !modalText.includes('Sie müssen zustimmen');
+    }).catch(() => true);
+    
+    if (modalGone) {
+      console.log('Terms modal successfully dismissed');
+    } else {
+      console.log('Terms modal may still be present');
     }
     
     return true;
@@ -549,6 +675,9 @@ async function handleTermsModal(page) {
     return false;
   }
 }
+
+// NOTE: You only need to replace the handleTermsModal function in your existing loginUtils.js
+// Keep all your other functions (performLogin, clearLoginData, etc.) exactly as they are!
 
 /**
  * Handle welcome dialog if it appears

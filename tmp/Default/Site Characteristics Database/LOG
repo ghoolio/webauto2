@@ -1,2 +1,3 @@
-2025/05/23-23:07:17.900 a20b Creating DB /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database since it was missing.
-2025/05/23-23:07:17.901 a20b Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/MANIFEST-000001
+2025/06/24-13:32:02.138 f603 Reusing MANIFEST /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/MANIFEST-000001
+2025/06/24-13:32:02.138 f603 Recovering log #3
+2025/06/24-13:32:02.139 f603 Reusing old log /Users/user/Documents/medibeebot/tmp/Default/Site Characteristics Database/000003.log 
