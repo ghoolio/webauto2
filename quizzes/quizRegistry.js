@@ -10,10 +10,12 @@
 const dorithricin = require('./dorithricin');
 const cystinolAkut = require('./cystinolAkut');
 const perenterol = require('./perenterol');
+const soventol = require('./soventol');
 // Import other quizzes as they are created
 
 // Repository of all available quizzes
 const quizzes = {
+  'Soventol': soventol,
   'Perenterol': perenterol,
   'Dorithricin': dorithricin,
   'CystinolAkut': cystinolAkut,
@@ -22,6 +24,7 @@ const quizzes = {
 
 // List of enabled quizzes (can be controlled through configuration)
 let enabledQuizzes = [
+  'Soventol',
   'Perenterol',
   'Dorithricin',
   'CystinolAkut',

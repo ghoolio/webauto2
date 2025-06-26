@@ -71,7 +71,7 @@ module.exports = {
       },
       waitAfter: 5000
     },
-
+    
     // Slide 6: Message button slide - click message button 5 times
     {
       type: "MESSAGE_BUTTONS_SLIDE",
@@ -85,7 +85,7 @@ module.exports = {
       },
       waitAfter: 5000
     },
-
+    /* 
     // Slide 7: Click the orange next button after message sequence
     {
       type: "NEXT_BUTTON",
@@ -260,7 +260,7 @@ module.exports = {
         waitAfterNext: 3000
       },
       waitAfter: 5000
-    },
+    }, 
 
     // Slide 16: Simple timed slide - wait for content/animation then proceed
     {
@@ -295,266 +295,84 @@ module.exports = {
         waitAfterNext: 3000
       },
       waitAfter: 5000
+    },
+
+    // Slide 18: Simple dialogue slide - Alex asks about mechanisms, MediBee responds
+    {
+      type: "SIMPLE_SLIDE",
+      action: "handleSimpleSlide",
+      useScormFrame: true,
+      forceExecute: true,
+      params: {
+        nextButtonId: "5WP8Lt8v1CQ",      // Next slide button
+        waitBeforeClick: 3000,            // Wait for dialogue animation
+        waitAfterNext: 3000
+      },
+      waitAfter: 5000
+    }, */
+
+    // Slide 19: 3-part mosaic carousel - progressive mechanism revelation
+    {
+      type: "CAROUSEL_MOSAIC",
+      action: "handleCarouselMosaic",
+      useScormFrame: true,
+      forceExecute: true,
+      params: {
+        carouselButtonIds: [
+          "5t6HyGNG6hP",  // First carousel button (reveals left+middle sections)
+          "5WDjzOok9ZD"   // Second carousel button (completes 3-part mosaic)
+        ],
+        nextButtonId: "5WP8Lt8v1CQ",      // Next slide button
+        delayBetweenClicks: 2500,         // Wait between carousel clicks for animation
+        waitAfterComplete: 2000,          // Wait after mosaic is complete
+        waitAfterNext: 3000
+      },
+      waitAfter: 5000
+    },
+
+    // Slide 20: Simple timed slide - wait for content/animation then proceed
+    {
+      type: "SIMPLE_SLIDE",
+      action: "handleSimpleSlide",
+      useScormFrame: true,
+      forceExecute: true,
+      params: {
+        nextButtonId: "5WP8Lt8v1CQ",      // Next slide button
+        waitBeforeClick: 3000,            // Wait for content/animation
+        waitAfterNext: 3000
+      },
+      waitAfter: 5000
+    }, 
+
+    // Completion screen - "Super, du hast es geschafft!" screen
+    {
+      type: "COMPLETION_SCREEN",
+      action: "clickPerenterolWeiterButton1",
+      useScormFrame: true,
+      waitAfter: 3000
+    },
+
+    // Second completion screen (if needed)
+    {
+      type: "COMPLETION_SCREEN",
+      action: "clickPerenterolWeiterButton2",
+      useScormFrame: true,
+      waitAfter: 3000
+    },
+    
+    // Final screen with final Weiter button
+    {
+      type: "FINAL_SCREEN",
+      action: "clickPerenterolWeiterButton3",
+      useScormFrame: true,
+      waitAfter: 5000
     }
     
-    // TODO: Add remaining slides based on user input
+    // Quiz completion - no more steps needed
   ],
   
   // Custom functions specific to Perenterol quiz
   customFunctions: {
-    /**
-     * Click the academy start/continue button that opens the new tab
-     * @param {Object} frame - Puppeteer frame (main page)
-     * @param {Object} params - Additional parameters
-     * @returns {Promise<boolean>} - Success status
-     */
-    clickAcademyStartButton: async function(frame, params = {}) {
-      try {
-        console.log('Clicking academy start/continue button to open SCORM tab...');
-        
-        // Wait for the button to be available
-        const buttonSelector = 'button.start-resume-button';
-        
-        await frame.waitForSelector(buttonSelector, { 
-          visible: true, 
-          timeout: params.timeout || 15000 
-        });
-        
-        console.log('Academy start button found, clicking it...');
-        await frame.click(buttonSelector);
-        
-        console.log('Academy start button clicked - new tab should open');
-        await sleep(params.waitAfter || 3000);
-        
-        return true;
-      } catch (error) {
-        console.error('Error clicking academy start button:', error.message);
-        
-        // Fallback: try alternative selectors
-        try {
-          console.log('Trying fallback selectors...');
-          
-          const fallbackSelectors = [
-            '.start-resume-button',
-            'button[class*="start-resume"]',
-            'button[class*="primary"][class*="brand"]',
-            '.button-regular.primary.brand'
-          ];
-          
-          for (const selector of fallbackSelectors) {
-            const exists = await frame.$(selector);
-            if (exists) {
-              console.log(`Using fallback selector: ${selector}`);
-              await frame.click(selector);
-              await sleep(3000);
-              return true;
-            }
-          }
-          
-          throw new Error('No suitable button selector found');
-        } catch (fallbackError) {
-          console.error('Fallback also failed:', fallbackError.message);
-          return false;
-        }
-      }
-    },
-
-    /**
-     * Handle dialog screen conditionally - checks for Resume button or black screen
-     * @param {Object} page - Puppeteer page object
-     * @param {Object} params - Additional parameters
-     * @returns {Promise<boolean>} - Success status
-     */
-    handlePerenterolDialog: async function(page, params = {}) {
-      try {
-        console.log('Adaptive dialog handling - checking for Resume button and black screen...');
-        
-        const maxAttempts = params.maxAttempts || 5;
-        const delay = params.delay || 2000;
-        
-        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-          console.log(`Dialog check attempt ${attempt}/${maxAttempts}`);
-          
-          // Wait between checks
-          await sleep(delay);
-          
-          // Get all frames (main page + SCORM frame)
-          const frames = await page.frames();
-          const scormFrame = frames.find(f => f.url().includes('/index_lms.html'));
-          
-          // Store SCORM frame for later use
-          if (scormFrame) {
-            page.__scormFrame = scormFrame;
-          }
-          
-          // Check for Resume button in SCORM frame first
-          if (scormFrame) {
-            console.log('Checking for Resume button in SCORM frame...');
-            
-            const resumeButtonExists = await scormFrame.evaluate(() => {
-              const resumeButton = document.querySelector('button[data-dv_ref="resume"]') || 
-                                 document.querySelector('button[aria-label="Resume"]') ||
-                                 document.querySelector('button:contains("Resume")');
-              return !!resumeButton;
-            }).catch(() => false);
-            
-            if (resumeButtonExists) {
-              console.log('Resume button found in SCORM frame, clicking it...');
-              
-              try {
-                await scormFrame.click('button[data-dv_ref="resume"]');
-                console.log('Clicked Resume button successfully');
-                await sleep(3000);
-                return true;
-              } catch (clickError) {
-                console.log('Direct click failed, trying evaluate method...');
-                
-                const clicked = await scormFrame.evaluate(() => {
-                  const resumeButton = document.querySelector('button[data-dv_ref="resume"]') || 
-                                     document.querySelector('button[aria-label="Resume"]');
-                  if (resumeButton) {
-                    resumeButton.click();
-                    console.log('[BROWSER] Clicked Resume button');
-                    return true;
-                  }
-                  return false;
-                });
-                
-                if (clicked) {
-                  console.log('Resume button clicked via evaluate');
-                  await sleep(3000);
-                  return true;
-                }
-              }
-            }
-          }
-          
-          // Check for Resume button in main page
-          console.log('Checking for Resume button in main page...');
-          const mainResumeExists = await page.evaluate(() => {
-            const resumeButton = document.querySelector('button[data-dv_ref="resume"]') || 
-                               document.querySelector('button[aria-label="Resume"]');
-            return !!resumeButton;
-          }).catch(() => false);
-          
-          if (mainResumeExists) {
-            console.log('Resume button found in main page, clicking it...');
-            
-            try {
-              await page.click('button[data-dv_ref="resume"]');
-              console.log('Clicked Resume button in main page');
-              await sleep(3000);
-              return true;
-            } catch (clickError) {
-              console.log('Main page resume click failed, trying evaluate...');
-              
-              const clicked = await page.evaluate(() => {
-                const resumeButton = document.querySelector('button[data-dv_ref="resume"]') || 
-                                   document.querySelector('button[aria-label="Resume"]');
-                if (resumeButton) {
-                  resumeButton.click();
-                  console.log('[BROWSER] Clicked Resume button in main page');
-                  return true;
-                }
-                return false;
-              });
-              
-              if (clicked) {
-                console.log('Main page Resume button clicked via evaluate');
-                await sleep(3000);
-                return true;
-              }
-            }
-          }
-          
-          // Fallback: Check for traditional black screen and try space key
-          const needsSpaceKey = await page.evaluate(() => {
-            // Check for black screen indicators
-            const isBlackScreen = document.body.innerHTML.trim() === '' || 
-                                 document.body.innerHTML.trim() === '<script></script>' ||
-                                 window.getComputedStyle(document.body).backgroundColor === 'rgb(0, 0, 0)';
-            
-            // Check if URL is about:blank
-            const isAboutBlank = window.location.href === 'about:blank';
-            
-            // Check if we have very minimal content
-            const hasMinimalContent = document.body.innerText.trim().length < 10;
-            
-            // Check if page seems unresponsive
-            const hasNoInteractiveElements = document.querySelectorAll('button, a, [onclick], [data-model-id]').length === 0;
-            
-            return isBlackScreen || isAboutBlank || hasMinimalContent || hasNoInteractiveElements;
-          }).catch(() => false);
-          
-          if (needsSpaceKey) {
-            console.log(`Black screen detected on attempt ${attempt}, pressing space key as fallback...`);
-            
-            // Press space key
-            await page.keyboard.press('Space');
-            console.log('Pressed the Space key as fallback');
-            await sleep(3000);
-          } else {
-            console.log(`No Resume button or black screen detected on attempt ${attempt}`);
-          }
-          
-          // Check if we now have interactive content
-          const hasContent = await page.evaluate(() => {
-            return document.querySelectorAll('button, a, [onclick], [data-model-id]').length > 0;
-          }).catch(() => true);
-          
-          if (hasContent) {
-            console.log('Interactive content found, dialog handling complete');
-            return true;
-          }
-        }
-        
-        console.log('Dialog handling completed after all attempts');
-        return true;
-      } catch (error) {
-        console.error('Error in handlePerenterolDialog:', error.message);
-        return true; // Continue even if dialog handling fails
-      }
-    },
-
-    /**
-     * Conditionally click SCORM start button - don't fail if it doesn't exist (resumed quiz)
-     * @param {Object} scormFrame - Puppeteer frame
-     * @param {Object} params - Additional parameters
-     * @returns {Promise<boolean>} - Success status
-     */
-    clickScormStartButtonConditional: async function(scormFrame, params = {}) {
-      try {
-        console.log('Conditionally clicking SCORM start button (may not exist on resumed quiz)...');
-        
-        const buttonId = params.buttonId || '5wi4qVJtVCO';
-        const timeout = params.timeout || 15000;
-        
-        // Check if button exists (don't wait long)
-        console.log(`Checking for SCORM start button with ID: ${buttonId}`);
-        
-        const buttonExists = await scormFrame.waitForSelector(`[data-model-id="${buttonId}"]`, { 
-          visible: true, 
-          timeout: timeout 
-        }).then(() => true).catch(() => false);
-        
-        if (buttonExists) {
-          console.log(`SCORM start button found with ID: ${buttonId}, clicking it...`);
-          await scormFrame.click(`[data-model-id="${buttonId}"]`);
-          console.log('SCORM start button clicked successfully');
-          await sleep(params.waitAfter || 3000);
-          return true;
-        } else {
-          console.log(`SCORM start button with ID ${buttonId} not found - quiz likely already started (resumed attempt)`);
-          console.log('This is normal for resumed quiz attempts, continuing...');
-          return true; // Don't fail - this is expected for resumed attempts
-        }
-      } catch (error) {
-        console.error('Error in clickScormStartButtonConditional:', error.message);
-        console.log('Continuing anyway - button may not exist on resumed attempts');
-        return true; // Don't fail the whole quiz for this
-      }
-    },
-
     /**
      * Enhanced SCORM start button click that handles the specific Perenterol button
      * @param {Object} scormFrame - Puppeteer frame
@@ -1730,6 +1548,259 @@ module.exports = {
     },
 
     /**
+     * Click the academy start/continue button that opens the new tab
+     * @param {Object} frame - Puppeteer frame (main page)
+     * @param {Object} params - Additional parameters
+     * @returns {Promise<boolean>} - Success status
+     */
+    clickAcademyStartButton: async function(frame, params = {}) {
+      try {
+        console.log('Clicking academy start/continue button to open SCORM tab...');
+        
+        // Wait for the button to be available
+        const buttonSelector = 'button.start-resume-button';
+        
+        await frame.waitForSelector(buttonSelector, { 
+          visible: true, 
+          timeout: params.timeout || 15000 
+        });
+        
+        console.log('Academy start button found, clicking it...');
+        await frame.click(buttonSelector);
+        
+        console.log('Academy start button clicked - new tab should open');
+        await sleep(params.waitAfter || 3000);
+        
+        return true;
+      } catch (error) {
+        console.error('Error clicking academy start button:', error.message);
+        
+        // Fallback: try alternative selectors
+        try {
+          console.log('Trying fallback selectors...');
+          
+          const fallbackSelectors = [
+            '.start-resume-button',
+            'button[class*="start-resume"]',
+            'button[class*="primary"][class*="brand"]',
+            '.button-regular.primary.brand'
+          ];
+          
+          for (const selector of fallbackSelectors) {
+            const exists = await frame.$(selector);
+            if (exists) {
+              console.log(`Using fallback selector: ${selector}`);
+              await frame.click(selector);
+              await sleep(3000);
+              return true;
+            }
+          }
+          
+          throw new Error('No suitable button selector found');
+        } catch (fallbackError) {
+          console.error('Fallback also failed:', fallbackError.message);
+          return false;
+        }
+      }
+    },
+
+    /**
+     * Handle dialog screen conditionally - checks for Resume button or black screen
+     * @param {Object} page - Puppeteer page object
+     * @param {Object} params - Additional parameters
+     * @returns {Promise<boolean>} - Success status
+     */
+    handlePerenterolDialog: async function(page, params = {}) {
+      try {
+        console.log('Adaptive dialog handling - checking for Resume button and black screen...');
+        
+        const maxAttempts = params.maxAttempts || 5;
+        const delay = params.delay || 2000;
+        
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+          console.log(`Dialog check attempt ${attempt}/${maxAttempts}`);
+          
+          // Wait between checks
+          await sleep(delay);
+          
+          // Get all frames (main page + SCORM frame)
+          const frames = await page.frames();
+          const scormFrame = frames.find(f => f.url().includes('/index_lms.html'));
+          
+          // Store SCORM frame for later use
+          if (scormFrame) {
+            page.__scormFrame = scormFrame;
+          }
+          
+          // Check for Resume button in SCORM frame first
+          if (scormFrame) {
+            console.log('Checking for Resume button in SCORM frame...');
+            
+            const resumeButtonExists = await scormFrame.evaluate(() => {
+              const resumeButton = document.querySelector('button[data-dv_ref="resume"]') || 
+                                 document.querySelector('button[aria-label="Resume"]') ||
+                                 document.querySelector('button:contains("Resume")');
+              return !!resumeButton;
+            }).catch(() => false);
+            
+            if (resumeButtonExists) {
+              console.log('Resume button found in SCORM frame, clicking it...');
+              
+              try {
+                await scormFrame.click('button[data-dv_ref="resume"]');
+                console.log('Clicked Resume button successfully');
+                await sleep(3000);
+                return true;
+              } catch (clickError) {
+                console.log('Direct click failed, trying evaluate method...');
+                
+                const clicked = await scormFrame.evaluate(() => {
+                  const resumeButton = document.querySelector('button[data-dv_ref="resume"]') || 
+                                     document.querySelector('button[aria-label="Resume"]');
+                  if (resumeButton) {
+                    resumeButton.click();
+                    console.log('[BROWSER] Clicked Resume button');
+                    return true;
+                  }
+                  return false;
+                });
+                
+                if (clicked) {
+                  console.log('Resume button clicked via evaluate');
+                  await sleep(3000);
+                  return true;
+                }
+              }
+            }
+          }
+          
+          // Check for Resume button in main page
+          console.log('Checking for Resume button in main page...');
+          const mainResumeExists = await page.evaluate(() => {
+            const resumeButton = document.querySelector('button[data-dv_ref="resume"]') || 
+                               document.querySelector('button[aria-label="Resume"]');
+            return !!resumeButton;
+          }).catch(() => false);
+          
+          if (mainResumeExists) {
+            console.log('Resume button found in main page, clicking it...');
+            
+            try {
+              await page.click('button[data-dv_ref="resume"]');
+              console.log('Clicked Resume button in main page');
+              await sleep(3000);
+              return true;
+            } catch (clickError) {
+              console.log('Main page resume click failed, trying evaluate...');
+              
+              const clicked = await page.evaluate(() => {
+                const resumeButton = document.querySelector('button[data-dv_ref="resume"]') || 
+                                   document.querySelector('button[aria-label="Resume"]');
+                if (resumeButton) {
+                  resumeButton.click();
+                  console.log('[BROWSER] Clicked Resume button in main page');
+                  return true;
+                }
+                return false;
+              });
+              
+              if (clicked) {
+                console.log('Main page Resume button clicked via evaluate');
+                await sleep(3000);
+                return true;
+              }
+            }
+          }
+          
+          // Fallback: Check for traditional black screen and try space key
+          const needsSpaceKey = await page.evaluate(() => {
+            // Check for black screen indicators
+            const isBlackScreen = document.body.innerHTML.trim() === '' || 
+                                 document.body.innerHTML.trim() === '<script></script>' ||
+                                 window.getComputedStyle(document.body).backgroundColor === 'rgb(0, 0, 0)';
+            
+            // Check if URL is about:blank
+            const isAboutBlank = window.location.href === 'about:blank';
+            
+            // Check if we have very minimal content
+            const hasMinimalContent = document.body.innerText.trim().length < 10;
+            
+            // Check if page seems unresponsive
+            const hasNoInteractiveElements = document.querySelectorAll('button, a, [onclick], [data-model-id]').length === 0;
+            
+            return isBlackScreen || isAboutBlank || hasMinimalContent || hasNoInteractiveElements;
+          }).catch(() => false);
+          
+          if (needsSpaceKey) {
+            console.log(`Black screen detected on attempt ${attempt}, pressing space key as fallback...`);
+            
+            // Press space key
+            await page.keyboard.press('Space');
+            console.log('Pressed the Space key as fallback');
+            await sleep(3000);
+          } else {
+            console.log(`No Resume button or black screen detected on attempt ${attempt}`);
+          }
+          
+          // Check if we now have interactive content
+          const hasContent = await page.evaluate(() => {
+            return document.querySelectorAll('button, a, [onclick], [data-model-id]').length > 0;
+          }).catch(() => true);
+          
+          if (hasContent) {
+            console.log('Interactive content found, dialog handling complete');
+            return true;
+          }
+        }
+        
+        console.log('Dialog handling completed after all attempts');
+        return true;
+      } catch (error) {
+        console.error('Error in handlePerenterolDialog:', error.message);
+        return true; // Continue even if dialog handling fails
+      }
+    },
+
+    /**
+     * Conditionally click SCORM start button - don't fail if it doesn't exist (resumed quiz)
+     * @param {Object} scormFrame - Puppeteer frame
+     * @param {Object} params - Additional parameters
+     * @returns {Promise<boolean>} - Success status
+     */
+    clickScormStartButtonConditional: async function(scormFrame, params = {}) {
+      try {
+        console.log('Conditionally clicking SCORM start button (may not exist on resumed quiz)...');
+        
+        const buttonId = params.buttonId || '5wi4qVJtVCO';
+        const timeout = params.timeout || 15000;
+        
+        // Check if button exists (don't wait long)
+        console.log(`Checking for SCORM start button with ID: ${buttonId}`);
+        
+        const buttonExists = await scormFrame.waitForSelector(`[data-model-id="${buttonId}"]`, { 
+          visible: true, 
+          timeout: timeout 
+        }).then(() => true).catch(() => false);
+        
+        if (buttonExists) {
+          console.log(`SCORM start button found with ID: ${buttonId}, clicking it...`);
+          await scormFrame.click(`[data-model-id="${buttonId}"]`);
+          console.log('SCORM start button clicked successfully');
+          await sleep(params.waitAfter || 3000);
+          return true;
+        } else {
+          console.log(`SCORM start button with ID ${buttonId} not found - quiz likely already started (resumed attempt)`);
+          console.log('This is normal for resumed quiz attempts, continuing...');
+          return true; // Don't fail - this is expected for resumed attempts
+        }
+      } catch (error) {
+        console.error('Error in clickScormStartButtonConditional:', error.message);
+        console.log('Continuing anyway - button may not exist on resumed attempts');
+        return true; // Don't fail the whole quiz for this
+      }
+    },
+
+    /**
      * Handle simple timed slide - just wait and proceed
      * @param {Object} scormFrame - Puppeteer frame
      * @param {Object} params - Additional parameters
@@ -2059,6 +2130,405 @@ module.exports = {
         return true;
       } catch (error) {
         console.error('Error in handleSpeechBubbleSequence:', error.message);
+        return false;
+      }
+    },
+
+    /**
+     * Handle 3-part mosaic carousel - progressive mechanism revelation
+     * @param {Object} scormFrame - Puppeteer frame
+     * @param {Object} params - Additional parameters
+     * @returns {Promise<boolean>} - Success status
+     */
+    handleCarouselMosaic: async function(scormFrame, params = {}) {
+      try {
+        console.log('Starting 3-part mosaic carousel interaction...');
+        
+        const carouselButtonIds = params.carouselButtonIds || ["5t6HyGNG6hP", "5WDjzOok9ZD"];
+        const nextButtonId = params.nextButtonId || "5WP8Lt8v1CQ";
+        const delayBetweenClicks = params.delayBetweenClicks || 2500;
+        const waitAfterComplete = params.waitAfterComplete || 2000;
+        
+        console.log(`Will click ${carouselButtonIds.length} different carousel buttons:`);
+        console.log(`1. ${carouselButtonIds[0]} → reveals left+middle sections`);
+        console.log(`2. ${carouselButtonIds[1]} → completes 3-part mechanism mosaic`);
+        
+        // Progressive mosaic revelation - click different buttons in sequence
+        for (let i = 0; i < carouselButtonIds.length; i++) {
+          const buttonId = carouselButtonIds[i];
+          const partNumber = i + 1;
+          const partDescription = i === 0 ? "left+middle sections" : "complete 3-part mechanism";
+          
+          console.log(`\n=== Mosaic Part ${partNumber}/${carouselButtonIds.length}: ${partDescription} ===`);
+          console.log(`🎯 Clicking carousel button: ${buttonId}`);
+          
+          try {
+            // Wait for carousel button to be visible and ready
+            const buttonExists = await scormFrame.waitForSelector(`[data-model-id="${buttonId}"]`, { 
+              visible: true, 
+              timeout: 10000 
+            }).then(() => true).catch(() => false);
+            
+            if (buttonExists) {
+              // Check if button is clickable
+              const isClickable = await scormFrame.evaluate((buttonId) => {
+                const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+                if (!button) return false;
+                
+                const style = window.getComputedStyle(button);
+                const rect = button.getBoundingClientRect();
+                
+                return style.opacity !== '0' && 
+                       style.visibility !== 'hidden' && 
+                       style.display !== 'none' &&
+                       rect.width > 0 && rect.height > 0;
+              }, buttonId);
+              
+              if (isClickable) {
+                // Try multiple click methods for carousel progression
+                try {
+                  await scormFrame.click(`[data-model-id="${buttonId}"]`);
+                  console.log(`✅ ${partDescription} revealed with frame.click()`);
+                } catch (clickError) {
+                  console.log('Direct click failed, using evaluate method:', clickError.message);
+                  
+                  // Fallback to evaluate method with comprehensive event handling
+                  await scormFrame.evaluate((buttonId) => {
+                    const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+                    if (button) {
+                      // For carousel buttons, focus on the SVG eventable group
+                      const eventableElement = button.querySelector('svg g.eventable') || 
+                                             button.querySelector('svg') ||
+                                             button;
+                      
+                      if (eventableElement) {
+                        // Create complete interaction sequence for mosaic progression
+                        const rect = eventableElement.getBoundingClientRect();
+                        const x = rect.left + rect.width/2;
+                        const y = rect.top + rect.height/2;
+                        
+                        const events = [
+                          new MouseEvent('mouseover', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                          new MouseEvent('mouseenter', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                          new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0}),
+                          new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0}),
+                          new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0}),
+                          new MouseEvent('mouseleave', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y})
+                        ];
+                        
+                        // Dispatch events with small delays for natural interaction
+                        events.forEach((event, index) => {
+                          setTimeout(() => eventableElement.dispatchEvent(event), index * 50);
+                        });
+                        
+                        console.log(`[BROWSER] Dispatched mosaic progression events on: ${buttonId}`);
+                        return true;
+                      }
+                      
+                      // Final fallback
+                      button.click();
+                      console.log(`[BROWSER] Fallback clicked carousel button: ${buttonId}`);
+                      return true;
+                    }
+                    return false;
+                  }, buttonId);
+                  
+                  console.log(`✅ ${partDescription} revealed with evaluate method`);
+                }
+                
+                // Wait between mosaic parts (except after the last part)
+                if (i < carouselButtonIds.length - 1) {
+                  console.log(`⏳ ${partDescription} revealed! Waiting ${delayBetweenClicks}ms for animation before next part...`);
+                  await sleep(delayBetweenClicks);
+                }
+                
+                // Verify the mosaic part was revealed by checking for content changes
+                const partRevealed = await scormFrame.evaluate((partNumber) => {
+                  // Look for mosaic content or animation changes that indicate progression
+                  const mosaicContent = document.querySelector('.slide-object, [data-dv_comp]');
+                  return mosaicContent !== null; // Basic verification that slide is active
+                }, partNumber).catch(() => true);
+                
+                if (partRevealed) {
+                  console.log(`✅ Mosaic ${partDescription} successfully revealed`);
+                } else {
+                  console.log(`⚠️ Mosaic part ${partNumber} may not have revealed properly, continuing...`);
+                }
+              } else {
+                console.log(`⚠️ Carousel button ${buttonId} not clickable for part ${partNumber}`);
+              }
+            } else {
+              console.log(`❌ Carousel button ${buttonId} not found for part ${partNumber}`);
+            }
+          } catch (error) {
+            console.error(`Error revealing mosaic part ${partNumber} (${buttonId}):`, error.message);
+            console.log('Continuing to next part...');
+          }
+        }
+        
+        // Wait after complete mosaic is revealed
+        console.log(`\n🧩 Complete 3-part mechanism mosaic revealed! Waiting ${waitAfterComplete}ms before next slide...`);
+        await sleep(waitAfterComplete);
+        
+        // Now click the next slide button
+        console.log(`\n🎯 Clicking next slide button: ${nextButtonId}`);
+        
+        try {
+          const nextButtonExists = await scormFrame.waitForSelector(`[data-model-id="${nextButtonId}"]`, { 
+            visible: true, 
+            timeout: 10000 
+          }).then(() => true).catch(() => false);
+          
+          if (nextButtonExists) {
+            try {
+              await scormFrame.click(`[data-model-id="${nextButtonId}"]`);
+              console.log(`✅ Clicked next button ${nextButtonId} with frame.click()`);
+            } catch (clickError) {
+              console.log('Direct next button click failed, using evaluate method:', clickError.message);
+              
+              await scormFrame.evaluate((buttonId) => {
+                const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+                if (button) {
+                  const eventableElement = button.querySelector('svg g.eventable') || button;
+                  
+                  if (eventableElement) {
+                    const rect = eventableElement.getBoundingClientRect();
+                    const x = rect.left + rect.width/2;
+                    const y = rect.top + rect.height/2;
+                    
+                    const events = [
+                      new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y})
+                    ];
+                    
+                    events.forEach(event => eventableElement.dispatchEvent(event));
+                    console.log(`[BROWSER] Dispatched events on next button: ${buttonId}`);
+                    return true;
+                  }
+                  
+                  button.click();
+                  console.log(`[BROWSER] Clicked next button: ${buttonId}`);
+                  return true;
+                }
+                return false;
+              }, nextButtonId);
+            }
+            
+            console.log(`✅ Successfully clicked next slide button: ${nextButtonId}`);
+            await sleep(params.waitAfterNext || 3000);
+          } else {
+            console.log(`❌ Next button ${nextButtonId} not found`);
+          }
+        } catch (error) {
+          console.error(`Error clicking next button ${nextButtonId}:`, error.message);
+        }
+        
+        console.log('🎉 3-part mosaic carousel completed!');
+        return true;
+      } catch (error) {
+        console.error('Error in handleCarouselMosaic:', error.message);
+        return false;
+      }
+    },
+
+    /**
+     * Click first Perenterol completion screen Weiter button
+     * @param {Object} scormFrame - Puppeteer frame
+     * @param {Object} params - Additional parameters
+     * @returns {Promise<boolean>} - Success status
+     */
+    clickPerenterolWeiterButton1: async function(scormFrame, params = {}) {
+      try {
+        console.log('Clicking first Perenterol completion Weiter button...');
+        
+        const buttonId = "5g1TJUoJ7me";
+        
+        // Wait for button to be visible
+        const buttonExists = await scormFrame.waitForSelector(`[data-model-id="${buttonId}"]`, { 
+          visible: true, 
+          timeout: 10000 
+        }).then(() => true).catch(() => false);
+        
+        if (buttonExists) {
+          try {
+            await scormFrame.click(`[data-model-id="${buttonId}"]`);
+            console.log(`✅ Clicked first Weiter button ${buttonId} with frame.click()`);
+          } catch (clickError) {
+            console.log('Direct click failed, using evaluate method:', clickError.message);
+            
+            await scormFrame.evaluate((buttonId) => {
+              const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+              if (button) {
+                const eventableElement = button.querySelector('svg g.eventable') || button;
+                
+                if (eventableElement) {
+                  const rect = eventableElement.getBoundingClientRect();
+                  const x = rect.left + rect.width/2;
+                  const y = rect.top + rect.height/2;
+                  
+                  const events = [
+                    new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                    new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                    new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y})
+                  ];
+                  
+                  events.forEach(event => eventableElement.dispatchEvent(event));
+                  console.log(`[BROWSER] Dispatched events on first Weiter button: ${buttonId}`);
+                  return true;
+                }
+                
+                button.click();
+                console.log(`[BROWSER] Clicked first Weiter button: ${buttonId}`);
+                return true;
+              }
+              return false;
+            }, buttonId);
+          }
+          
+          console.log('✅ First completion Weiter button clicked successfully');
+          await sleep(3000);
+          return true;
+        } else {
+          console.log(`❌ First Weiter button ${buttonId} not found`);
+          return false;
+        }
+      } catch (error) {
+        console.error('Error clicking first Perenterol Weiter button:', error.message);
+        return false;
+      }
+    },
+
+    /**
+     * Click second Perenterol completion screen Weiter button
+     * @param {Object} scormFrame - Puppeteer frame
+     * @param {Object} params - Additional parameters
+     * @returns {Promise<boolean>} - Success status
+     */
+    clickPerenterolWeiterButton2: async function(scormFrame, params = {}) {
+      try {
+        console.log('Clicking second Perenterol completion Weiter button...');
+        
+        const buttonId = "5f98Jcw4z44";
+        
+        // Wait for button to be visible
+        const buttonExists = await scormFrame.waitForSelector(`[data-model-id="${buttonId}"]`, { 
+          visible: true, 
+          timeout: 10000 
+        }).then(() => true).catch(() => false);
+        
+        if (buttonExists) {
+          try {
+            await scormFrame.click(`[data-model-id="${buttonId}"]`);
+            console.log(`✅ Clicked second Weiter button ${buttonId} with frame.click()`);
+          } catch (clickError) {
+            console.log('Direct click failed, using evaluate method:', clickError.message);
+            
+            await scormFrame.evaluate((buttonId) => {
+              const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+              if (button) {
+                const eventableElement = button.querySelector('svg g.eventable') || button;
+                
+                if (eventableElement) {
+                  const rect = eventableElement.getBoundingClientRect();
+                  const x = rect.left + rect.width/2;
+                  const y = rect.top + rect.height/2;
+                  
+                  const events = [
+                    new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                    new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                    new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y})
+                  ];
+                  
+                  events.forEach(event => eventableElement.dispatchEvent(event));
+                  console.log(`[BROWSER] Dispatched events on second Weiter button: ${buttonId}`);
+                  return true;
+                }
+                
+                button.click();
+                console.log(`[BROWSER] Clicked second Weiter button: ${buttonId}`);
+                return true;
+              }
+              return false;
+            }, buttonId);
+          }
+          
+          console.log('✅ Second completion Weiter button clicked successfully');
+          await sleep(3000);
+          return true;
+        } else {
+          console.log(`❌ Second Weiter button ${buttonId} not found`);
+          return false;
+        }
+      } catch (error) {
+        console.error('Error clicking second Perenterol Weiter button:', error.message);
+        return false;
+      }
+    },
+
+    /**
+     * Click final Perenterol screen Weiter button
+     * @param {Object} scormFrame - Puppeteer frame
+     * @param {Object} params - Additional parameters
+     * @returns {Promise<boolean>} - Success status
+     */
+    clickPerenterolWeiterButton3: async function(scormFrame, params = {}) {
+      try {
+        console.log('Clicking final Perenterol screen Weiter button...');
+        
+        const buttonId = "69t4j5DGpuw";
+        
+        // Wait for button to be visible
+        const buttonExists = await scormFrame.waitForSelector(`[data-model-id="${buttonId}"]`, { 
+          visible: true, 
+          timeout: 10000 
+        }).then(() => true).catch(() => false);
+        
+        if (buttonExists) {
+          try {
+            await scormFrame.click(`[data-model-id="${buttonId}"]`);
+            console.log(`✅ Clicked final Weiter button ${buttonId} with frame.click()`);
+          } catch (clickError) {
+            console.log('Direct click failed, using evaluate method:', clickError.message);
+            
+            await scormFrame.evaluate((buttonId) => {
+              const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+              if (button) {
+                const eventableElement = button.querySelector('svg g.eventable') || button;
+                
+                if (eventableElement) {
+                  const rect = eventableElement.getBoundingClientRect();
+                  const x = rect.left + rect.width/2;
+                  const y = rect.top + rect.height/2;
+                  
+                  const events = [
+                    new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                    new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                    new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y})
+                  ];
+                  
+                  events.forEach(event => eventableElement.dispatchEvent(event));
+                  console.log(`[BROWSER] Dispatched events on final Weiter button: ${buttonId}`);
+                  return true;
+                }
+                
+                button.click();
+                console.log(`[BROWSER] Clicked final Weiter button: ${buttonId}`);
+                return true;
+              }
+              return false;
+            }, buttonId);
+          }
+          
+          console.log('✅ Final Weiter button clicked successfully');
+          await sleep(5000);
+          return true;
+        } else {
+          console.log(`❌ Final Weiter button ${buttonId} not found`);
+          return false;
+        }
+      } catch (error) {
+        console.error('Error clicking final Perenterol Weiter button:', error.message);
         return false;
       }
     }
