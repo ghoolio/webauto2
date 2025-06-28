@@ -1925,7 +1925,8 @@ async function handleMessageDialogFive(frame, params = {}) {
     
     return false;
   }
-}/**
+}
+/**
  * Handle slider interaction with EXACT approach copied from dorithricin1.js
  * @param {Object} frame - Puppeteer page or frame 
  * @param {Object} params - Additional parameters

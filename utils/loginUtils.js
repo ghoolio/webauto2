@@ -13,10 +13,6 @@ async function performLogin(page, username, password) {
   try {
     console.log(`Attempting login for user: ${username}`);
 
-    // Take screenshot of the current state
-    await page.screenshot({ path: 'before-login-attempt.png' });
-    console.log('Saved screenshot before login attempt');
-
     // First visit the main site to allow all cookies to set up properly
     console.log('Visiting main site first to initialize cookies...');
     await page.goto('https://medice-health-family.com/de/', {
@@ -128,10 +124,6 @@ async function performLogin(page, username, password) {
       console.log('No remember me checkbox found');
     }
 
-    // Take screenshot before submitting
-    await page.screenshot({ path: 'login-form-filled.png' });
-    console.log('Saved screenshot of filled login form');
-
     // Identify the submit button more reliably
     const submitButtonInfo = await page.evaluate(() => {
       // Look for button with ID first
@@ -191,10 +183,6 @@ async function performLogin(page, username, password) {
       await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 120000 })
         .catch(e => console.log('Navigation error:', e.message));
     }
-
-    // Take screenshot after login attempt
-    await page.screenshot({ path: 'after-login-attempt.png' });
-    console.log('Saved screenshot after login attempt');
 
     // Analyze current page state in detail
     const pageState = await page.evaluate(() => {
@@ -291,9 +279,6 @@ async function performLogin(page, username, password) {
         timeout: 60000
       }).catch(e => console.log('Academy home navigation error:', e.message));
       
-      // Take a final verification screenshot
-      await page.screenshot({ path: 'final-verification.png' });
-      
       return true;
     } else {
       console.log('Login verification failed. Detailed diagnostics:', loginVerification);
@@ -305,9 +290,6 @@ async function performLogin(page, username, password) {
         waitUntil: 'networkidle2',
         timeout: 60000
       }).catch(e => console.log('Academy home navigation error:', e.message));
-      
-      // Take a final verification screenshot
-      await page.screenshot({ path: 'final-verification.png' });
       
       // One final check
       const finalCheck = await page.evaluate(() => {
@@ -831,9 +813,6 @@ async function redirectToAcademy(page) {
     // Check if we've arrived
     const finalUrl = page.url();
     console.log('Final URL after redirect attempt:', finalUrl);
-    
-    // Take screenshot after redirect
-    await page.screenshot({ path: 'academy-redirect-result.png' });
     
     // Check if we need login again or are on academy
     const finalCheck = await page.evaluate(() => {

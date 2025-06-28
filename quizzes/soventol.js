@@ -72,7 +72,7 @@ module.exports = {
       },
       waitAfter: 3000
     },
-    /*
+    
     // Slide 5: Pharmacy scene - click orange plus button
     {
       type: "PHARMACY_SCENE",
@@ -166,7 +166,6 @@ module.exports = {
       },
       waitAfter: 5000
     },
-    */
 
     // Slide 10: Drag and Drop Hotspots Slide BS
     {
@@ -187,32 +186,87 @@ module.exports = {
         waitAfterComplete: 3000
       },
       waitAfter: 5000
+    }, 
+
+    // Slide 11: Simple timed slide - wait 8 seconds for content/animation then proceed
+    {
+      type: "SIMPLE_SLIDE",
+      action: "handleSimpleSlide", 
+      useScormFrame: true,
+      forceExecute: true,
+      params: {
+        nextButtonId: "65LuQWennx6",   // Orange next slide button
+        waitBeforeClick: 8000,         // Wait 8 seconds for content/animation
+        waitAfterNext: 3000
+      },
+      waitAfter: 5000
     },
+
+    // Slide 12: Multiple Choice Quiz - Select 3 options, submit, close dialog, proceed
+    {
+      type: "MULTIPLE_CHOICE_QUIZ",
+      action: "handleSoventolMultipleChoiceQuiz",
+      useScormFrame: true,
+      forceExecute: true,
+      params: {
+        choiceButtonIds: [
+          "6TcBwCDEggU",  // First choice circle
+          "6NN9l6OFYoZ",  // Second choice circle  
+          "5kOsfbgzDZw"   // Third choice circle
+        ],
+        submitButtonId: "5eQof3pwEAp",    // "Absenden" button
+        dialogCloseButtonId: "60TDbRClej2", // X button to close success dialog
+        nextButtonId: "65LuQWennx6",      // Next slide button
+        delayBetweenChoices: 1000,        // Wait between selecting choices
+        waitAfterSubmit: 2000,            // Wait for dialog to animate in
+        waitAfterCloseDialog: 1500,       // Wait for next button to appear
+        waitAfterNext: 3000
+      },
+      waitAfter: 5000
+    }, 
     // === QUIZ SLIDES WILL BE ADDED HERE PROGRESSIVELY ===
     // (User will provide screenshots and DOM details for each slide)
     
     // === COMPLETION FLOW (Following dorithricin.js pattern) ===
-    // Completion screen 1
+    // Slide 13: First completion screen with "Weiter" button
     {
-      type: "COMPLETION_SCREEN",
-      action: "clickSoventolWeiterButton1",
+      type: "COMPLETION_SLIDE",
+      action: "handleSimpleSlide", 
       useScormFrame: true,
-      waitAfter: 3000
+      forceExecute: true,
+      params: {
+        nextButtonId: "6Xd71gHGQzH",   // Blue "Weiter" button
+        waitBeforeClick: 3000,         // Wait for completion screen to load
+        waitAfterNext: 3000
+      },
+      waitAfter: 5000
     },
 
     // Completion screen 2
     {
-      type: "COMPLETION_SCREEN",
-      action: "clickSoventolWeiterButton2",
+      type: "COMPLETION_SLIDE",
+      action: "handleSimpleSlide", 
       useScormFrame: true,
-      waitAfter: 3000
+      forceExecute: true,
+      params: {
+        nextButtonId: "UNKNOWN_BUTTON_ID",  //
+        waitBeforeClick: 3000,
+        waitAfterNext: 3000
+      },
+      waitAfter: 5000
     },
     
     // Final screen with final Weiter button
     {
-      type: "FINAL_SCREEN",
-      action: "clickSoventolWeiterButton3",
+      type: "FINAL_COMPLETION",
+      action: "handleFinalSoventolCompletion",
       useScormFrame: true,
+      forceExecute: true,
+      params: {
+        finalButtonId: "6CpW3wxY3br",    // Blue "Training schließen" button
+        waitBeforeClick: 3000,           // Wait for final screen to load
+        completionMessage: "🎉 Soventol training completed successfully!"
+      },
       waitAfter: 5000
     }
     
@@ -1745,6 +1799,275 @@ module.exports = {
     },
 
     /**
+     * Handle Soventol multiple choice quiz - select options, submit, close dialog, proceed
+     * @param {Object} scormFrame - Puppeteer frame
+     * @param {Object} params - Additional parameters
+     * @returns {Promise<boolean>} - Success status
+     */
+    handleSoventolMultipleChoiceQuiz: async function(scormFrame, params = {}) {
+      try {
+        console.log('Starting Soventol multiple choice quiz interaction...');
+        
+        const choiceButtonIds = params.choiceButtonIds || [];
+        const submitButtonId = params.submitButtonId || "5eQof3pwEAp";
+        const dialogCloseButtonId = params.dialogCloseButtonId || "60TDbRClej2";
+        const nextButtonId = params.nextButtonId || "65LuQWennx6";
+        const delayBetweenChoices = params.delayBetweenChoices || 1000;
+        const waitAfterSubmit = params.waitAfterSubmit || 2000;
+        const waitAfterCloseDialog = params.waitAfterCloseDialog || 1500;
+
+        // STEP 1: Select all multiple choice options
+        console.log('\n=== STEP 1: Selecting multiple choice options ===');
+        
+        for (let i = 0; i < choiceButtonIds.length; i++) {
+          const choiceId = choiceButtonIds[i];
+          console.log(`Selecting choice ${i + 1}/${choiceButtonIds.length}: ${choiceId}`);
+          
+          try {
+            // Wait for choice button to be available
+            const choiceExists = await scormFrame.waitForSelector(`[data-model-id="${choiceId}"]`, { 
+              visible: true, 
+              timeout: 8000 
+            }).then(() => true).catch(() => false);
+            
+            if (choiceExists) {
+              try {
+                await scormFrame.click(`[data-model-id="${choiceId}"]`);
+                console.log(`✅ Choice ${i + 1} clicked with frame.click()`);
+              } catch (clickError) {
+                console.log(`Direct click failed for choice ${i + 1}, using evaluate method:`, clickError.message);
+                
+                // Fallback to evaluate method with enhanced clicking
+                await scormFrame.evaluate((buttonId) => {
+                  const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+                  if (button) {
+                    // Try clicking the eventable SVG element first
+                    const eventableElement = button.querySelector('svg g.eventable') || button.querySelector('path[data-accepts="events"]') || button;
+                    
+                    if (eventableElement) {
+                      const rect = eventableElement.getBoundingClientRect();
+                      const x = rect.left + rect.width/2;
+                      const y = rect.top + rect.height/2;
+                      
+                      // Comprehensive event sequence for reliable selection
+                      const events = [
+                        new MouseEvent('mouseenter', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                        new MouseEvent('mouseover', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                        new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0}),
+                        new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0}),
+                        new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0})
+                      ];
+                      
+                      events.forEach(event => eventableElement.dispatchEvent(event));
+                      console.log(`[BROWSER] Dispatched events on choice: ${buttonId}`);
+                      return true;
+                    }
+                    
+                    // Fallback to direct click
+                    button.click();
+                    console.log(`[BROWSER] Direct clicked choice: ${buttonId}`);
+                    return true;
+                  }
+                  return false;
+                }, choiceId);
+              }
+              
+              console.log(`✅ Choice ${i + 1} selected successfully`);
+              
+              // Wait between choices
+              if (i < choiceButtonIds.length - 1) {
+                await sleep(delayBetweenChoices);
+              }
+            } else {
+              console.log(`❌ Choice ${i + 1} (${choiceId}) not found`);
+            }
+          } catch (error) {
+            console.error(`Error selecting choice ${i + 1}:`, error.message);
+          }
+        }
+        
+        console.log('✅ All multiple choice options selected');
+        await sleep(1000);
+
+        // STEP 2: Click the Submit (Absenden) button
+        console.log('\n=== STEP 2: Clicking Submit (Absenden) button ===');
+        
+        try {
+          const submitExists = await scormFrame.waitForSelector(`[data-model-id="${submitButtonId}"]`, { 
+            visible: true, 
+            timeout: 8000 
+          }).then(() => true).catch(() => false);
+          
+          if (submitExists) {
+            try {
+              await scormFrame.click(`[data-model-id="${submitButtonId}"]`);
+              console.log(`✅ Submit button clicked with frame.click()`);
+            } catch (clickError) {
+              console.log('Direct submit click failed, using evaluate method:', clickError.message);
+              
+              await scormFrame.evaluate((buttonId) => {
+                const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+                if (button) {
+                  const eventableElement = button.querySelector('svg g.eventable') || button;
+                  
+                  if (eventableElement) {
+                    const rect = eventableElement.getBoundingClientRect();
+                    const x = rect.left + rect.width/2;
+                    const y = rect.top + rect.height/2;
+                    
+                    const events = [
+                      new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y})
+                    ];
+                    
+                    events.forEach(event => eventableElement.dispatchEvent(event));
+                    console.log(`[BROWSER] Dispatched events on submit button: ${buttonId}`);
+                    return true;
+                  }
+                  
+                  button.click();
+                  console.log(`[BROWSER] Direct clicked submit button: ${buttonId}`);
+                  return true;
+                }
+                return false;
+              }, submitButtonId);
+            }
+            
+            console.log('✅ Submit button clicked successfully');
+          } else {
+            console.log(`❌ Submit button ${submitButtonId} not found`);
+            return false;
+          }
+        } catch (error) {
+          console.error(`Error clicking submit button:`, error.message);
+          return false;
+        }
+
+        // STEP 3: Wait for success dialog to animate in and close it
+        console.log('\n=== STEP 3: Handling success dialog ===');
+        console.log(`⏳ Waiting ${waitAfterSubmit}ms for success dialog to animate in...`);
+        await sleep(waitAfterSubmit);
+        
+        console.log(`🎯 Clicking dialog close (X) button: ${dialogCloseButtonId}`);
+        
+        try {
+          const dialogCloseExists = await scormFrame.waitForSelector(`[data-model-id="${dialogCloseButtonId}"]`, { 
+            visible: true, 
+            timeout: 8000 
+          }).then(() => true).catch(() => false);
+          
+          if (dialogCloseExists) {
+            try {
+              await scormFrame.click(`[data-model-id="${dialogCloseButtonId}"]`);
+              console.log(`✅ Dialog close button clicked with frame.click()`);
+            } catch (clickError) {
+              console.log('Direct dialog close click failed, using evaluate method:', clickError.message);
+              
+              await scormFrame.evaluate((buttonId) => {
+                const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+                if (button) {
+                  const eventableElement = button.querySelector('svg g.eventable') || button;
+                  
+                  if (eventableElement) {
+                    const rect = eventableElement.getBoundingClientRect();
+                    const x = rect.left + rect.width/2;
+                    const y = rect.top + rect.height/2;
+                    
+                    const events = [
+                      new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y})
+                    ];
+                    
+                    events.forEach(event => eventableElement.dispatchEvent(event));
+                    console.log(`[BROWSER] Dispatched events on dialog close button: ${buttonId}`);
+                    return true;
+                  }
+                  
+                  button.click();
+                  console.log(`[BROWSER] Direct clicked dialog close button: ${buttonId}`);
+                  return true;
+                }
+                return false;
+              }, dialogCloseButtonId);
+            }
+            
+            console.log('✅ Success dialog closed successfully');
+          } else {
+            console.log(`❌ Dialog close button ${dialogCloseButtonId} not found`);
+          }
+        } catch (error) {
+          console.error(`Error closing dialog:`, error.message);
+        }
+
+        // STEP 4: Wait for next button to appear and click it
+        console.log('\n=== STEP 4: Proceeding to next slide ===');
+        console.log(`⏳ Waiting ${waitAfterCloseDialog}ms for next button to become available...`);
+        await sleep(waitAfterCloseDialog);
+        
+        console.log(`🎯 Clicking next slide button: ${nextButtonId}`);
+        
+        try {
+          const nextButtonExists = await scormFrame.waitForSelector(`[data-model-id="${nextButtonId}"]`, { 
+            visible: true, 
+            timeout: 10000 
+          }).then(() => true).catch(() => false);
+          
+          if (nextButtonExists) {
+            try {
+              await scormFrame.click(`[data-model-id="${nextButtonId}"]`);
+              console.log(`✅ Next button clicked with frame.click()`);
+            } catch (clickError) {
+              console.log('Direct next button click failed, using evaluate method:', clickError.message);
+              
+              await scormFrame.evaluate((buttonId) => {
+                const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+                if (button) {
+                  const eventableElement = button.querySelector('svg g.eventable') || button;
+                  
+                  if (eventableElement) {
+                    const rect = eventableElement.getBoundingClientRect();
+                    const x = rect.left + rect.width/2;
+                    const y = rect.top + rect.height/2;
+                    
+                    const events = [
+                      new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y})
+                    ];
+                    
+                    events.forEach(event => eventableElement.dispatchEvent(event));
+                    console.log(`[BROWSER] Dispatched events on next button: ${buttonId}`);
+                    return true;
+                  }
+                  
+                  button.click();
+                  console.log(`[BROWSER] Direct clicked next button: ${buttonId}`);
+                  return true;
+                }
+                return false;
+              }, nextButtonId);
+            }
+            
+            console.log(`✅ Successfully proceeded to next slide!`);
+            await sleep(params.waitAfterNext || 3000);
+          } else {
+            console.log(`❌ Next button ${nextButtonId} not found`);
+          }
+        } catch (error) {
+          console.error(`Error clicking next button:`, error.message);
+        }
+        
+        console.log('🎉 Soventol multiple choice quiz completed successfully!');
+        return true;
+      } catch (error) {
+        console.error('Error in handleSoventolMultipleChoiceQuiz:', error.message);
+        return false;
+      }
+    },
+
+    /**
      * Click first Soventol completion screen Weiter button
      * @param {Object} scormFrame - Puppeteer frame
      * @param {Object} params - Additional parameters
@@ -1881,71 +2204,83 @@ module.exports = {
     },
 
     /**
-     * Click final Soventol screen Weiter button
+     * Handle final Soventol training completion
      * @param {Object} scormFrame - Puppeteer frame
      * @param {Object} params - Additional parameters
      * @returns {Promise<boolean>} - Success status
      */
-    clickSoventolWeiterButton3: async function(scormFrame, params = {}) {
+    handleFinalSoventolCompletion: async function(scormFrame, params = {}) {
       try {
-        console.log('Clicking final Soventol screen Weiter button...');
+        console.log('🎯 Starting final Soventol training completion...');
         
-        // Will be updated with specific button ID when we get to completion screens
-        const buttonId = "PLACEHOLDER_BUTTON_ID_3";
+        const finalButtonId = params.finalButtonId || "6CpW3wxY3br";
+        const waitBeforeClick = params.waitBeforeClick || 3000;
+        const completionMessage = params.completionMessage || "Training completed!";
+
+        console.log(`⏳ Waiting ${waitBeforeClick}ms for final completion screen to load...`);
+        await sleep(waitBeforeClick);
+
+        console.log(`🎯 Clicking final "Training schließen" button: ${finalButtonId}`);
         
-        // Wait for button to be visible
-        const buttonExists = await scormFrame.waitForSelector(`[data-model-id="${buttonId}"]`, { 
-          visible: true, 
-          timeout: 10000 
-        }).then(() => true).catch(() => false);
-        
-        if (buttonExists) {
-          try {
-            await scormFrame.click(`[data-model-id="${buttonId}"]`);
-            console.log(`✅ Clicked final Weiter button ${buttonId} with frame.click()`);
-          } catch (clickError) {
-            console.log('Direct click failed, using evaluate method:', clickError.message);
-            
-            await scormFrame.evaluate((buttonId) => {
-              const button = document.querySelector(`[data-model-id="${buttonId}"]`);
-              if (button) {
-                const eventableElement = button.querySelector('svg g.eventable') || button;
-                
-                if (eventableElement) {
-                  const rect = eventableElement.getBoundingClientRect();
-                  const x = rect.left + rect.width/2;
-                  const y = rect.top + rect.height/2;
+        try {
+          const finalButtonExists = await scormFrame.waitForSelector(`[data-model-id="${finalButtonId}"]`, { 
+            visible: true, 
+            timeout: 10000 
+          }).then(() => true).catch(() => false);
+          
+          if (finalButtonExists) {
+            try {
+              await scormFrame.click(`[data-model-id="${finalButtonId}"]`);
+              console.log(`✅ Final button clicked with frame.click()`);
+            } catch (clickError) {
+              console.log('Direct final button click failed, using evaluate method:', clickError.message);
+              
+              await scormFrame.evaluate((buttonId) => {
+                const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+                if (button) {
+                  const eventableElement = button.querySelector('svg g.eventable') || button;
                   
-                  const events = [
-                    new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
-                    new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
-                    new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y})
-                  ];
+                  if (eventableElement) {
+                    const rect = eventableElement.getBoundingClientRect();
+                    const x = rect.left + rect.width/2;
+                    const y = rect.top + rect.height/2;
+                    
+                    const events = [
+                      new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y})
+                    ];
+                    
+                    events.forEach(event => eventableElement.dispatchEvent(event));
+                    console.log(`[BROWSER] Dispatched events on final button: ${buttonId}`);
+                    return true;
+                  }
                   
-                  events.forEach(event => eventableElement.dispatchEvent(event));
-                  console.log(`[BROWSER] Dispatched events on final Weiter button: ${buttonId}`);
+                  button.click();
+                  console.log(`[BROWSER] Direct clicked final button: ${buttonId}`);
                   return true;
                 }
-                
-                button.click();
-                console.log(`[BROWSER] Clicked final Weiter button: ${buttonId}`);
-                return true;
-              }
-              return false;
-            }, buttonId);
+                return false;
+              }, finalButtonId);
+            }
+            
+            console.log('✅ Final completion button clicked successfully!');
+            await sleep(2000);
+            
+            console.log(completionMessage);
+            return true;
+          } else {
+            console.log(`❌ Final button ${finalButtonId} not found`);
+            return false;
           }
-          
-          console.log('✅ Final Weiter button clicked successfully');
-          await sleep(5000);
-          return true;
-        } else {
-          console.log(`❌ Final Weiter button ${buttonId} not found`);
+        } catch (error) {
+          console.error(`Error clicking final button:`, error.message);
           return false;
         }
       } catch (error) {
-        console.error('Error clicking final Soventol Weiter button:', error.message);
+        console.error('Error in handleFinalSoventolCompletion:', error.message);
         return false;
       }
-    }
+    },
   }
 };

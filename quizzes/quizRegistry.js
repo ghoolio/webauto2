@@ -24,11 +24,10 @@ const quizzes = {
 
 // List of enabled quizzes (can be controlled through configuration)
 let enabledQuizzes = [
-  'Soventol',
-  'Perenterol',
-  'Dorithricin',
   'CystinolAkut',
-  // 'Dorithricin',
+  'Perenterol',
+  'Soventol',
+  'Dorithricin',
   // Enable/disable quizzes as needed
 ];
 

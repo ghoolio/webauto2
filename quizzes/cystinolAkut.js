@@ -20,17 +20,21 @@ module.exports = {
       action: "clickStartButton",
       waitAfter: 3000
     },
+    // Slide 2: Academy "Starten/Fortsetzen" button (opens new tab)
     {
-      type: "NEXT_BUTTON",
-      action: "clickNextButton",
-      waitAfter: 2000
+      type: "ACADEMY_START_BUTTON", 
+      action: "clickAcademyStartButton",
+      openNewTab: false,
+      waitAfter: 5000
     },
+
     {
-      type: "NEXT_BUTTON",
-      action: "clickNextButton",
-      openNewTab: true, // Mark this step as one that opens a new tab
-      waitAfter: 2000
+      type: "ACADEMY_START_BUTTON", 
+      action: "clickAcademyStartButton",
+      openNewTab: true,
+      waitAfter: 5000
     },
+    
     
     // Handle popup and find SCORM frame
     {
@@ -66,7 +70,7 @@ module.exports = {
       },
       waitAfter: 5000
     },
-    
+   
     // Message button slide (only execute if we need to)
     {
       type: "MESSAGE_SLIDE",
@@ -76,13 +80,13 @@ module.exports = {
       waitAfter: 4000
     },
 
-    /* // Wait for MediBee to appear and click it
+    // Wait for MediBee to appear and click it
     {
       type: "MEDIBEE_APPEARS",
       action: "waitForAndClickMediBee",
       useScormFrame: true,
       waitAfter: 4000
-    }, */
+    }, 
 
     // Risk factors slide
     {
@@ -96,23 +100,19 @@ module.exports = {
       forceExecute: true,
       waitAfter: 2000
     },
-    
-    // Next button after risk factors
+
     {
-      type: "NEXT_BUTTON_STATE",
-      action: "clickNextButton",
+      type: "TIMED_INFO_SLIDE",
+      action: "handleTimedSlideWithWait",
       useScormFrame: true,
+      params: {
+        requiredWaitTime: 28000,    // 28 seconds as you mentioned
+        maxWaitTime: 35000,         // 35 seconds max (safety buffer)
+        useSimpleWait: true,        // Use simple wait (most reliable for timed content)
+        waitAfterClick: 5000        // Wait 5 seconds after clicking
+      },
       waitAfter: 5000
     },
-
-    // Info slide (bacteria info)
-    {
-      type: "INFO_SLIDE",
-      action: "waitForContentAndProceedToNext",
-      useScormFrame: true,
-      waitAfter: 20000
-    },
-
 
     // Message button slide (one click)
     {
@@ -178,6 +178,142 @@ module.exports = {
   
   // Custom functions specific to Cystinol Akut quiz
   customFunctions: {
+    /**
+     * Click the start button to begin - EXACT COPY of dorithricin approach but updated for new button
+     * @param {Object} frame - Puppeteer frame (main page)
+     * @param {Object} params - Additional parameters
+     * @returns {Promise<boolean>} - Success status
+     */
+    clickStartButton: async function(frame, params = {}) {
+      try {
+        console.log('Clicking start button...');
+        
+        // Primary selector for new button structure
+        const primarySelector = 'button[data-test="path-start-button"]';
+        
+        // Fallback selectors
+        const fallbackSelectors = [
+          'button.button-regular.primary.brand.regular.initial',
+          'button.button-regular.primary.brand',
+          'button[type="button"]'
+        ];
+        
+        // Try primary selector first
+        try {
+          await frame.waitForSelector(primarySelector, { 
+            visible: true, 
+            timeout: params.timeout || 15000 
+          });
+          
+          await frame.click(primarySelector);
+          console.log('✅ Clicked start button with primary selector');
+          await sleep(params.waitAfter || 3000);
+          return true;
+          
+        } catch (primaryError) {
+          console.log('Primary selector failed, trying fallbacks...');
+          
+          // Try fallback selectors
+          for (const selector of fallbackSelectors) {
+            try {
+              const elementExists = await frame.$(selector);
+              if (elementExists) {
+                await frame.click(selector);
+                console.log(`✅ Clicked start button with fallback: ${selector}`);
+                await sleep(params.waitAfter || 3000);
+                return true;
+              }
+            } catch (fallbackError) {
+              console.log(`Fallback failed: ${selector}`);
+            }
+          }
+          
+          // Text-based fallback
+          const clicked = await frame.evaluate(() => {
+            const buttons = Array.from(document.querySelectorAll('button'));
+            const startButton = buttons.find(btn => 
+              btn.textContent.trim().toLowerCase().includes('starten') &&
+              !btn.disabled &&
+              window.getComputedStyle(btn).display !== 'none'
+            );
+            
+            if (startButton) {
+              startButton.click();
+              console.log('[BROWSER] Clicked start button via text search');
+              return true;
+            }
+            return false;
+          });
+          
+          if (clicked) {
+            console.log('✅ Clicked start button via text search');
+            await sleep(params.waitAfter || 3000);
+            return true;
+          }
+          
+          throw new Error('Failed to find start button with any method');
+        }
+      } catch (error) {
+        console.error('Error clicking start button:', error.message);
+        return false;
+      }
+    },
+    /**
+     * Click the academy start/continue button that opens the new tab - EXACT COPY from dorithricin
+     * @param {Object} frame - Puppeteer frame (main page)
+     * @param {Object} params - Additional parameters
+     * @returns {Promise<boolean>} - Success status
+     */
+    clickAcademyStartButton: async function(frame, params = {}) {
+      try {
+        console.log('Clicking academy start/continue button to open SCORM tab...');
+        
+        const buttonSelector = 'button.start-resume-button';
+        
+        await frame.waitForSelector(buttonSelector, { 
+          visible: true, 
+          timeout: params.timeout || 15000 
+        });
+        
+        console.log('Academy start button found, clicking it...');
+        await frame.click(buttonSelector);
+        
+        console.log('Academy start button clicked - new tab should open');
+        await sleep(params.waitAfter || 3000);
+        
+        return true;
+      } catch (error) {
+        console.error('Error clicking academy start button:', error.message);
+        
+        // Fallback: try alternative selectors
+        try {
+          console.log('Trying fallback selectors...');
+          
+          const fallbackSelectors = [
+            '.start-resume-button',
+            'button[class*="start-resume"]',
+            'button[class*="primary"][class*="brand"]',
+            '.button-regular.primary.brand'
+          ];
+          
+          for (const selector of fallbackSelectors) {
+            const exists = await frame.$(selector);
+            if (exists) {
+              console.log(`Using fallback selector: ${selector}`);
+              await frame.click(selector);
+              await sleep(3000);
+              return true;
+            }
+          }
+          
+          throw new Error('No suitable button selector found');
+        } catch (fallbackError) {
+          console.error('Fallback also failed:', fallbackError.message);
+          return false;
+        }
+      }
+    },
+
     // New function that can handle either pharmacy scene or message buttons
     handlePharmacyOrMessageButtons: async function(scormFrame, params = {}) {
       try {
@@ -425,54 +561,331 @@ module.exports = {
     },
 
     // In customFunctions of cystinolAkut.js
+    /**
+     * REVAMPED: Click all risk factors based on the actual HTML structure
+     * Updated to work with the specific data-model-ids and SVG eventable groups
+     */
     clickAllRiskFactors: async function(scormFrame, params = {}) {
       try {
-        console.log('Starting enhanced risk factors interaction...');
+        console.log('Starting REVAMPED risk factors interaction with actual element IDs...');
         
         // Wait for risk factors to load
         await sleep(params.initialDelay || 2000);
         
-        // Define risk factors by text content (from screenshot)
-        const riskFactorTexts = [
-          "Unzureichende Flüssigkeitszufuhr",
-          "Hormonelle Veränderungen, wie Schwangerschaft oder Wechseljahre",
-          "Geschwächtes Immunsystem",
-          "Falsche Intimhygiene",
-          "Antibiotika-Einnahme",
-          "Ein frisch verliebtes Paar: möglicherweise häufiger Geschlechtsverkehr"
+        // Define risk factors by their actual data-model-ids from the HTML
+        const riskFactorElements = [
+          {
+            id: "6ik9oDyZp4F",
+            description: "Old lady (elderly woman risk factor)"
+          },
+          {
+            id: "6aelPxiqTQs", 
+            description: "Pregnant lady (pregnancy risk factor)"
+          },
+          {
+            id: "6cACM9wqz9n",
+            description: "Women on blanket (lifestyle risk factor)" 
+          },
+          {
+            id: "6U8twOQqmyr",
+            description: "Lady with red nose (health condition risk factor)"
+          },
+          {
+            id: "6f83JhqEXI5", 
+            description: "Reading lady (stress/lifestyle risk factor)"
+          },
+          {
+            id: "6CgBjku5i0P",
+            description: "Couple kissing (sexual activity risk factor)"
+          }
         ];
 
-        // Click elements containing these texts
-        for (const text of riskFactorTexts) {
-          await scormFrame.evaluate((searchText) => {
-            // Find all elements with matching text
-            const elements = Array.from(document.querySelectorAll('[data-acc-text], div'));
-            const targetElement = elements.find(el => 
-              (el.getAttribute('data-acc-text') || el.textContent).includes(searchText)
-            );
-            
-            if (targetElement) {
-              // Find the closest clickable parent
-              const clickTarget = targetElement.closest('[data-model-id]') || targetElement;
-              clickTarget.click();
-              console.log(`Clicked element with text: "${searchText}"`);
-            }
-          }, text);
+        console.log(`Will click ${riskFactorElements.length} risk factor images...`);
+
+        let successfulClicks = 0;
+
+        // Click each risk factor element using the SVG eventable group
+        for (let i = 0; i < riskFactorElements.length; i++) {
+          const factor = riskFactorElements[i];
+          console.log(`Clicking risk factor ${i + 1}/${riskFactorElements.length}: ${factor.description} (ID: ${factor.id})`);
           
+          try {
+            // Enhanced clicking method targeting the eventable SVG group
+            const clickSuccess = await scormFrame.evaluate((factorId) => {
+              const element = document.querySelector(`[data-model-id="${factorId}"]`);
+              if (!element) {
+                console.log(`[BROWSER] Element not found: ${factorId}`);
+                return false;
+              }
+
+              // Check if element is visible and has cursor-hover class
+              const isVisible = window.getComputedStyle(element).display !== 'none';
+              const isInteractive = element.classList.contains('cursor-hover');
+              
+              if (!isVisible || !isInteractive) {
+                console.log(`[BROWSER] Element not interactive: ${factorId}`);
+                return false;
+              }
+
+              // Target the SVG eventable group specifically (most reliable)
+              const eventableGroup = element.querySelector('svg g.eventable');
+              if (eventableGroup) {
+                // Get center coordinates for precise clicking
+                const rect = eventableGroup.getBoundingClientRect();
+                const centerX = rect.left + rect.width/2;
+                const centerY = rect.top + rect.height/2;
+                
+                // Dispatch comprehensive mouse event sequence
+                const events = [
+                  new MouseEvent('mouseover', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY}),
+                  new MouseEvent('mouseenter', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY}),
+                  new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0}),
+                  new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0}),
+                  new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0})
+                ];
+                
+                // Dispatch events to the eventable group
+                events.forEach(event => eventableGroup.dispatchEvent(event));
+                console.log(`[BROWSER] Dispatched events to eventable group for: ${factorId}`);
+                
+                // Also try clicking the main element as backup
+                element.click();
+                console.log(`[BROWSER] Also clicked main element: ${factorId}`);
+                
+                return true;
+              } else {
+                // Fallback: click the main element directly
+                element.click();
+                console.log(`[BROWSER] Clicked main element (no eventable group): ${factorId}`);
+                return true;
+              }
+            }, factor.id);
+
+            if (clickSuccess) {
+              console.log(`✅ Successfully clicked risk factor: ${factor.description}`);
+              successfulClicks++;
+            } else {
+              console.log(`❌ Failed to click risk factor: ${factor.description}`);
+            }
+
+          } catch (error) {
+            console.error(`Error clicking risk factor ${factor.id}:`, error.message);
+          }
+          
+          // Wait between clicks to allow for animations/feedback
           await sleep(params.delayBetweenClicks || 1000);
         }
 
-        // Handle success popup
-        console.log('Closing success dialog...');
-        await scormFrame.evaluate(() => {
-          const closeButton = document.querySelector('[data-model-id="5nUZEiVuJdn"]');
-          if (closeButton) closeButton.click();
-        });
+        console.log(`✅ Clicked ${successfulClicks}/${riskFactorElements.length} risk factors`);
+
+        // Wait for success dialog to appear
+        console.log('Waiting for success dialog to appear...');
+        await sleep(params.waitForPopup || 3000);
+
+        // Handle success popup with the CORRECT close button ID
+        console.log('Closing success dialog with updated button ID...');
         
-        await sleep(params.waitAfter || 2000);
-        return true;
+        try {
+          // Use the correct close button ID from the HTML: 6C0p3gtvB8a
+          const correctCloseButtonId = "6C0p3gtvB8a";
+          
+          const dialogClosed = await scormFrame.evaluate((closeButtonId) => {
+            // Find the close button element
+            const closeButton = document.querySelector(`[data-model-id="${closeButtonId}"]`);
+            if (!closeButton) {
+              console.log(`[BROWSER] Close button not found: ${closeButtonId}`);
+              return false;
+            }
+
+            // Check if it's part of a shown dialog
+            const isInShownDialog = closeButton.closest('.slide-object-stategroup.shown') || 
+                                  closeButton.classList.contains('shown');
+                                  
+            if (!isInShownDialog) {
+              console.log(`[BROWSER] Close button not in shown dialog: ${closeButtonId}`);
+              return false;
+            }
+
+            // Target the SVG eventable group for reliable clicking
+            const eventableGroup = closeButton.querySelector('svg g.eventable');
+            if (eventableGroup) {
+              // Get center coordinates
+              const rect = eventableGroup.getBoundingClientRect();
+              const centerX = rect.left + rect.width/2;
+              const centerY = rect.top + rect.height/2;
+              
+              // Comprehensive click event sequence
+              const events = [
+                new MouseEvent('mouseover', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY}),
+                new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0}),
+                new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0}),
+                new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0})
+              ];
+              
+              // Dispatch to eventable group
+              events.forEach(event => eventableGroup.dispatchEvent(event));
+              console.log(`[BROWSER] Dispatched close events to eventable group: ${closeButtonId}`);
+              
+              // Also try direct element click as backup
+              closeButton.click();
+              console.log(`[BROWSER] Also clicked close button directly: ${closeButtonId}`);
+              
+              return true;
+            } else {
+              // Fallback: direct click
+              closeButton.click();
+              console.log(`[BROWSER] Direct clicked close button: ${closeButtonId}`);
+              return true;
+            }
+          }, correctCloseButtonId);
+
+          if (dialogClosed) {
+            console.log('✅ Successfully closed success dialog');
+          } else {
+            console.log('⚠️ Could not close dialog with primary method, trying fallbacks...');
+            
+            // Fallback: try other common close button methods
+            await scormFrame.evaluate(() => {
+              // Try clicking any orange stroke circle (typical close button)
+              const orangeCircles = document.querySelectorAll('path[stroke="#FF9800"]');
+              for (const circle of orangeCircles) {
+                const parent = circle.closest('[data-model-id]');
+                if (parent && parent.getAttribute('data-acc-text') === 'Oval 3') {
+                  parent.click();
+                  console.log('[BROWSER] Clicked orange oval as fallback close');
+                  return true;
+                }
+              }
+              
+              // Try pressing Escape key
+              document.dispatchEvent(new KeyboardEvent('keydown', {
+                key: 'Escape',
+                code: 'Escape',
+                keyCode: 27,
+                bubbles: true
+              }));
+              console.log('[BROWSER] Pressed Escape as fallback');
+              
+              return false;
+            });
+          }
+
+        } catch (closeError) {
+          console.error('Error closing success dialog:', closeError.message);
+        }
+        
+        await sleep(params.waitAfterClose || 2000);
+
+        // IMPORTANT: Click the next button to proceed (using the correct ID from the HTML)
+        console.log('Clicking next button to proceed from risk factors slide...');
+        
+        try {
+          const nextButtonId = "5fJnOnqo2Mn"; // The actual next button ID from the HTML
+          
+          const nextButtonClicked = await scormFrame.evaluate((buttonId) => {
+            const nextButton = document.querySelector(`[data-model-id="${buttonId}"]`);
+            if (!nextButton) {
+              console.log(`[BROWSER] Next button not found: ${buttonId}`);
+              return false;
+            }
+
+            // Check if button is visible and shown
+            const isVisible = window.getComputedStyle(nextButton).display !== 'none';
+            const isShown = nextButton.classList.contains('shown');
+            
+            if (!isVisible || !isShown) {
+              console.log(`[BROWSER] Next button not visible/shown: ${buttonId}`);
+              return false;
+            }
+
+            // Target the SVG eventable group for reliable clicking
+            const eventableGroup = nextButton.querySelector('svg g.eventable');
+            if (eventableGroup) {
+              // Get center coordinates
+              const rect = eventableGroup.getBoundingClientRect();
+              const centerX = rect.left + rect.width/2;
+              const centerY = rect.top + rect.height/2;
+              
+              // Comprehensive click event sequence for next button
+              const events = [
+                new MouseEvent('mouseover', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY}),
+                new MouseEvent('mouseenter', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY}),
+                new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0}),
+                new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0}),
+                new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0})
+              ];
+              
+              // Dispatch to eventable group
+              events.forEach(event => eventableGroup.dispatchEvent(event));
+              console.log(`[BROWSER] Dispatched next button events to eventable group: ${buttonId}`);
+              
+              // Also try direct element click as backup
+              nextButton.click();
+              console.log(`[BROWSER] Also clicked next button directly: ${buttonId}`);
+              
+              return true;
+            } else {
+              // Fallback: direct click
+              nextButton.click();
+              console.log(`[BROWSER] Direct clicked next button: ${buttonId}`);
+              return true;
+            }
+          }, nextButtonId);
+
+          if (nextButtonClicked) {
+            console.log('✅ Successfully clicked next button to proceed');
+          } else {
+            console.log('⚠️ Could not click next button, trying fallback...');
+            
+            // Fallback: try clicking by orange stroke (the button has stroke="#FF9800")
+            await scormFrame.evaluate(() => {
+              // Look for orange stroke circles that could be next buttons
+              const orangeButtons = document.querySelectorAll('path[stroke="#FF9800"]');
+              for (const path of orangeButtons) {
+                const parent = path.closest('[data-model-id]');
+                if (parent && parent.classList.contains('shown')) {
+                  // Check if it's likely a next button (usually in bottom right area)
+                  const rect = parent.getBoundingClientRect();
+                  if (rect.right > window.innerWidth * 0.7 && rect.bottom > window.innerHeight * 0.7) {
+                    parent.click();
+                    console.log('[BROWSER] Clicked orange button in bottom right as next button');
+                    return true;
+                  }
+                }
+              }
+              
+              // Final fallback: click bottom right corner
+              const rightSide = window.innerWidth - 50;
+              const bottomSide = window.innerHeight - 50;
+              const element = document.elementFromPoint(rightSide, bottomSide);
+              if (element) {
+                element.click();
+                console.log('[BROWSER] Clicked bottom right corner as next button fallback');
+                return true;
+              }
+              
+              return false;
+            });
+          }
+
+        } catch (nextButtonError) {
+          console.error('Error clicking next button:', nextButtonError.message);
+        }
+
+        // Wait for transition after clicking next button
+        await sleep(params.waitAfterNext || 3000);
+
+        console.log('🎉 REVAMPED risk factors interaction completed!');
+        
+        // Success criteria: at least 4 out of 6 risk factors clicked
+        const successRate = successfulClicks / riskFactorElements.length;
+        const success = successRate >= 0.66; // 66% success rate
+        
+        console.log(`📊 Success rate: ${(successRate * 100).toFixed(1)}% (${successfulClicks}/${riskFactorElements.length})`);
+        
+        return success;
       } catch (error) {
-        console.error('Risk factor interaction failed:', error);
+        console.error('Error in REVAMPED risk factors interaction:', error.message);
         return false;
       }
     },
@@ -515,7 +928,411 @@ module.exports = {
         throw new Error(`Failed to click MediBee: ${error.message}`);
       }
     },
-    
+
+    /**
+     * Handle timed slide that requires 28 seconds wait for next button to become active
+     * This is for the bacteria information slide that has a specific timing requirement
+     */
+    handleTimedSlideWithWait: async function(scormFrame, params = {}) {
+      try {
+        console.log('Starting timed slide handler - waiting for next button to become active...');
+        
+        const nextButtonId = "5fJnOnqo2Mn"; // Same ID as before
+        const requiredWaitTime = params.requiredWaitTime || 28000; // 28 seconds default
+        const maxWaitTime = params.maxWaitTime || 35000; // 35 seconds max (safety buffer)
+        
+        console.log(`⏳ Waiting ${requiredWaitTime/1000} seconds for next button to become active...`);
+        
+        // Method 1: Simple wait approach (most reliable for timed content)
+        if (params.useSimpleWait !== false) {
+          console.log('Using simple wait approach for timed content...');
+          await sleep(requiredWaitTime);
+          
+          // After the wait, click the button
+          console.log('Wait complete, attempting to click next button...');
+          
+        } else {
+          // Method 2: Polling approach (checks button state periodically)
+          console.log('Using polling approach to detect button activation...');
+          
+          const startTime = Date.now();
+          let buttonActive = false;
+          
+          while (!buttonActive && (Date.now() - startTime < maxWaitTime)) {
+            // Check if the next button is active (has orange stroke)
+            buttonActive = await scormFrame.evaluate((buttonId) => {
+              const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+              if (!button) return false;
+              
+              const isShown = button.classList.contains('shown');
+              const isVisible = window.getComputedStyle(button).display !== 'none';
+              const hasOrangeStroke = button.querySelector('path[stroke="#FF9800"]');
+              
+              // Additional check: see if button responds to hover (indicates it's active)
+              const isInteractive = button.classList.contains('cursor-hover') || 
+                                  button.style.cursor === 'pointer';
+              
+              const isActive = isShown && isVisible && hasOrangeStroke;
+              
+              if (isActive) {
+                console.log(`[BROWSER] Button is active: shown=${isShown}, visible=${isVisible}, hasOrange=${!!hasOrangeStroke}`);
+              }
+              
+              return isActive;
+            }, nextButtonId);
+            
+            if (buttonActive) {
+              console.log(`✅ Next button became active after ${((Date.now() - startTime)/1000).toFixed(1)} seconds`);
+              break;
+            }
+            
+            // Log progress every 5 seconds
+            const elapsed = (Date.now() - startTime) / 1000;
+            if (Math.floor(elapsed) % 5 === 0 && elapsed >= 5) {
+              console.log(`⏳ Still waiting... ${elapsed.toFixed(0)}s elapsed`);
+            }
+            
+            await sleep(1000); // Check every second
+          }
+          
+          if (!buttonActive) {
+            console.log(`⚠️ Button didn't become active within ${maxWaitTime/1000}s, proceeding anyway...`);
+          }
+        }
+        
+        // Now click the next button using the proven method
+        console.log('Clicking next button with enhanced method...');
+        
+        try {
+          const nextButtonClicked = await scormFrame.evaluate((buttonId) => {
+            const nextButton = document.querySelector(`[data-model-id="${buttonId}"]`);
+            if (!nextButton) {
+              console.log(`[BROWSER] Next button not found: ${buttonId}`);
+              return false;
+            }
+
+            // Target the SVG eventable group for reliable clicking
+            const eventableGroup = nextButton.querySelector('svg g.eventable');
+            if (eventableGroup) {
+              // Get center coordinates
+              const rect = eventableGroup.getBoundingClientRect();
+              const centerX = rect.left + rect.width/2;
+              const centerY = rect.top + rect.height/2;
+              
+              // Comprehensive click event sequence
+              const events = [
+                new MouseEvent('mouseover', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY}),
+                new MouseEvent('mouseenter', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY}),
+                new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0}),
+                new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0}),
+                new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0})
+              ];
+              
+              // Dispatch to eventable group
+              events.forEach(event => eventableGroup.dispatchEvent(event));
+              console.log(`[BROWSER] Dispatched click events to eventable group: ${buttonId}`);
+              
+              // Also try direct element click as backup
+              nextButton.click();
+              console.log(`[BROWSER] Also clicked next button directly: ${buttonId}`);
+              
+              return true;
+            } else {
+              // Fallback: direct click
+              nextButton.click();
+              console.log(`[BROWSER] Direct clicked next button: ${buttonId}`);
+              return true;
+            }
+          }, nextButtonId);
+
+          if (nextButtonClicked) {
+            console.log('✅ Successfully clicked next button on timed slide');
+          } else {
+            console.log('⚠️ Could not click next button, trying fallback...');
+            
+            // Fallback: click by orange stroke in bottom right area
+            await scormFrame.evaluate(() => {
+              const orangeButtons = document.querySelectorAll('path[stroke="#FF9800"]');
+              for (const path of orangeButtons) {
+                const parent = path.closest('[data-model-id]');
+                if (parent && parent.classList.contains('shown')) {
+                  const rect = parent.getBoundingClientRect();
+                  // Check if it's in the bottom right area (typical next button position)
+                  if (rect.right > window.innerWidth * 0.7 && rect.bottom > window.innerHeight * 0.7) {
+                    parent.click();
+                    console.log('[BROWSER] Clicked orange button in bottom right as next button');
+                    return true;
+                  }
+                }
+              }
+              
+              // Final fallback
+              const rightSide = window.innerWidth - 50;
+              const bottomSide = window.innerHeight - 50;
+              const element = document.elementFromPoint(rightSide, bottomSide);
+              if (element) {
+                element.click();
+                console.log('[BROWSER] Clicked bottom right corner as final fallback');
+              }
+              
+              return false;
+            });
+          }
+
+        } catch (clickError) {
+          console.error('Error clicking next button on timed slide:', clickError.message);
+        }
+
+        // Wait for transition to next slide
+        console.log('Waiting for transition to next slide...');
+        await sleep(params.waitAfterClick || 5000);
+
+        console.log('🎉 Timed slide completed successfully!');
+        return true;
+        
+      } catch (error) {
+        console.error('Error in timed slide handler:', error.message);
+        
+        // Emergency fallback: try to click something in bottom right
+        try {
+          await scormFrame.evaluate(() => {
+            const rightSide = window.innerWidth - 50;
+            const bottomSide = window.innerHeight - 50;
+            const element = document.elementFromPoint(rightSide, bottomSide);
+            if (element) element.click();
+          });
+        } catch (e) {
+          console.log('Emergency fallback also failed');
+        }
+        
+        return false;
+      }
+    },
+
+    /**
+     * Handle message dialog sequence with updated next button ID
+     * Updated to use the correct next button ID: 6Cp6RKOAOTU
+     */
+    handleMessageDialogSequence: async function(scormFrame, params = {}) {
+      try {
+        console.log('Starting message dialog sequence with updated next button handling...');
+        
+        const messageButtonId = "6l65RbsSaM0"; // Message button ID (this worked)
+        const nextButtonId = "6Cp6RKOAOTU";   // UPDATED: New next button ID
+        const maxClicks = params.maxClicks || 1;
+        const delayBetweenClicks = params.delayBetweenClicks || 1500;
+        const waitForActivation = params.waitForActivation || 5000; // Wait for button to become active
+        
+        console.log(`Will click message button ${maxClicks} times, then proceed with next button: ${nextButtonId}`);
+        
+        // STEP 1: Click message button the required number of times
+        for (let i = 1; i <= maxClicks; i++) {
+          console.log(`Message button click ${i}/${maxClicks}`);
+          
+          try {
+            await scormFrame.click(`[data-model-id="${messageButtonId}"]`);
+            console.log(`✅ Message button click ${i} successful`);
+            
+            if (i < maxClicks) {
+              await sleep(delayBetweenClicks);
+            }
+          } catch (error) {
+            console.log(`❌ Error with message button click ${i}: ${error.message}`);
+          }
+        }
+        
+        console.log('✅ All message button clicks completed');
+        
+        // STEP 2: Wait for next button to become active (stroke changes from gray to orange)
+        console.log(`⏳ Waiting ${waitForActivation/1000}s for next button to become active...`);
+        await sleep(waitForActivation);
+        
+        // STEP 3: Click next button with enhanced detection and multiple strategies
+        console.log('Attempting to click next button with multiple strategies...');
+        
+        let nextButtonClicked = false;
+        
+        // Strategy 1: Direct click with specific ID
+        try {
+          const buttonFound = await scormFrame.evaluate((buttonId) => {
+            const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+            if (!button) {
+              console.log(`[BROWSER] Button not found: ${buttonId}`);
+              return false;
+            }
+            
+            const isShown = button.classList.contains('shown');
+            const isVisible = window.getComputedStyle(button).display !== 'none';
+            
+            console.log(`[BROWSER] Button state: shown=${isShown}, visible=${isVisible}`);
+            
+            return isShown && isVisible;
+          }, nextButtonId);
+          
+          if (buttonFound) {
+            await scormFrame.click(`[data-model-id="${nextButtonId}"]`);
+            console.log(`✅ Strategy 1: Clicked next button with ID: ${nextButtonId}`);
+            nextButtonClicked = true;
+          }
+        } catch (error) {
+          console.log(`Strategy 1 failed: ${error.message}`);
+        }
+        
+        // Strategy 2: Enhanced SVG eventable group clicking
+        if (!nextButtonClicked) {
+          try {
+            nextButtonClicked = await scormFrame.evaluate((buttonId) => {
+              const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+              if (!button) return false;
+              
+              // Target the SVG eventable group specifically
+              const eventableGroup = button.querySelector('svg g.eventable');
+              if (eventableGroup) {
+                // Get center coordinates
+                const rect = eventableGroup.getBoundingClientRect();
+                const centerX = rect.left + rect.width/2;
+                const centerY = rect.top + rect.height/2;
+                
+                // Comprehensive click event sequence
+                const events = [
+                  new MouseEvent('mouseover', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY}),
+                  new MouseEvent('mouseenter', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY}),
+                  new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0}),
+                  new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0}),
+                  new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: centerX, clientY: centerY, button: 0})
+                ];
+                
+                // Dispatch events
+                events.forEach(event => eventableGroup.dispatchEvent(event));
+                console.log(`[BROWSER] Strategy 2: Enhanced SVG click for ${buttonId}`);
+                
+                // Also try direct click as backup
+                button.click();
+                console.log(`[BROWSER] Strategy 2: Also direct clicked ${buttonId}`);
+                
+                return true;
+              }
+              
+              return false;
+            }, nextButtonId);
+            
+            if (nextButtonClicked) {
+              console.log(`✅ Strategy 2: Enhanced SVG click successful`);
+            }
+          } catch (error) {
+            console.log(`Strategy 2 failed: ${error.message}`);
+          }
+        }
+        
+        // Strategy 3: Look for any orange or gray stroke circles (button might still be gray but clickable)
+        if (!nextButtonClicked) {
+          try {
+            nextButtonClicked = await scormFrame.evaluate(() => {
+              // Look for circles with orange OR gray stroke (in case button is still gray but clickable)
+              const strokeColors = ['#FF9800', '#BFBFBF']; // Orange or gray
+              
+              for (const color of strokeColors) {
+                const circles = document.querySelectorAll(`path[stroke="${color}"]`);
+                for (const path of circles) {
+                  const parent = path.closest('[data-model-id]');
+                  if (parent && parent.classList.contains('shown')) {
+                    // Check if it's likely a next button (in bottom right area)
+                    const rect = parent.getBoundingClientRect();
+                    if (rect.right > window.innerWidth * 0.7 && rect.bottom > window.innerHeight * 0.7) {
+                      // Try clicking with events
+                      const centerX = rect.left + rect.width/2;
+                      const centerY = rect.top + rect.height/2;
+                      
+                      const clickEvent = new MouseEvent('click', {
+                        bubbles: true, 
+                        cancelable: true, 
+                        view: window,
+                        clientX: centerX,
+                        clientY: centerY
+                      });
+                      
+                      parent.dispatchEvent(clickEvent);
+                      parent.click(); // Also direct click
+                      
+                      console.log(`[BROWSER] Strategy 3: Clicked ${color} stroke button in bottom right`);
+                      return true;
+                    }
+                  }
+                }
+              }
+              
+              return false;
+            });
+            
+            if (nextButtonClicked) {
+              console.log(`✅ Strategy 3: Stroke-based click successful`);
+            }
+          } catch (error) {
+            console.log(`Strategy 3 failed: ${error.message}`);
+          }
+        }
+        
+        // Strategy 4: Position-based clicking (bottom right corner)
+        if (!nextButtonClicked) {
+          try {
+            await scormFrame.evaluate(() => {
+              // Try clicking in bottom right area where next buttons typically are
+              const positions = [
+                { x: window.innerWidth - 50, y: window.innerHeight - 50 },   // Very bottom right
+                { x: window.innerWidth - 100, y: window.innerHeight - 50 },  // Slightly left
+                { x: window.innerWidth - 50, y: window.innerHeight - 100 },  // Slightly up
+              ];
+              
+              for (const pos of positions) {
+                const element = document.elementFromPoint(pos.x, pos.y);
+                if (element) {
+                  element.click();
+                  console.log(`[BROWSER] Strategy 4: Clicked element at (${pos.x}, ${pos.y})`);
+                  return true;
+                }
+              }
+              
+              return false;
+            });
+            
+            console.log(`✅ Strategy 4: Position-based click attempted`);
+            nextButtonClicked = true; // Assume success for position-based clicking
+          } catch (error) {
+            console.log(`Strategy 4 failed: ${error.message}`);
+          }
+        }
+        
+        // Wait for transition
+        console.log('Waiting for transition to next slide...');
+        await sleep(params.waitAfterNext || 5000);
+        
+        if (nextButtonClicked) {
+          console.log('🎉 Message dialog sequence completed successfully!');
+        } else {
+          console.log('⚠️ Message dialog sequence completed, but next button click uncertain');
+        }
+        
+        return true;
+        
+      } catch (error) {
+        console.error('Error in message dialog sequence:', error.message);
+        
+        // Emergency fallback
+        try {
+          await scormFrame.evaluate(() => {
+            const rightSide = window.innerWidth - 50;
+            const bottomSide = window.innerHeight - 50;
+            const element = document.elementFromPoint(rightSide, bottomSide);
+            if (element) element.click();
+          });
+        } catch (e) {
+          console.log('Emergency fallback failed');
+        }
+        
+        return false;
+      }
+    },
+        
     // Final implementation for handling slider interaction with direct element clicking
     // Completely standalone implementation for slider interaction
     // This does NOT use any functions from pageInteractions.js

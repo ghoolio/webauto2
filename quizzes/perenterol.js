@@ -80,12 +80,12 @@ module.exports = {
       params: {
         maxClicks: 5,
         delayBetweenClicks: 1500,
-        maxWaitForNextButton: 30000,
+        maxWaitForNextButton: 15000,
         waitAfterNext: 5000
       },
       waitAfter: 5000
     },
-    /* 
+    
     // Slide 7: Click the orange next button after message sequence
     {
       type: "NEXT_BUTTON",
@@ -309,7 +309,7 @@ module.exports = {
         waitAfterNext: 3000
       },
       waitAfter: 5000
-    }, */
+    },
 
     // Slide 19: 3-part mosaic carousel - progressive mechanism revelation
     {
@@ -365,6 +365,20 @@ module.exports = {
       type: "FINAL_SCREEN",
       action: "clickPerenterolWeiterButton3",
       useScormFrame: true,
+      waitAfter: 30000
+    },
+
+    // Final screen with final Weiter button
+    {
+      type: "FINAL_COMPLETION",
+      action: "handleFinalPerenterolCompletion",
+      useScormFrame: true,
+      forceExecute: true,
+      params: {
+        finalButtonId: "5an4xgts7U1",    // Blue "Training schließen" button
+        waitBeforeClick: 3000,           // Wait for final screen to load
+        completionMessage: "🎉 Perenterol training completed successfully!"
+      },
       waitAfter: 5000
     }
     
@@ -2531,6 +2545,86 @@ module.exports = {
         console.error('Error clicking final Perenterol Weiter button:', error.message);
         return false;
       }
-    }
+    },
+
+    /**
+     * Handle final Perenterol training completion
+     * @param {Object} scormFrame - Puppeteer frame
+     * @param {Object} params - Additional parameters
+     * @returns {Promise<boolean>} - Success status
+     */
+    handleFinalPerenterolCompletion: async function(scormFrame, params = {}) {
+      try {
+        console.log('🎯 Starting final Perenterol training completion...');
+        
+        const finalButtonId = params.finalButtonId || "5an4xgts7U1";
+        const waitBeforeClick = params.waitBeforeClick || 3000;
+        const completionMessage = params.completionMessage || "Training completed!";
+
+        console.log(`⏳ Waiting ${waitBeforeClick}ms for final completion screen to load...`);
+        await sleep(waitBeforeClick);
+
+        console.log(`🎯 Clicking final "Training schließen" button: ${finalButtonId}`);
+        
+        try {
+          const finalButtonExists = await scormFrame.waitForSelector(`[data-model-id="${finalButtonId}"]`, { 
+            visible: true, 
+            timeout: 10000 
+          }).then(() => true).catch(() => false);
+          
+          if (finalButtonExists) {
+            try {
+              await scormFrame.click(`[data-model-id="${finalButtonId}"]`);
+              console.log(`✅ Final button clicked with frame.click()`);
+            } catch (clickError) {
+              console.log('Direct final button click failed, using evaluate method:', clickError.message);
+              
+              await scormFrame.evaluate((buttonId) => {
+                const button = document.querySelector(`[data-model-id="${buttonId}"]`);
+                if (button) {
+                  const eventableElement = button.querySelector('svg g.eventable') || button;
+                  
+                  if (eventableElement) {
+                    const rect = eventableElement.getBoundingClientRect();
+                    const x = rect.left + rect.width/2;
+                    const y = rect.top + rect.height/2;
+                    
+                    const events = [
+                      new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('mouseup', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y}),
+                      new MouseEvent('click', {bubbles: true, cancelable: true, view: window, clientX: x, clientY: y})
+                    ];
+                    
+                    events.forEach(event => eventableElement.dispatchEvent(event));
+                    console.log(`[BROWSER] Dispatched events on final button: ${buttonId}`);
+                    return true;
+                  }
+                  
+                  button.click();
+                  console.log(`[BROWSER] Direct clicked final button: ${buttonId}`);
+                  return true;
+                }
+                return false;
+              }, finalButtonId);
+            }
+            
+            console.log('✅ Final completion button clicked successfully!');
+            await sleep(2000);
+            
+            console.log(completionMessage);
+            return true;
+          } else {
+            console.log(`❌ Final button ${finalButtonId} not found`);
+            return false;
+          }
+        } catch (error) {
+          console.error(`Error clicking final button:`, error.message);
+          return false;
+        }
+      } catch (error) {
+        console.error('Error in handleFinalPerenterolCompletion:', error.message);
+        return false;
+      }
+    },
   }
 };

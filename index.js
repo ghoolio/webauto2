@@ -527,9 +527,6 @@ const startMedibee = async () => {
                     } catch (error) {
                         console.error(`Error in user session (Attempt ${userAttempts}):`, error);
                         
-                        // Take error screenshot
-                        await page.screenshot({ path: `session-error-${globalLoginName}-attempt-${userAttempts}.png` });
-                        
                         if (userAttempts < maxUserAttempts) {
                             console.log('Retrying user session after error...');
                             // Logout and clear data for next attempt
